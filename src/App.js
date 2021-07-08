@@ -1,23 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import { useEffect, useState } from "react";
+import axios from "axios";
+import Grid from "@material-ui/core/Grid";
+import PostCard from "./components/postCard";
 
 function App() {
+  const [posts, getPosts] = useState([]);
+
+  useEffect(() => {
+    getAllPosts();
+  }, []);
+
+  const getAllPosts = () => {
+    axios.get("http://localhost:5000/api/v1/posts").then((response) => {
+      const allPosts = response.data.data;
+      console.log(allPosts);
+      getPosts(allPosts);
+    });
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Grid container spacing={4}>
+        {posts.map((post) => (
+          <Grid item>
+            <PostCard key={post._id} post={post} />
+          </Grid>
+        ))}
+      </Grid>
     </div>
   );
 }
