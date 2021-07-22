@@ -14,17 +14,26 @@ function App() {
   const getAllPosts = () => {
     axios.get("http://localhost:5000/api/v1/posts").then((response) => {
       const allPosts = response.data.data;
-      console.log(allPosts);
       getPosts(allPosts);
     });
+  };
+
+  const deletePost = (id) => {
+    axios
+      .delete(`http://localhost:5000/api/v1/posts/${id}`)
+      .then((response) => {
+        if (response.status === 200) {
+          getPosts(posts.filter((post) => post._id !== id));
+        }
+      });
   };
 
   return (
     <div>
       <Grid container spacing={4}>
         {posts.map((post) => (
-          <Grid item>
-            <PostCard key={post._id} post={post} />
+          <Grid item key={post._id}>
+            <PostCard post={post} deletePost={deletePost} />
           </Grid>
         ))}
       </Grid>
