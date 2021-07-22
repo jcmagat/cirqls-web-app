@@ -25,17 +25,36 @@ function PostDialog(props) {
 
   const [open, setOpen] = useState(false);
 
+  const [name, setName] = useState("");
+  const [message, setMessage] = useState("");
+
   const handleOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
+    setName("");
+    setMessage("");
+
     setOpen(false);
   };
 
   const handlePost = () => {
-    props.addPost();
+    const data = {
+      name: name,
+      message: message,
+    };
+    props.addPost(data);
+
     handleClose();
+  };
+
+  const handleNameChange = (name) => {
+    setName(name);
+  };
+
+  const handleMessageChange = (message) => {
+    setMessage(message);
   };
 
   return (
@@ -50,23 +69,26 @@ function PostDialog(props) {
       </Fab>
       <Dialog open={open} onClose={handleClose}>
         <DialogContent>
-          <TextField
-            className={classes.pos}
-            id="name"
-            label="Name"
-            defaultValue="Anonymous"
-            fullWidth
-          />
-          <TextField
-            className={classes.pos}
-            autoFocus
-            id="message"
-            label="Message"
-            variant="filled"
-            multiline
-            rows={6}
-            fullWidth
-          />
+          <form noValidate autoComplete="off">
+            <TextField
+              className={classes.pos}
+              id="name"
+              label="Name"
+              autoFocus
+              fullWidth
+              onChange={(event) => handleNameChange(event.target.value)}
+            />
+            <TextField
+              className={classes.pos}
+              id="message"
+              label="Message"
+              variant="filled"
+              multiline
+              rows={6}
+              fullWidth
+              onChange={(event) => handleMessageChange(event.target.value)}
+            />
+          </form>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose} color="secondary">

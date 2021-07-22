@@ -29,8 +29,17 @@ function App() {
       });
   };
 
-  const addPost = () => {
-    console.log("Adding a post!");
+  const addPost = (data) => {
+    const post = {
+      postedBy: data.name,
+      message: data.message,
+    };
+
+    axios.post("http://localhost:5000/api/v1/posts", post).then((response) => {
+      if (response.status === 200) {
+        getAllPosts();
+      }
+    });
   };
 
   return (
