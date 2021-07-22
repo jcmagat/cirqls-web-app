@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import Grid from "@material-ui/core/Grid";
 import PostCard from "./components/postCard";
+import PostDialog from "./components/postDialog";
 
 function App() {
   const [posts, getPosts] = useState([]);
@@ -28,6 +29,10 @@ function App() {
       });
   };
 
+  const addPost = () => {
+    console.log("Adding a post!");
+  };
+
   return (
     <div>
       <Grid container spacing={4}>
@@ -37,6 +42,7 @@ function App() {
           </Grid>
         ))}
       </Grid>
+      <PostDialog addPost={addPost} />
     </div>
   );
 }
