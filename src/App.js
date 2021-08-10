@@ -1,11 +1,21 @@
 import "./App.css";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PostCard from "./components/postCard";
 import PostDialog from "./components/postDialog";
+import NavBar from "./components/navBar";
+
+const useStyles = makeStyles({
+  postGrid: {
+    margin: 16,
+  },
+});
 
 function App() {
+  const classes = useStyles();
+
   const [posts, getPosts] = useState([]);
 
   useEffect(() => {
@@ -44,7 +54,8 @@ function App() {
 
   return (
     <div>
-      <Grid container spacing={4}>
+      <NavBar />
+      <Grid className={classes.postGrid} container spacing={4}>
         {posts.map((post) => (
           <Grid item key={post._id}>
             <PostCard post={post} deletePost={deletePost} />
