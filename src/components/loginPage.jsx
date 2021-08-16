@@ -1,4 +1,6 @@
 import React from "react";
+import { useState } from "react";
+import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
@@ -30,6 +32,31 @@ const useStyles = makeStyles((theme) => ({
 function LoginPage(props) {
   const classes = useStyles();
 
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleUsernameChange = (username) => {
+    setUsername(username);
+  };
+
+  const handlePasswordChange = (password) => {
+    setPassword(password);
+  };
+
+  const handleLogin = () => {
+    console.log(username, password);
+    const user = {
+      username: username,
+      password: password,
+    };
+
+    axios.post("http://localhost:5000/users/login", user).then((response) => {
+      if (response.status === 200) {
+        console.log(response.data);
+      }
+    });
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <div className={classes.paper}>
@@ -50,6 +77,7 @@ function LoginPage(props) {
             name="username"
             autoComplete="username"
             autoFocus
+            onChange={(event) => handleUsernameChange(event.target.value)}
           />
           <TextField
             variant="outlined"
@@ -61,15 +89,16 @@ function LoginPage(props) {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(event) => handlePasswordChange(event.target.value)}
           />
           <Button
-            type="submit"
             fullWidth
             variant="contained"
             color="primary"
             className={classes.submit}
+            onClick={handleLogin}
           >
-            Sign In
+            Login
           </Button>
         </form>
       </div>
