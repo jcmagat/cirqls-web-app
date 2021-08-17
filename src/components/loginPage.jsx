@@ -44,7 +44,6 @@ function LoginPage(props) {
   };
 
   const handleLogin = () => {
-    console.log(username, password);
     const user = {
       username: username,
       password: password,
@@ -52,7 +51,7 @@ function LoginPage(props) {
 
     axios.post("http://localhost:5000/users/login", user).then((response) => {
       if (response.status === 200) {
-        console.log(response.data);
+        localStorage.setItem("token", response.data.accessToken);
       }
     });
   };

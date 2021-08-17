@@ -45,11 +45,19 @@ function HomePage(props) {
       message: data.message,
     };
 
-    axios.post("http://localhost:5000/api/v1/posts", post).then((response) => {
-      if (response.status === 200) {
-        getAllPosts();
-      }
-    });
+    const config = {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    };
+
+    axios
+      .post("http://localhost:5000/api/v1/posts", post, config)
+      .then((response) => {
+        if (response.status === 200) {
+          getAllPosts();
+        }
+      });
   };
 
   return (
