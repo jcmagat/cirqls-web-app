@@ -16,6 +16,15 @@ const useStyles = makeStyles({
 function HomePage(props) {
   const classes = useStyles();
 
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    !(localStorage.getItem("token") == null)
+  );
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+  };
+
   const [posts, getPosts] = useState([]);
 
   useEffect(() => {
@@ -39,10 +48,9 @@ function HomePage(props) {
       });
   };
 
-  const addPost = (data) => {
+  const addPost = (message) => {
     const post = {
-      postedBy: data.name,
-      message: data.message,
+      message: message,
     };
 
     const config = {
@@ -62,7 +70,7 @@ function HomePage(props) {
 
   return (
     <div>
-      <NavBar />
+      <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <Grid className={classes.postGrid} container spacing={4}>
         {posts.map((post) => (
           <Grid item key={post._id}>
@@ -70,7 +78,7 @@ function HomePage(props) {
           </Grid>
         ))}
       </Grid>
-      <PostDialog addPost={addPost} />
+      {isLoggedIn ? <PostDialog addPost={addPost} /> : <></>}
     </div>
   );
 }

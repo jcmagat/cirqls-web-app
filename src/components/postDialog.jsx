@@ -25,7 +25,6 @@ function PostDialog(props) {
 
   const [open, setOpen] = useState(false);
 
-  const [name, setName] = useState("");
   const [message, setMessage] = useState("");
 
   const handleOpen = () => {
@@ -33,24 +32,15 @@ function PostDialog(props) {
   };
 
   const handleClose = () => {
-    setName("");
     setMessage("");
 
     setOpen(false);
   };
 
   const handlePost = () => {
-    const data = {
-      name: name,
-      message: message,
-    };
-    props.addPost(data);
+    props.addPost(message);
 
     handleClose();
-  };
-
-  const handleNameChange = (name) => {
-    setName(name);
   };
 
   const handleMessageChange = (message) => {
@@ -72,17 +62,10 @@ function PostDialog(props) {
           <form noValidate autoComplete="off">
             <TextField
               className={classes.pos}
-              id="name"
-              label="Name"
-              autoFocus
-              fullWidth
-              onChange={(event) => handleNameChange(event.target.value)}
-            />
-            <TextField
-              className={classes.pos}
               id="message"
               label="Message"
               variant="filled"
+              autoFocus
               multiline
               rows={6}
               fullWidth

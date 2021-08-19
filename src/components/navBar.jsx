@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -24,15 +23,6 @@ const useStyles = makeStyles((theme) => ({
 function NavBar(props) {
   const classes = useStyles();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    !(localStorage.getItem("token") == null)
-  );
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-  };
-
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -48,8 +38,8 @@ function NavBar(props) {
           <Typography variant="h6" className={classes.title}>
             Bulletin Board
           </Typography>
-          {isLoggedIn ? (
-            <Button color="inherit" onClick={handleLogout}>
+          {props.isLoggedIn ? (
+            <Button color="inherit" onClick={props.handleLogout}>
               Logout
             </Button>
           ) : (
