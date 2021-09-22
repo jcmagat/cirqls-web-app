@@ -48,9 +48,10 @@ function HomePage(props) {
       });
   };
 
-  const addPost = (message) => {
+  const addPost = (data) => {
     const post = {
-      message: message,
+      title: data.title,
+      message: data.message,
     };
 
     const config = {

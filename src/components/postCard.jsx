@@ -19,13 +19,13 @@ function PostCard(props) {
   return (
     <Card>
       <CardContent>
-        <Typography variant="h5">{props.post.postedBy}</Typography>
+        <Typography variant="h5">{props.post.title}</Typography>
         <Typography
           className={classes.pos}
           variant="subtitle2"
           color="textSecondary"
         >
-          {props.post.postedOn}
+          posted on {props.post.postedOn} by {props.post.postedBy}
         </Typography>
         <Typography variant="body1">{props.post.message}</Typography>
       </CardContent>
