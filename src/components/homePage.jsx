@@ -26,6 +26,7 @@ function HomePage(props) {
   };
 
   const [posts, getPosts] = useState([]);
+  const [currentDate, setCurrentDate] = useState(0);
 
   useEffect(() => {
     getAllPosts();
@@ -33,8 +34,9 @@ function HomePage(props) {
 
   const getAllPosts = () => {
     axios.get("http://localhost:5000/api/v1/posts").then((response) => {
-      const allPosts = response.data.data;
-      getPosts(allPosts);
+      const responseData = response.data;
+      getPosts(responseData.data);
+      setCurrentDate(responseData.date);
     });
   };
 
@@ -75,7 +77,11 @@ function HomePage(props) {
       <Grid className={classes.postGrid} container spacing={4}>
         {posts.map((post) => (
           <Grid item key={post._id}>
-            <PostCard post={post} deletePost={deletePost} />
+            <PostCard
+              post={post}
+              currentDate={currentDate}
+              deletePost={deletePost}
+            />
           </Grid>
         ))}
       </Grid>

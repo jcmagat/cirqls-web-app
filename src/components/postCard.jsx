@@ -13,8 +13,45 @@ const useStyles = makeStyles({
   },
 });
 
+function timeDifference(current, previous) {
+  const msPerMinute = 60 * 1000;
+  const msPerHour = msPerMinute * 60;
+  const msPerDay = msPerHour * 24;
+  const msPerMonth = msPerDay * 30;
+  const msPerYear = msPerDay * 365;
+
+  const elapsed = current - previous;
+
+  if (elapsed < msPerMinute) {
+    return "just now";
+  } else if (elapsed < msPerHour) {
+    const time = Math.round(elapsed / msPerMinute);
+    const ago = time > 1 ? " minutes ago" : " minute ago";
+    return time + ago;
+  } else if (elapsed < msPerDay) {
+    const time = Math.round(elapsed / msPerHour);
+    const ago = time > 1 ? " hours ago" : " hour ago";
+    return time + ago;
+  } else if (elapsed < msPerMonth) {
+    const time = Math.round(elapsed / msPerDay);
+    const ago = time > 1 ? " days ago" : " day ago";
+    return time + ago;
+  } else if (elapsed < msPerYear) {
+    const time = Math.round(elapsed / msPerMonth);
+    const ago = time > 1 ? " months ago" : " month ago";
+    return time + ago;
+  } else {
+    const time = Math.round(elapsed / msPerYear);
+    const ago = time > 1 ? " years ago" : " year ago";
+    return time + ago;
+  }
+}
+
 function PostCard(props) {
   const classes = useStyles();
+
+  const postedOn = new Date(props.post.postedOn).getTime();
+  const postedSince = timeDifference(props.currentDate, postedOn);
 
   return (
     <Card>
@@ -25,7 +62,7 @@ function PostCard(props) {
           variant="subtitle2"
           color="textSecondary"
         >
-          posted on {props.post.postedOn} by {props.post.postedBy}
+          posted {postedSince} by {props.post.postedBy}
         </Typography>
         <Typography variant="body1">{props.post.message}</Typography>
       </CardContent>
