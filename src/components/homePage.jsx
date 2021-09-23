@@ -25,7 +25,7 @@ function HomePage(props) {
     setIsLoggedIn(false);
   };
 
-  const [posts, getPosts] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [currentDate, setCurrentDate] = useState(0);
 
   useEffect(() => {
@@ -35,7 +35,7 @@ function HomePage(props) {
   const getAllPosts = () => {
     axios.get("http://localhost:5000/api/v1/posts").then((response) => {
       const responseData = response.data;
-      getPosts(responseData.data);
+      setPosts(responseData.data);
       setCurrentDate(responseData.date);
     });
   };
@@ -45,7 +45,7 @@ function HomePage(props) {
       .delete(`http://localhost:5000/api/v1/posts/${id}`)
       .then((response) => {
         if (response.status === 200) {
-          getPosts(posts.filter((post) => post._id !== id));
+          setPosts(posts.filter((post) => post._id !== id));
         }
       });
   };
@@ -66,7 +66,8 @@ function HomePage(props) {
       .post("http://localhost:5000/api/v1/posts", post, config)
       .then((response) => {
         if (response.status === 200) {
-          getAllPosts();
+          setPosts([...posts, response.data.data]);
+          setCurrentDate(response.data.date);
         }
       });
   };
