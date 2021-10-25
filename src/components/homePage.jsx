@@ -30,6 +30,7 @@ function HomePage(props) {
   const [posts, setPosts] = useState([]);
   const [currentDate, setCurrentDate] = useState(0);
 
+  // eslint-disable-next-line
   const { loading, error, data } = useQuery(GET_POSTS);
 
   useEffect(() => {
@@ -38,14 +39,9 @@ function HomePage(props) {
     }
   }, [data]);
 
-  const deletePost = (id) => {
-    axios
-      .delete(`http://localhost:5000/api/v1/posts/${id}`)
-      .then((response) => {
-        if (response.status === 200) {
-          setPosts(posts.filter((post) => post._id !== id));
-        }
-      });
+  const removePost = (data) => {
+    const deletedPost = data.deletePost;
+    setPosts(posts.filter((post) => post.id !== deletedPost.id));
   };
 
   const addPost = (data) => {
@@ -79,7 +75,7 @@ function HomePage(props) {
             <PostCard
               post={post}
               currentDate={currentDate}
-              deletePost={deletePost}
+              removePost={removePost}
             />
           </Grid>
         ))}
