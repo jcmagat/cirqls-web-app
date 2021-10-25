@@ -6,6 +6,8 @@ import Grid from "@material-ui/core/Grid";
 import PostCard from "./postCard";
 import PostDialog from "./postDialog";
 import NavBar from "./navBar";
+import { useQuery } from "@apollo/client";
+import { GET_POSTS } from "../graphql/queries";
 
 const useStyles = makeStyles({
   postGrid: {
@@ -28,17 +30,13 @@ function HomePage(props) {
   const [posts, setPosts] = useState([]);
   const [currentDate, setCurrentDate] = useState(0);
 
-  useEffect(() => {
-    getAllPosts();
-  }, []);
+  const { loading, error, data } = useQuery(GET_POSTS);
 
-  const getAllPosts = () => {
-    axios.get("http://localhost:5000/api/v1/posts").then((response) => {
-      const responseData = response.data;
-      setPosts(responseData.data);
-      setCurrentDate(responseData.date);
-    });
-  };
+  useEffect(() => {
+    if (data) {
+      setPosts(data.posts);
+    }
+  }, [data]);
 
   const deletePost = (id) => {
     axios
@@ -77,7 +75,7 @@ function HomePage(props) {
       <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
       <Grid className={classes.postGrid} container spacing={4}>
         {posts.map((post) => (
-          <Grid item key={post._id}>
+          <Grid item key={post.id}>
             <PostCard
               post={post}
               currentDate={currentDate}
