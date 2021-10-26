@@ -1,6 +1,5 @@
 import React from "react";
 import { useState, useEffect } from "react";
-import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import PostCard from "./postCard";
@@ -28,7 +27,6 @@ function HomePage(props) {
   };
 
   const [posts, setPosts] = useState([]);
-  const [currentDate, setCurrentDate] = useState(0);
 
   // eslint-disable-next-line
   const { loading, error, data } = useQuery(GET_POSTS);
@@ -39,31 +37,14 @@ function HomePage(props) {
     }
   }, [data]);
 
+  const displayPost = (data) => {
+    const addedPost = data.addPost;
+    setPosts([...posts, addedPost]);
+  };
+
   const removePost = (data) => {
     const deletedPost = data.deletePost;
     setPosts(posts.filter((post) => post.id !== deletedPost.id));
-  };
-
-  const addPost = (data) => {
-    const post = {
-      title: data.title,
-      message: data.message,
-    };
-
-    const config = {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    };
-
-    axios
-      .post("http://localhost:5000/api/v1/posts", post, config)
-      .then((response) => {
-        if (response.status === 200) {
-          setPosts([...posts, response.data.data]);
-          setCurrentDate(response.data.date);
-        }
-      });
   };
 
   return (
@@ -72,15 +53,11 @@ function HomePage(props) {
       <Grid className={classes.postGrid} container spacing={4}>
         {posts.map((post) => (
           <Grid item key={post.id}>
-            <PostCard
-              post={post}
-              currentDate={currentDate}
-              removePost={removePost}
-            />
+            <PostCard post={post} removePost={removePost} />
           </Grid>
         ))}
       </Grid>
-      {isLoggedIn ? <PostDialog addPost={addPost} /> : <></>}
+      {isLoggedIn ? <PostDialog displayPost={displayPost} /> : <></>}
     </div>
   );
 }

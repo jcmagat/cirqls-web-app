@@ -8,6 +8,8 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import Button from "@material-ui/core/Button";
+import { useMutation } from "@apollo/client";
+import { ADD_POST } from "../graphql/mutations";
 
 const useStyles = makeStyles({
   fab: {
@@ -28,6 +30,11 @@ function PostDialog(props) {
   const [title, setTitle] = useState("");
   const [message, setMessage] = useState("");
 
+  // eslint-disable-next-line
+  const [addPost, { loading, error }] = useMutation(ADD_POST, {
+    onCompleted: props.displayPost,
+  });
+
   const handleOpen = () => {
     setOpen(true);
   };
@@ -39,12 +46,13 @@ function PostDialog(props) {
     setOpen(false);
   };
 
-  const handlePost = () => {
-    const data = {
-      title: title,
-      message: message,
-    };
-    props.addPost(data);
+  const handleAddPost = () => {
+    addPost({
+      variables: {
+        title: title,
+        message: message,
+      },
+    });
 
     handleClose();
   };
@@ -95,7 +103,7 @@ function PostDialog(props) {
           <Button onClick={handleClose} color="secondary">
             Cancel
           </Button>
-          <Button onClick={handlePost} variant="contained" color="primary">
+          <Button onClick={handleAddPost} variant="contained" color="primary">
             Post
           </Button>
         </DialogActions>
