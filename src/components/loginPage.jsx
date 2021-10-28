@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import axios from "axios";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
@@ -8,6 +7,8 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Button from "@material-ui/core/Button";
+import { useMutation } from "@apollo/client";
+import { LOGIN } from "../graphql/mutations";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -35,6 +36,11 @@ function LoginPage(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  // eslint-disable-next-line
+  const [login, { loading, error }] = useMutation(LOGIN, {
+    onCompleted: setToken,
+  });
+
   const handleUsernameChange = (username) => {
     setUsername(username);
   };
@@ -44,17 +50,17 @@ function LoginPage(props) {
   };
 
   const handleLogin = () => {
-    const user = {
-      username: username,
-      password: password,
-    };
-
-    axios.post("http://localhost:5000/users/login", user).then((response) => {
-      if (response.status === 200) {
-        localStorage.setItem("token", response.data.accessToken);
-      }
+    login({
+      variables: {
+        username: username,
+        password: password,
+      },
     });
   };
+
+  function setToken(data) {
+    localStorage.setItem("token", data.login.accessToken);
+  }
 
   return (
     <Container component="main" maxWidth="xs">
