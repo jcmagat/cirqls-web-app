@@ -1,6 +1,7 @@
-import React from "react";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
+import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import PostCard from "./postCard";
 import PostDialog from "./postDialog";
@@ -10,7 +11,7 @@ import { GET_POSTS } from "../graphql/queries";
 
 const useStyles = makeStyles({
   postGrid: {
-    margin: 16,
+    marginTop: 8,
   },
 });
 
@@ -48,17 +49,24 @@ function HomePage(props) {
   };
 
   return (
-    <div>
+    <Paper component="div" elevation={0}>
       <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      <Grid className={classes.postGrid} container spacing={4}>
-        {posts.map((post) => (
-          <Grid item key={post.id}>
-            <PostCard post={post} removePost={removePost} />
-          </Grid>
-        ))}
-      </Grid>
+      <Container>
+        <Grid
+          className={classes.postGrid}
+          container
+          spacing={2}
+          direction="column-reverse"
+        >
+          {posts.map((post) => (
+            <Grid item key={post.id}>
+              <PostCard post={post} removePost={removePost} />
+            </Grid>
+          ))}
+        </Grid>
+      </Container>
       {isLoggedIn ? <PostDialog displayPost={displayPost} /> : <></>}
-    </div>
+    </Paper>
   );
 }
 
