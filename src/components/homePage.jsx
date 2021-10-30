@@ -10,8 +10,8 @@ import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
 
 const useStyles = makeStyles({
-  postGrid: {
-    marginTop: 8,
+  postCards: {
+    marginTop: 80,
   },
 });
 
@@ -49,15 +49,10 @@ function HomePage(props) {
   };
 
   return (
-    <Paper component="div" elevation={0}>
+    <Paper elevation={0}>
       <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
-      <Container>
-        <Grid
-          className={classes.postGrid}
-          container
-          spacing={2}
-          direction="column-reverse"
-        >
+      <Container className={classes.postCards}>
+        <Grid container spacing={2} direction="column-reverse">
           {posts.map((post) => (
             <Grid item key={post.id}>
               <PostCard post={post} removePost={removePost} />
