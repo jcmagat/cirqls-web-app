@@ -1,6 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
@@ -32,13 +33,14 @@ const useStyles = makeStyles((theme) => ({
 
 function LoginPage(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
   // eslint-disable-next-line
   const [login, { loading, error }] = useMutation(LOGIN, {
-    onCompleted: setToken,
+    onCompleted: finishLogin,
   });
 
   const handleUsernameChange = (username) => {
@@ -49,7 +51,9 @@ function LoginPage(props) {
     setPassword(password);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (event) => {
+    event.preventDefault();
+
     login({
       variables: {
         username: username,
@@ -58,8 +62,9 @@ function LoginPage(props) {
     });
   };
 
-  function setToken(data) {
+  function finishLogin(data) {
     localStorage.setItem("token", data.login.accessToken);
+    history.push("/");
   }
 
   return (
@@ -71,15 +76,14 @@ function LoginPage(props) {
         <Typography component="h1" variant="h5">
           Log In
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleLogin}>
           <TextField
             variant="outlined"
             margin="normal"
             required
             fullWidth
-            id="email"
+            id="username"
             label="Username"
-            name="username"
             autoComplete="username"
             autoFocus
             onChange={(event) => handleUsernameChange(event.target.value)}
@@ -89,19 +93,18 @@ function LoginPage(props) {
             margin="normal"
             required
             fullWidth
-            name="password"
-            label="Password"
             type="password"
             id="password"
+            label="Password"
             autoComplete="current-password"
             onChange={(event) => handlePasswordChange(event.target.value)}
           />
           <Button
             fullWidth
+            type="submit"
             variant="contained"
             color="primary"
             className={classes.submit}
-            onClick={handleLogin}
           >
             Login
           </Button>
