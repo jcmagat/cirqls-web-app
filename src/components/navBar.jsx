@@ -50,7 +50,12 @@ function NavBar(props) {
               >
                 Log In
               </Button>
-              <Button variant="contained" color="primary">
+              <Button
+                variant="contained"
+                color="primary"
+                component={Link}
+                to={"/signup"}
+              >
                 Sign Up
               </Button>
             </Paper>
