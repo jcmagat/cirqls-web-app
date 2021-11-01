@@ -23,6 +23,7 @@ function HomePage(props) {
   );
 
   const handleLogout = () => {
+    localStorage.removeItem("user");
     localStorage.removeItem("token");
     setIsLoggedIn(false);
   };

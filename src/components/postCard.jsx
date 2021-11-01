@@ -20,6 +20,9 @@ const useStyles = makeStyles({
 function PostCard(props) {
   const classes = useStyles();
 
+  const user = localStorage.getItem("user");
+  const canDelete = user === props.post.postedBy;
+
   const [liked, setLiked] = useState(false);
 
   // eslint-disable-next-line
@@ -61,12 +64,16 @@ function PostCard(props) {
           )}
         </IconButton>
         <Typography variant="subtitle1">{props.post.likes}</Typography>
-        <IconButton
-          onClick={(id) => handleDeletePost(props.post.id, id)}
-          aria-label="delete"
-        >
-          <DeleteIcon />
-        </IconButton>
+        {canDelete ? (
+          <IconButton
+            onClick={(id) => handleDeletePost(props.post.id, id)}
+            aria-label="delete"
+          >
+            <DeleteIcon />
+          </IconButton>
+        ) : (
+          <></>
+        )}
       </CardActions>
     </Card>
   );
