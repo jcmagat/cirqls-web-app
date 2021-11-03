@@ -10,6 +10,7 @@ export const GET_POSTS = gql`
       postedSince
       postedBy
       likes
+      likedByMe
     }
   }
 `;

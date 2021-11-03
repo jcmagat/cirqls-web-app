@@ -9,7 +9,7 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import { useMutation } from "@apollo/client";
-import { DELETE_POST } from "../graphql/mutations";
+import { DELETE_POST, LIKE_POST } from "../graphql/mutations";
 
 const useStyles = makeStyles({
   pos: {
@@ -23,7 +23,7 @@ function PostCard(props) {
   const user = localStorage.getItem("user");
   const canDelete = user === props.post.postedBy;
 
-  const [liked, setLiked] = useState(false);
+  const [liked, setLiked] = useState(props.post.likedByMe);
 
   // eslint-disable-next-line
   const [deletePost, { loading, error }] = useMutation(DELETE_POST, {
@@ -38,8 +38,18 @@ function PostCard(props) {
     });
   };
 
-  const handleLikePost = () => {
-    setLiked(!liked);
+  const [likePost] = useMutation(LIKE_POST, {
+    onCompleted: () => {
+      setLiked(true);
+    },
+  });
+
+  const handleLikePost = (id) => {
+    likePost({
+      variables: {
+        id: id,
+      },
+    });
   };
 
   return (
@@ -56,7 +66,7 @@ function PostCard(props) {
         <Typography variant="body1">{props.post.message}</Typography>
       </CardContent>
       <CardActions disableSpacing>
-        <IconButton onClick={handleLikePost}>
+        <IconButton onClick={(id) => handleLikePost(props.post.id, id)}>
           {liked ? (
             <FavoriteIcon style={{ fill: "red" }} />
           ) : (
