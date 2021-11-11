@@ -28,41 +28,33 @@ function PostDialog(props) {
   const [open, setOpen] = useState(false);
 
   const [title, setTitle] = useState("");
-  const [message, setMessage] = useState("");
+  const [description, setDescription] = useState("");
 
   // eslint-disable-next-line
   const [addPost, { loading, error }] = useMutation(ADD_POST, {
     onCompleted: props.displayPost,
   });
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setMessage("");
-    setTitle("");
-
-    setOpen(false);
-  };
-
   const handleAddPost = () => {
     addPost({
       variables: {
         title: title,
-        message: message,
+        description: description,
       },
     });
 
     handleClose();
   };
 
-  const handleTitleChange = (title) => {
-    setTitle(title);
+  const handleOpen = () => {
+    setOpen(true);
   };
 
-  const handleMessageChange = (message) => {
-    setMessage(message);
+  const handleClose = () => {
+    setTitle("");
+    setDescription("");
+
+    setOpen(false);
   };
 
   return (
@@ -85,17 +77,17 @@ function PostDialog(props) {
               variant="filled"
               autoFocus
               fullWidth
-              onChange={(event) => handleTitleChange(event.target.value)}
+              onChange={(event) => setTitle(event.target.value)}
             />
             <TextField
               className={classes.pos}
-              id="message"
-              label="Message"
+              id="description"
+              label="description"
               variant="filled"
               multiline
               rows={6}
               fullWidth
-              onChange={(event) => handleMessageChange(event.target.value)}
+              onChange={(event) => setDescription(event.target.value)}
             />
           </form>
         </DialogContent>

@@ -46,7 +46,7 @@ function HomePage(props) {
 
   const removePost = (data) => {
     const deletedPost = data.deletePost;
-    setPosts(posts.filter((post) => post.id !== deletedPost.id));
+    setPosts(posts.filter((post) => post.post_id !== deletedPost.post_id));
   };
 
   return (
@@ -55,7 +55,7 @@ function HomePage(props) {
       <Container className={classes.postCards}>
         <Grid container spacing={2} direction="column-reverse">
           {posts.map((post) => (
-            <Grid item key={post.id}>
+            <Grid item key={post.post_id}>
               <PostCard post={post} removePost={removePost} />
             </Grid>
           ))}

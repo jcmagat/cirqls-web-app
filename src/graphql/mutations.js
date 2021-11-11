@@ -21,23 +21,21 @@ export const LOGIN = gql`
 `;
 
 export const ADD_POST = gql`
-  mutation Mutation($title: String!, $message: String!) {
-    addPost(title: $title, message: $message) {
-      id
+  mutation AddPost($title: String!, $description: String!) {
+    addPost(title: $title, description: $description) {
+      post_id
       title
-      message
-      postedOn
-      postedSince
-      postedBy
-      likes
+      description
+      created_at
+      user_id
     }
   }
 `;
 
 export const DELETE_POST = gql`
-  mutation Mutation($id: ID!) {
-    deletePost(id: $id) {
-      id
+  mutation DeletePost($post_id: Int!) {
+    deletePost(post_id: $post_id) {
+      post_id
     }
   }
 `;

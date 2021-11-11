@@ -20,9 +20,6 @@ const useStyles = makeStyles({
 function PostCard(props) {
   const classes = useStyles();
 
-  const user = localStorage.getItem("user");
-  const canDelete = user === props.post.postedBy;
-
   const [liked, setLiked] = useState(props.post.likedByMe);
 
   // eslint-disable-next-line
@@ -30,10 +27,10 @@ function PostCard(props) {
     onCompleted: props.removePost,
   });
 
-  const handleDeletePost = (id) => {
+  const handleDeletePost = (post_id) => {
     deletePost({
       variables: {
-        id: id,
+        post_id: post_id,
       },
     });
   };
@@ -61,9 +58,9 @@ function PostCard(props) {
           variant="subtitle2"
           color="textSecondary"
         >
-          posted {props.post.postedSince} by {props.post.postedBy}
+          posted {props.post.created_at} by {props.post.user_id}
         </Typography>
-        <Typography variant="body1">{props.post.message}</Typography>
+        <Typography variant="body1">{props.post.description}</Typography>
       </CardContent>
       <CardActions disableSpacing>
         <IconButton onClick={(id) => handleLikePost(props.post.id, id)}>
@@ -74,16 +71,12 @@ function PostCard(props) {
           )}
         </IconButton>
         <Typography variant="subtitle1">{props.post.likes}</Typography>
-        {canDelete ? (
-          <IconButton
-            onClick={(id) => handleDeletePost(props.post.id, id)}
-            aria-label="delete"
-          >
-            <DeleteIcon />
-          </IconButton>
-        ) : (
-          <></>
-        )}
+        <IconButton
+          onClick={(post_id) => handleDeletePost(props.post.post_id, post_id)}
+          aria-label="delete"
+        >
+          <DeleteIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );
