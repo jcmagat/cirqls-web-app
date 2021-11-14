@@ -6,8 +6,8 @@ export const GET_POSTS = gql`
       post_id
       title
       description
-      created_at
-      user_id
+      username
+      created_since
     }
   }
 `;

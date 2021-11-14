@@ -26,8 +26,8 @@ export const ADD_POST = gql`
       post_id
       title
       description
-      created_at
-      user_id
+      username
+      created_since
     }
   }
 `;

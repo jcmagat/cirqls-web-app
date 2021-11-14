@@ -58,7 +58,7 @@ function PostCard(props) {
           variant="subtitle2"
           color="textSecondary"
         >
-          posted {props.post.created_at} by {props.post.user_id}
+          posted {props.post.created_since} by {props.post.username}
         </Typography>
         <Typography variant="body1">{props.post.description}</Typography>
       </CardContent>
