@@ -28,6 +28,11 @@ export const ADD_POST = gql`
       description
       username
       created_since
+      reactions {
+        likes
+        dislikes
+        total
+      }
     }
   }
 `;
@@ -40,11 +45,12 @@ export const DELETE_POST = gql`
   }
 `;
 
-export const LIKE_POST = gql`
-  mutation Mutation($id: ID!) {
-    likePost(id: $id) {
-      id
-      likes
+export const ADD_POST_REACTION = gql`
+  mutation AddPostReaction($post_id: Int!, $reaction: String!) {
+    addPostReaction(post_id: $post_id, reaction: $reaction) {
+      post_id
+      username
+      reaction
     }
   }
 `;

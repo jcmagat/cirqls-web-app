@@ -8,6 +8,11 @@ export const GET_POSTS = gql`
       description
       username
       created_since
+      reactions {
+        likes
+        dislikes
+        total
+      }
     }
   }
 `;

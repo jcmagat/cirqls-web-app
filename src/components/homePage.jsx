@@ -31,7 +31,7 @@ function HomePage(props) {
   const [posts, setPosts] = useState([]);
 
   // eslint-disable-next-line
-  const { loading, error, data } = useQuery(GET_POSTS);
+  const { loading, error, data, refetch } = useQuery(GET_POSTS);
 
   useEffect(() => {
     if (data) {
@@ -39,14 +39,21 @@ function HomePage(props) {
     }
   }, [data]);
 
+  // Called postDialog when a post has been added
   const displayPost = (data) => {
     const addedPost = data.addPost;
     setPosts([...posts, addedPost]);
   };
 
+  // Called in postCard when a post has been deleted
   const removePost = (data) => {
     const deletedPost = data.deletePost;
     setPosts(posts.filter((post) => post.post_id !== deletedPost.post_id));
+  };
+
+  // Called in postCard when a post has been liked or disliked
+  const handleAddPostReaction = (data) => {
+    refetch();
   };
 
   return (
@@ -56,7 +63,11 @@ function HomePage(props) {
         <Grid container spacing={2} direction="column-reverse">
           {posts.map((post) => (
             <Grid item key={post.post_id}>
-              <PostCard post={post} removePost={removePost} />
+              <PostCard
+                post={post}
+                removePost={removePost}
+                handleAddPostReaction={handleAddPostReaction}
+              />
             </Grid>
           ))}
         </Grid>
