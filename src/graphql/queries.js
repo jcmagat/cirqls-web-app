@@ -12,6 +12,7 @@ export const GET_POSTS = gql`
         likes
         dislikes
         total
+        auth_user_reaction
       }
     }
   }

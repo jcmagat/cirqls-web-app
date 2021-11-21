@@ -32,6 +32,7 @@ export const ADD_POST = gql`
         likes
         dislikes
         total
+        auth_user_reaction
       }
     }
   }
