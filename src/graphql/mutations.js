@@ -55,3 +55,13 @@ export const ADD_POST_REACTION = gql`
     }
   }
 `;
+
+export const DELETE_POST_REACTION = gql`
+  mutation DeletePostReaction($post_id: Int!) {
+    deletePostReaction(post_id: $post_id) {
+      post_id
+      username
+      reaction
+    }
+  }
+`;

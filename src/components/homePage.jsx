@@ -52,7 +52,7 @@ function HomePage(props) {
   };
 
   // Called in postCard when a post has been liked or disliked
-  const handleAddPostReaction = (data) => {
+  const handlePostReactionChange = (data) => {
     refetch();
   };
 
@@ -66,7 +66,7 @@ function HomePage(props) {
               <PostCard
                 post={post}
                 removePost={removePost}
-                handleAddPostReaction={handleAddPostReaction}
+                handlePostReactionChange={handlePostReactionChange}
               />
             </Grid>
           ))}

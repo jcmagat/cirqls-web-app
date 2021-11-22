@@ -11,7 +11,11 @@ import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import { useMutation } from "@apollo/client";
-import { DELETE_POST, ADD_POST_REACTION } from "../graphql/mutations";
+import {
+  DELETE_POST,
+  ADD_POST_REACTION,
+  DELETE_POST_REACTION,
+} from "../graphql/mutations";
 
 const useStyles = makeStyles({
   pos: {
@@ -27,12 +31,15 @@ function PostCard(props) {
   const [disliked, setDisliked] = useState(false);
 
   useEffect(() => {
-    console.log(auth_user_reaction);
-
     if (auth_user_reaction === "like") {
       setLiked(true);
+      setDisliked(false);
     } else if (auth_user_reaction === "dislike") {
+      setLiked(false);
       setDisliked(true);
+    } else {
+      setLiked(false);
+      setDisliked(false);
     }
   }, [auth_user_reaction]);
 
@@ -42,7 +49,11 @@ function PostCard(props) {
   });
 
   const [addPostReaction] = useMutation(ADD_POST_REACTION, {
-    onCompleted: props.handleAddPostReaction,
+    onCompleted: props.handlePostReactionChange,
+  });
+
+  const [deletePostReaction] = useMutation(DELETE_POST_REACTION, {
+    onCompleted: props.handlePostReactionChange,
   });
 
   const handleDeletePost = (post_id) => {
@@ -71,6 +82,14 @@ function PostCard(props) {
     });
   };
 
+  const handleDeletePostReaction = (post_id) => {
+    deletePostReaction({
+      variables: {
+        post_id: post_id,
+      },
+    });
+  };
+
   return (
     <Card>
       <CardContent>
@@ -86,7 +105,11 @@ function PostCard(props) {
       </CardContent>
       <CardActions disableSpacing>
         {liked ? (
-          <IconButton>
+          <IconButton
+            onClick={(post_id) =>
+              handleDeletePostReaction(props.post.post_id, post_id)
+            }
+          >
             <ThumbUpIcon />
           </IconButton>
         ) : (
@@ -100,7 +123,11 @@ function PostCard(props) {
           {props.post.reactions.total}
         </Typography>
         {disliked ? (
-          <IconButton>
+          <IconButton
+            onClick={(post_id) =>
+              handleDeletePostReaction(props.post.post_id, post_id)
+            }
+          >
             <ThumbDownIcon />
           </IconButton>
         ) : (
