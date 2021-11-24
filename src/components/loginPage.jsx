@@ -2,11 +2,13 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../graphql/mutations";
 
@@ -36,19 +38,12 @@ function LoginPage(props) {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  // eslint-disable-next-line
-  const [login, { loading, error }] = useMutation(LOGIN, {
+  const [login, { loading }] = useMutation(LOGIN, {
     onCompleted: finishLogin,
+    onError: handleError,
   });
-
-  const handleUsernameChange = (username) => {
-    setUsername(username);
-  };
-
-  const handlePasswordChange = (password) => {
-    setPassword(password);
-  };
 
   const handleLogin = (event) => {
     event.preventDefault();
@@ -67,9 +62,23 @@ function LoginPage(props) {
     history.push("/");
   }
 
+  function handleError(error) {
+    setError(error.message);
+  }
+
+  const handleUsernameChange = (username) => {
+    setUsername(username);
+    setError("");
+  };
+
+  const handlePasswordChange = (password) => {
+    setPassword(password);
+    setError("");
+  };
+
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
+      <Paper className={classes.paper} elevation={0}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -87,6 +96,9 @@ function LoginPage(props) {
             autoComplete="username"
             autoFocus
             onChange={(event) => handleUsernameChange(event.target.value)}
+            disabled={loading}
+            error={Boolean(error)}
+            helperText={error}
           />
           <TextField
             variant="outlined"
@@ -98,18 +110,22 @@ function LoginPage(props) {
             label="Password"
             autoComplete="current-password"
             onChange={(event) => handlePasswordChange(event.target.value)}
+            disabled={loading}
+            error={Boolean(error)}
           />
           <Button
+            className={classes.submit}
             fullWidth
             type="submit"
             variant="contained"
             color="primary"
-            className={classes.submit}
+            disabled={!username || !password || loading}
           >
             Login
           </Button>
         </form>
-      </div>
+        {loading && <CircularProgress />}
+      </Paper>
     </Container>
   );
 }
