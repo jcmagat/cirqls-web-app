@@ -57,7 +57,7 @@ function LoginPage(props) {
   };
 
   function finishLogin(data) {
-    localStorage.setItem("user", data.login.username);
+    localStorage.setItem("user_id", data.login.user_id);
     localStorage.setItem("token", data.login.accessToken);
     history.push("/");
   }

@@ -26,22 +26,25 @@ const useStyles = makeStyles({
 function PostCard(props) {
   const classes = useStyles();
 
-  const auth_user_reaction = props.post.reactions.auth_user_reaction;
+  const isAuthUsersPost =
+    parseInt(localStorage.getItem("user_id")) === props.post.user_id;
+
+  const authUserReaction = props.post.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
   useEffect(() => {
-    if (auth_user_reaction === "like") {
+    if (authUserReaction === "like") {
       setLiked(true);
       setDisliked(false);
-    } else if (auth_user_reaction === "dislike") {
+    } else if (authUserReaction === "dislike") {
       setLiked(false);
       setDisliked(true);
     } else {
       setLiked(false);
       setDisliked(false);
     }
-  }, [auth_user_reaction]);
+  }, [authUserReaction]);
 
   // eslint-disable-next-line
   const [deletePost, { loading, error }] = useMutation(DELETE_POST, {
@@ -139,12 +142,14 @@ function PostCard(props) {
             <ThumbDownOutlinedIcon />
           </IconButton>
         )}
-        <IconButton
-          onClick={(post_id) => handleDeletePost(props.post.post_id, post_id)}
-          aria-label="delete"
-        >
-          <DeleteIcon />
-        </IconButton>
+        {isAuthUsersPost && (
+          <IconButton
+            onClick={(post_id) => handleDeletePost(props.post.post_id, post_id)}
+            aria-label="delete"
+          >
+            <DeleteIcon />
+          </IconButton>
+        )}
       </CardActions>
     </Card>
   );

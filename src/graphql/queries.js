@@ -6,6 +6,7 @@ export const GET_POSTS = gql`
       post_id
       title
       description
+      user_id
       username
       created_since
       reactions {

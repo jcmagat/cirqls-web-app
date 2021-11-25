@@ -35,7 +35,7 @@ function HomePage(props) {
 
   // Called in navBar when the logout button is pressed
   const handleLogout = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("user_id");
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     refetch();
