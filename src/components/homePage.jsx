@@ -22,12 +22,6 @@ function HomePage(props) {
     !(localStorage.getItem("token") == null)
   );
 
-  const handleLogout = () => {
-    localStorage.removeItem("user");
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-  };
-
   const [posts, setPosts] = useState([]);
 
   // eslint-disable-next-line
@@ -38,6 +32,14 @@ function HomePage(props) {
       setPosts(data.posts);
     }
   }, [data]);
+
+  // Called in navBar when the logout button is pressed
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    refetch();
+  };
 
   // Called postDialog when a post has been added
   const displayPost = (data) => {
