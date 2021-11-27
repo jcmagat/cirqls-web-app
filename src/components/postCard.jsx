@@ -46,10 +46,12 @@ function PostCard(props) {
     }
   }, [authUserReaction]);
 
-  // eslint-disable-next-line
-  const [deletePost, { loading, error }] = useMutation(DELETE_POST, {
-    onCompleted: props.removePost,
-  });
+  const [deletePost, { loading: deletePostLoading }] = useMutation(
+    DELETE_POST,
+    {
+      onCompleted: props.removePost,
+    }
+  );
 
   const [addPostReaction] = useMutation(ADD_POST_REACTION, {
     onCompleted: props.handlePostReactionChange,
@@ -93,8 +95,15 @@ function PostCard(props) {
     });
   };
 
+  const disableIfLoading = (loading) => {
+    return {
+      opacity: loading ? 0.25 : 1,
+      pointerEvents: loading ? "none" : "initial",
+    };
+  };
+
   return (
-    <Card>
+    <Card style={disableIfLoading(deletePostLoading)}>
       <CardContent>
         <Typography variant="h5">{props.post.title}</Typography>
         <Typography
