@@ -5,11 +5,15 @@ import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
-import DeleteIcon from "@material-ui/icons/Delete";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
+import DeleteIcon from "@material-ui/icons/Delete";
+import FlagIcon from "@material-ui/icons/Flag";
+import Popover from "@material-ui/core/Popover";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
 import { useMutation } from "@apollo/client";
 import {
   DELETE_POST,
@@ -32,6 +36,8 @@ function PostCard(props) {
   const authUserReaction = props.post.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+
+  const [moreMenuAnchor, setMoreMenuAnchor] = useState(null);
 
   useEffect(() => {
     if (authUserReaction === "like") {
@@ -61,14 +67,6 @@ function PostCard(props) {
     onCompleted: props.handlePostReactionChange,
   });
 
-  const handleDeletePost = (post_id) => {
-    deletePost({
-      variables: {
-        post_id: post_id,
-      },
-    });
-  };
-
   const handleLikePost = (post_id) => {
     addPostReaction({
       variables: {
@@ -95,6 +93,24 @@ function PostCard(props) {
     });
   };
 
+  const handleDeletePost = (post_id) => {
+    handleMoreMenuClose();
+
+    deletePost({
+      variables: {
+        post_id: post_id,
+      },
+    });
+  };
+
+  const handleMoreMenuOpen = (event) => {
+    setMoreMenuAnchor(event.currentTarget);
+  };
+
+  const handleMoreMenuClose = () => {
+    setMoreMenuAnchor(null);
+  };
+
   const disableIfLoading = (loading) => {
     return {
       opacity: loading ? 0.25 : 1,
@@ -115,6 +131,7 @@ function PostCard(props) {
         </Typography>
         <Typography variant="body1">{props.post.description}</Typography>
       </CardContent>
+
       <CardActions disableSpacing>
         {liked ? (
           <IconButton
@@ -131,9 +148,11 @@ function PostCard(props) {
             <ThumbUpOutlinedIcon />
           </IconButton>
         )}
+
         <Typography variant="subtitle1">
           {props.post.reactions.total}
         </Typography>
+
         {disliked ? (
           <IconButton
             onClick={(post_id) =>
@@ -151,14 +170,37 @@ function PostCard(props) {
             <ThumbDownOutlinedIcon />
           </IconButton>
         )}
-        {isAuthUsersPost && (
-          <IconButton
-            onClick={(post_id) => handleDeletePost(props.post.post_id, post_id)}
-            aria-label="delete"
-          >
-            <DeleteIcon />
-          </IconButton>
-        )}
+
+        <IconButton onClick={handleMoreMenuOpen}>
+          <MoreVertIcon />
+        </IconButton>
+        <Popover
+          open={Boolean(moreMenuAnchor)}
+          anchorEl={moreMenuAnchor}
+          onClose={handleMoreMenuClose}
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "left",
+          }}
+        >
+          <ButtonGroup orientation="vertical">
+            {isAuthUsersPost && (
+              <IconButton
+                onClick={(post_id) =>
+                  handleDeletePost(props.post.post_id, post_id)
+                }
+              >
+                <DeleteIcon />
+                <Typography>Delete</Typography>
+              </IconButton>
+            )}
+
+            <IconButton>
+              <FlagIcon />
+              <Typography>Report</Typography>
+            </IconButton>
+          </ButtonGroup>
+        </Popover>
       </CardActions>
     </Card>
   );
