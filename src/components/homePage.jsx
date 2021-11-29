@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
 import PostCard from "./postCard";
-import PostDialog from "./postDialog";
 import NavBar from "./navBar";
 import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
@@ -41,12 +40,6 @@ function HomePage(props) {
     refetch();
   };
 
-  // Called postDialog when a post has been added
-  const displayPost = (data) => {
-    const addedPost = data.addPost;
-    setPosts([...posts, addedPost]);
-  };
-
   // Called in postCard when a post has been deleted
   const removePost = (data) => {
     const deletedPost = data.deletePost;
@@ -74,7 +67,6 @@ function HomePage(props) {
           ))}
         </Grid>
       </Container>
-      {isLoggedIn ? <PostDialog displayPost={displayPost} /> : <></>}
     </Paper>
   );
 }
