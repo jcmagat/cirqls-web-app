@@ -14,6 +14,12 @@ import DeleteIcon from "@material-ui/icons/Delete";
 import FlagIcon from "@material-ui/icons/Flag";
 import Popover from "@material-ui/core/Popover";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
 import { useMutation } from "@apollo/client";
 import {
   DELETE_POST,
@@ -38,6 +44,7 @@ function PostCard(props) {
   const [disliked, setDisliked] = useState(false);
 
   const [moreMenuAnchor, setMoreMenuAnchor] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     if (authUserReaction === "like") {
@@ -94,7 +101,7 @@ function PostCard(props) {
   };
 
   const handleDeletePost = (post_id) => {
-    handleMoreMenuClose();
+    handleDeleteDialogClose();
 
     deletePost({
       variables: {
@@ -109,6 +116,15 @@ function PostCard(props) {
 
   const handleMoreMenuClose = () => {
     setMoreMenuAnchor(null);
+  };
+
+  const handleDeleteButtonClick = () => {
+    handleMoreMenuClose();
+    setDeleteDialogOpen(true);
+  };
+
+  const handleDeleteDialogClose = () => {
+    setDeleteDialogOpen(false);
   };
 
   const disableIfLoading = (loading) => {
@@ -185,11 +201,7 @@ function PostCard(props) {
         >
           <ButtonGroup orientation="vertical">
             {isAuthUsersPost && (
-              <IconButton
-                onClick={(post_id) =>
-                  handleDeletePost(props.post.post_id, post_id)
-                }
-              >
+              <IconButton onClick={handleDeleteButtonClick}>
                 <DeleteIcon />
                 <Typography>Delete</Typography>
               </IconButton>
@@ -201,6 +213,33 @@ function PostCard(props) {
             </IconButton>
           </ButtonGroup>
         </Popover>
+
+        <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
+          <DialogTitle>Delete post</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+              Are you sure you want to delete this post?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              color="primary"
+              variant="outlined"
+              onClick={handleDeleteDialogClose}
+            >
+              Keep
+            </Button>
+            <Button
+              color="secondary"
+              variant="contained"
+              onClick={(post_id) =>
+                handleDeletePost(props.post.post_id, post_id)
+              }
+            >
+              Delete
+            </Button>
+          </DialogActions>
+        </Dialog>
       </CardActions>
     </Card>
   );
