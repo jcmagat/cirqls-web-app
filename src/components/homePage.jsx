@@ -17,10 +17,6 @@ const useStyles = makeStyles({
 function HomePage(props) {
   const classes = useStyles();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    !(localStorage.getItem("token") == null)
-  );
-
   const [posts, setPosts] = useState([]);
 
   // eslint-disable-next-line
@@ -31,14 +27,6 @@ function HomePage(props) {
       setPosts(data.posts);
     }
   }, [data]);
-
-  // Called in navBar when the logout button is pressed
-  const handleLogout = () => {
-    localStorage.removeItem("user_id");
-    localStorage.removeItem("token");
-    setIsLoggedIn(false);
-    refetch();
-  };
 
   // Called in postCard when a post has been deleted
   const removePost = (data) => {
@@ -53,7 +41,7 @@ function HomePage(props) {
 
   return (
     <Paper elevation={0}>
-      <NavBar isLoggedIn={isLoggedIn} handleLogout={handleLogout} />
+      <NavBar />
       <Container className={classes.postCards}>
         <Grid container spacing={2} direction="column-reverse">
           {posts.map((post) => (

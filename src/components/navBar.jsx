@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
@@ -25,8 +26,20 @@ const useStyles = makeStyles({
 
 function NavBar(props) {
   const classes = useStyles();
+  const history = useHistory();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    Boolean(localStorage.getItem("token"))
+  );
 
   const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
+
+  const handleLogout = () => {
+    localStorage.removeItem("user_id");
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
+    history.push("/");
+  };
 
   const handleAccountMenuOpen = (event) => {
     setAccountMenuAnchor(event.currentTarget);
@@ -47,7 +60,7 @@ function NavBar(props) {
             Bulletin Board
           </Typography>
 
-          {props.isLoggedIn ? (
+          {isLoggedIn ? (
             <Paper elevation={0}>
               <Button
                 className={classes.leftButton}
@@ -77,7 +90,7 @@ function NavBar(props) {
                     <Typography>Profile</Typography>
                   </IconButton>
 
-                  <IconButton onClick={props.handleLogout}>
+                  <IconButton onClick={handleLogout}>
                     <ExitToAppOutlinedIcon />
                     <Typography>Logout</Typography>
                   </IconButton>

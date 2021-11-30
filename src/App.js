@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import HomePage from "./components/homePage";
 import LoginPage from "./components/loginPage";
 import SignupPage from "./components/signupPage";
+import SubmitPage from "./components/submitPage";
 import {
   createHttpLink,
   ApolloClient,
@@ -40,6 +41,9 @@ function App() {
           </Route>
           <Route path="/signup">
             <SignupPage />
+          </Route>
+          <Route path="/submit">
+            <SubmitPage />
           </Route>
           <Route path="/">
             <HomePage />
