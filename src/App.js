@@ -1,8 +1,9 @@
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Switch, Route } from "react-router-dom";
 import HomePage from "./components/homePage";
 import LoginPage from "./components/loginPage";
 import SignupPage from "./components/signupPage";
 import SubmitPage from "./components/submitPage";
+import NotFoundPage from "./components/notFoundPage";
 import {
   createHttpLink,
   ApolloClient,
@@ -34,8 +35,11 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <Router>
+      <BrowserRouter forceRefresh={true}>
         <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
           <Route path="/login">
             <LoginPage />
           </Route>
@@ -45,11 +49,11 @@ function App() {
           <Route path="/submit">
             <SubmitPage />
           </Route>
-          <Route path="/">
-            <HomePage />
+          <Route>
+            <NotFoundPage />
           </Route>
         </Switch>
-      </Router>
+      </BrowserRouter>
     </ApolloProvider>
   );
 }

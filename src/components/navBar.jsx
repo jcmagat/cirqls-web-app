@@ -53,7 +53,7 @@ function NavBar(props) {
     <Paper>
       <AppBar color="inherit">
         <Toolbar>
-          <IconButton edge="start" color="inherit" aria-label="menu">
+          <IconButton edge="start" color="inherit" component={Link} to={"/"}>
             <DashboardIcon fontSize="large" />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
