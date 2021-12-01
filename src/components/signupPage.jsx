@@ -1,13 +1,14 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
+import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import Button from "@material-ui/core/Button";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import { useMutation } from "@apollo/client";
 import { REGISTER } from "../graphql/mutations";
 
@@ -38,9 +39,19 @@ function SignupPage(props) {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
 
-  // eslint-disable-next-line
-  const [register, { loading, error }] = useMutation(REGISTER, {
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+
+  useEffect(() => {
+    if (password === confirmPassword) {
+      setConfirmPasswordError("");
+    } else {
+      setConfirmPasswordError("Passwords do not match");
+    }
+  }, [password, confirmPassword]);
+
+  const [register, { loading }] = useMutation(REGISTER, {
     onCompleted: finishRegister,
   });
 
@@ -57,12 +68,12 @@ function SignupPage(props) {
   };
 
   function finishRegister(data) {
-    history.push("/");
+    history.push("/login");
   }
 
   return (
     <Container component="main" maxWidth="xs">
-      <div className={classes.paper}>
+      <Paper className={classes.paper} elevation={0}>
         <Avatar className={classes.avatar}>
           <PersonOutlineOutlinedIcon />
         </Avatar>
@@ -80,6 +91,7 @@ function SignupPage(props) {
             label="Email"
             autoFocus
             onChange={(event) => setEmail(event.target.value)}
+            disabled={loading}
           />
           <TextField
             variant="outlined"
@@ -89,6 +101,7 @@ function SignupPage(props) {
             id="username"
             label="Username"
             onChange={(event) => setUsername(event.target.value)}
+            disabled={loading}
           />
           <TextField
             variant="outlined"
@@ -99,6 +112,20 @@ function SignupPage(props) {
             id="password"
             label="Password"
             onChange={(event) => setPassword(event.target.value)}
+            disabled={loading}
+          />
+          <TextField
+            variant="outlined"
+            margin="normal"
+            required
+            fullWidth
+            type="password"
+            id="confirm-password"
+            label="Confirm Password"
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            disabled={loading}
+            error={Boolean(confirmPasswordError)}
+            helperText={confirmPasswordError}
           />
           <Button
             fullWidth
@@ -106,11 +133,20 @@ function SignupPage(props) {
             variant="contained"
             color="primary"
             className={classes.submit}
+            disabled={
+              !email ||
+              !username ||
+              !password ||
+              !confirmPassword ||
+              Boolean(confirmPasswordError) ||
+              loading
+            }
           >
             Signup
           </Button>
         </form>
-      </div>
+        {loading && <CircularProgress />}
+      </Paper>
     </Container>
   );
 }
