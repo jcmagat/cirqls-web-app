@@ -41,18 +41,21 @@ function SignupPage(props) {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [emailError, setEmailError] = useState("");
+  const [usernameError, setUsernameError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
   useEffect(() => {
-    if (password === confirmPassword) {
-      setConfirmPasswordError("");
-    } else {
+    if (confirmPassword && password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
+    } else {
+      setConfirmPasswordError("");
     }
   }, [password, confirmPassword]);
 
   const [register, { loading }] = useMutation(REGISTER, {
     onCompleted: finishRegister,
+    onError: handleError,
   });
 
   const handleRegister = (event) => {
@@ -70,6 +73,24 @@ function SignupPage(props) {
   function finishRegister(data) {
     history.push("/login");
   }
+
+  function handleError(error) {
+    if (error.message.includes("Email")) {
+      setEmailError(error.message);
+    } else if (error.message.includes("Username")) {
+      setUsernameError(error.message);
+    }
+  }
+
+  const handleEmailChange = (email) => {
+    setEmail(email);
+    setEmailError("");
+  };
+
+  const handleUsernameChange = (username) => {
+    setUsername(username);
+    setUsernameError("");
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -90,8 +111,10 @@ function SignupPage(props) {
             id="email"
             label="Email"
             autoFocus
-            onChange={(event) => setEmail(event.target.value)}
+            onChange={(event) => handleEmailChange(event.target.value)}
             disabled={loading}
+            error={Boolean(emailError)}
+            helperText={emailError}
           />
           <TextField
             variant="outlined"
@@ -100,8 +123,10 @@ function SignupPage(props) {
             fullWidth
             id="username"
             label="Username"
-            onChange={(event) => setUsername(event.target.value)}
+            onChange={(event) => handleUsernameChange(event.target.value)}
             disabled={loading}
+            error={Boolean(usernameError)}
+            helperText={usernameError}
           />
           <TextField
             variant="outlined"
@@ -138,6 +163,8 @@ function SignupPage(props) {
               !username ||
               !password ||
               !confirmPassword ||
+              Boolean(emailError) ||
+              Boolean(usernameError) ||
               Boolean(confirmPasswordError) ||
               loading
             }
