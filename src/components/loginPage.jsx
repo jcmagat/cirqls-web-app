@@ -9,6 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../graphql/mutations";
 
@@ -124,6 +125,9 @@ function LoginPage(props) {
             Login
           </Button>
         </form>
+        <Typography component={Link} to={"/signup"}>
+          Don't have an account? Sign Up
+        </Typography>
         {loading && <CircularProgress />}
       </Paper>
     </Container>
