@@ -9,6 +9,7 @@ import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
+import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FlagIcon from "@material-ui/icons/Flag";
@@ -20,6 +21,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import {
   DELETE_POST,
@@ -186,6 +188,11 @@ function PostCard(props) {
             <ThumbDownOutlinedIcon />
           </IconButton>
         )}
+
+        <IconButton component={Link} to={`/post/${props.post.post_id}`}>
+          <ChatBubbleOutlineIcon />
+          <Typography>Comments</Typography>
+        </IconButton>
 
         <IconButton onClick={handleMoreMenuOpen}>
           <MoreVertIcon />

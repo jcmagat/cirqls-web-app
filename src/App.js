@@ -3,6 +3,7 @@ import HomePage from "./components/homePage";
 import LoginPage from "./components/loginPage";
 import SignupPage from "./components/signupPage";
 import SubmitPage from "./components/submitPage";
+import PostPage from "./components/postPage";
 import NotFoundPage from "./components/notFoundPage";
 import {
   createHttpLink,
@@ -49,6 +50,9 @@ function App() {
           </Route>
           <Route path="/submit">
             <SubmitPage />
+          </Route>
+          <Route path="/post/:id">
+            <PostPage />
           </Route>
           <Route>
             <NotFoundPage />
