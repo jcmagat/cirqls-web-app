@@ -10,7 +10,7 @@ import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FlagIcon from "@material-ui/icons/Flag";
 import Popover from "@material-ui/core/Popover";
@@ -195,7 +195,7 @@ function PostCard(props) {
         </IconButton>
 
         <IconButton onClick={handleMoreMenuOpen}>
-          <MoreVertIcon />
+          <MoreHorizIcon />
         </IconButton>
         <Popover
           open={Boolean(moreMenuAnchor)}
