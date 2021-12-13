@@ -12,6 +12,11 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import Typography from "@material-ui/core/Typography";
+import { useMutation } from "@apollo/client";
+import {
+  ADD_COMMENT_REACTION,
+  DELETE_COMMENT_REACTION,
+} from "../graphql/mutations";
 
 const useStyles = makeStyles({
   comment: {
@@ -41,6 +46,40 @@ function CommentCard(props) {
     }
   }, [authUserReaction]);
 
+  const [addCommentReaction] = useMutation(ADD_COMMENT_REACTION, {
+    onCompleted: props.handleCommentReactionChange,
+  });
+
+  const [deleteCommentReaction] = useMutation(DELETE_COMMENT_REACTION, {
+    onCompleted: props.handleCommentReactionChange,
+  });
+
+  const handleLikeComment = (comment_id) => {
+    addCommentReaction({
+      variables: {
+        comment_id: comment_id,
+        reaction: "like",
+      },
+    });
+  };
+
+  const handleDislikeComment = (comment_id) => {
+    addCommentReaction({
+      variables: {
+        comment_id: comment_id,
+        reaction: "dislike",
+      },
+    });
+  };
+
+  const handleDeleteCommentReaction = (comment_id) => {
+    deleteCommentReaction({
+      variables: {
+        comment_id: comment_id,
+      },
+    });
+  };
+
   return (
     <Card className={classes.comment}>
       <CardContent>
@@ -66,15 +105,17 @@ function CommentCard(props) {
       <CardActions disableSpacing>
         {liked ? (
           <IconButton
-          // onClick={(post_id) =>
-          //   handleDeletePostReaction(props.post.post_id, post_id)
-          // }
+            onClick={(comment_id) =>
+              handleDeleteCommentReaction(props.comment.comment_id, comment_id)
+            }
           >
             <ThumbUpIcon />
           </IconButton>
         ) : (
           <IconButton
-          // onClick={(post_id) => handleLikePost(props.post.post_id, post_id)}
+            onClick={(comment_id) =>
+              handleLikeComment(props.comment.comment_id, comment_id)
+            }
           >
             <ThumbUpOutlinedIcon />
           </IconButton>
@@ -86,17 +127,17 @@ function CommentCard(props) {
 
         {disliked ? (
           <IconButton
-          // onClick={(post_id) =>
-          //   handleDeletePostReaction(props.post.post_id, post_id)
-          // }
+            onClick={(comment_id) =>
+              handleDeleteCommentReaction(props.comment.comment_id, comment_id)
+            }
           >
             <ThumbDownIcon />
           </IconButton>
         ) : (
           <IconButton
-          // onClick={(post_id) =>
-          //   handleDislikePost(props.post.post_id, post_id)
-          // }
+            onClick={(comment_id) =>
+              handleDislikeComment(props.comment.comment_id, comment_id)
+            }
           >
             <ThumbDownOutlinedIcon />
           </IconButton>

@@ -32,9 +32,12 @@ function PostPage(props) {
     variables: { post_id: post_id },
   });
 
-  const { data: getCommentsData } = useQuery(GET_COMMENTS, {
-    variables: { post_id: post_id },
-  });
+  const { data: getCommentsData, refetch: refetchComments } = useQuery(
+    GET_COMMENTS,
+    {
+      variables: { post_id: post_id },
+    }
+  );
 
   useEffect(() => {
     if (getPostData) {
@@ -48,10 +51,18 @@ function PostPage(props) {
     }
   }, [getCommentsData]);
 
+  // Called in commentCard when a comment has been liked or disliked
+  const handleCommentReactionChange = (data) => {
+    refetchComments();
+  };
+
   const renderCommentTree = (comment) => {
     return (
       <TreeItem key={comment.comment_id} nodeId={comment.comment_id.toString()}>
-        <CommentCard comment={comment} />
+        <CommentCard
+          comment={comment}
+          handleCommentReactionChange={handleCommentReactionChange}
+        />
         {Array.isArray(comment.child_comments)
           ? comment.child_comments.map((comments) =>
               renderCommentTree(comments)
