@@ -191,7 +191,7 @@ function PostCard(props) {
 
         <IconButton component={Link} to={`/post/${props.post.post_id}`}>
           <ChatBubbleOutlineIcon />
-          <Typography>Comments</Typography>
+          <Typography>{`${props.post.comments_info.total} Comments`}</Typography>
         </IconButton>
 
         <IconButton onClick={handleMoreMenuOpen}>

@@ -16,6 +16,9 @@ export const GET_POSTS = gql`
         total
         auth_user_reaction
       }
+      comments_info {
+        total
+      }
     }
   }
 `;
@@ -34,6 +37,10 @@ export const GET_POST = gql`
         dislikes
         total
         auth_user_reaction
+      }
+      comments_info {
+        total
+        comment_ids
       }
     }
   }

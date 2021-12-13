@@ -25,7 +25,7 @@ function PostPage(props) {
 
   const classes = useStyles();
 
-  const [post, setPost] = useState({});
+  const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
 
   const { data: getPostData } = useQuery(GET_POST, {
@@ -41,7 +41,7 @@ function PostPage(props) {
 
   useEffect(() => {
     if (getPostData) {
-      setPost(getPostData.post || {});
+      setPost(getPostData.post);
     }
   }, [getPostData]);
 
@@ -75,27 +75,19 @@ function PostPage(props) {
   return (
     <Container>
       <NavBar />
-      <Paper className={classes.paper} elevation={0}>
-        {Object.keys(post).length > 0 && <PostCard post={post} />}
+      {post && (
+        <Paper className={classes.paper} elevation={0}>
+          <PostCard post={post} />
 
-        <TreeView
-          defaultExpanded={[
-            "12",
-            "13",
-            "14",
-            "15",
-            "16",
-            "17",
-            "18",
-            "19",
-            "20",
-          ]}
-          defaultCollapseIcon={<ExpandMoreIcon />}
-          defaultExpandIcon={<ChevronRightIcon />}
-        >
-          {comments.map((comment) => renderCommentTree(comment))}
-        </TreeView>
-      </Paper>
+          <TreeView
+            defaultExpanded={post.comments_info.comment_ids.map(String)}
+            defaultCollapseIcon={<ExpandMoreIcon />}
+            defaultExpandIcon={<ChevronRightIcon />}
+          >
+            {comments.map((comment) => renderCommentTree(comment))}
+          </TreeView>
+        </Paper>
+      )}
     </Container>
   );
 }
