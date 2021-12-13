@@ -8,6 +8,7 @@ import TreeItem from "@material-ui/lab/TreeItem";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import NavBar from "./navBar";
+import PostCard from "./postCard";
 import CommentCard from "./commentCard";
 import { useQuery } from "@apollo/client";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
@@ -64,10 +65,7 @@ function PostPage(props) {
     <Container>
       <NavBar />
       <Paper className={classes.paper} elevation={0}>
-        <div>
-          <h1>{post.title}</h1>
-          <h2>{post.description}</h2>
-        </div>
+        {Object.keys(post).length > 0 && <PostCard post={post} />}
 
         <TreeView
           defaultExpanded={[

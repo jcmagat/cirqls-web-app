@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -24,8 +24,22 @@ const useStyles = makeStyles({
 function CommentCard(props) {
   const classes = useStyles();
 
+  const authUserReaction = props.comment.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
+
+  useEffect(() => {
+    if (authUserReaction === "like") {
+      setLiked(true);
+      setDisliked(false);
+    } else if (authUserReaction === "dislike") {
+      setLiked(false);
+      setDisliked(true);
+    } else {
+      setLiked(false);
+      setDisliked(false);
+    }
+  }, [authUserReaction]);
 
   return (
     <Card className={classes.comment}>
@@ -66,7 +80,9 @@ function CommentCard(props) {
           </IconButton>
         )}
 
-        <Typography variant="subtitle1">{0}</Typography>
+        <Typography variant="subtitle1">
+          {props.comment.reactions.total}
+        </Typography>
 
         {disliked ? (
           <IconButton

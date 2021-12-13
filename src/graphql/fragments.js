@@ -8,5 +8,11 @@ export const COMMENT_FRAGMENT = gql`
     username
     message
     created_since
+    reactions {
+      likes
+      dislikes
+      total
+      auth_user_reaction
+    }
   }
 `;
