@@ -61,6 +61,51 @@ export const GET_COMMENTS = gql`
               ...CommentFragment
               child_comments {
                 ...CommentFragment
+                child_comments {
+                  ...CommentFragment
+                  child_comments {
+                    ...CommentFragment
+                    child_comments {
+                      ...CommentFragment
+                      child_comments {
+                        ...CommentFragment
+                        child_comments {
+                          ...CommentFragment
+                          child_comments {
+                            ...CommentFragment
+                            child_comments {
+                              ...CommentFragment
+                              child_comments {
+                                ...CommentFragment
+                                child_comments {
+                                  ...CommentFragment
+                                  child_comments {
+                                    ...CommentFragment
+                                    child_comments {
+                                      ...CommentFragment
+                                      child_comments {
+                                        ...CommentFragment
+                                        child_comments {
+                                          ...CommentFragment
+                                          child_comments {
+                                            ...CommentFragment
+                                            child_comments {
+                                              ...CommentFragment
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
               }
             }
           }
