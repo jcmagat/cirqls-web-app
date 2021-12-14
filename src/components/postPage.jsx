@@ -4,14 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import TreeView from "@material-ui/lab/TreeView";
-import TreeItem from "@material-ui/lab/TreeItem";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import NavBar from "./navBar";
 import PostCard from "./postCard";
 import CommentForm from "./commentForm";
-import CommentCard from "./commentCard";
+import CommentTree from "./commentTree";
 import { useQuery } from "@apollo/client";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 
@@ -53,35 +49,20 @@ function PostPage(props) {
     }
   }, [getCommentsData]);
 
-  // Called in commentCard when a comment has been liked or disliked
+  // Called in CommentCard when a comment has been liked or disliked
+  // Passed to CommentCard from CommentTree
   const handleCommentReactionChange = (data) => {
     refetchComments();
   };
 
-  // Called in postCard when the post has been liked or disliked
+  // Called in PostCard when the post has been liked or disliked
   const handlePostReactionChange = (data) => {
     refetchPost();
   };
 
-  // Called in commentForm when a comment has been added
+  // Called in CommentForm when a comment has been added
   const handleAddComment = (data) => {
     refetchComments();
-  };
-
-  const renderCommentTree = (comment) => {
-    return (
-      <TreeItem key={comment.comment_id} nodeId={comment.comment_id.toString()}>
-        <CommentCard
-          comment={comment}
-          handleCommentReactionChange={handleCommentReactionChange}
-        />
-        {Array.isArray(comment.child_comments)
-          ? comment.child_comments.map((comments) =>
-              renderCommentTree(comments)
-            )
-          : null}
-      </TreeItem>
-    );
   };
 
   return (
@@ -107,13 +88,11 @@ function PostPage(props) {
             </Grid>
 
             <Grid item>
-              <TreeView
-                defaultExpanded={post.comments_info.comment_ids.map(String)}
-                defaultCollapseIcon={<ExpandMoreIcon />}
-                defaultExpandIcon={<ChevronRightIcon />}
-              >
-                {comments.map((comment) => renderCommentTree(comment))}
-              </TreeView>
+              <CommentTree
+                comments={comments}
+                comment_ids={post.comments_info.comment_ids}
+                handleCommentReactionChange={handleCommentReactionChange}
+              />
             </Grid>
           </Grid>
         </Paper>
