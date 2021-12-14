@@ -67,6 +67,27 @@ export const DELETE_POST_REACTION = gql`
   }
 `;
 
+export const ADD_COMMENT = gql`
+  mutation AddComment(
+    $parent_comment_id: Int
+    $post_id: Int!
+    $message: String!
+  ) {
+    addComment(
+      parent_comment_id: $parent_comment_id
+      post_id: $post_id
+      message: $message
+    ) {
+      comment_id
+      parent_comment_id
+      post_id
+      username
+      message
+      created_since
+    }
+  }
+`;
+
 export const ADD_COMMENT_REACTION = gql`
   mutation AddCommentReaction($comment_id: Int!, $reaction: String!) {
     addCommentReaction(comment_id: $comment_id, reaction: $reaction) {

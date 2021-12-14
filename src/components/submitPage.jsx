@@ -58,9 +58,10 @@ function SubmitPage(props) {
   };
 
   return (
-    <Paper elevation={0}>
+    <Container component="main" maxWidth="md">
       <NavBar />
-      <Container component="main" maxWidth="md">
+
+      <Paper elevation={0}>
         <Paper className={classes.paper} elevation={0}>
           <form className={classes.form} noValidate autoComplete="off">
             <TextField
@@ -78,7 +79,7 @@ function SubmitPage(props) {
               label="Description"
               variant="outlined"
               multiline
-              rows={6}
+              rows={8}
               fullWidth
               onChange={(event) => setDescription(event.target.value)}
               disabled={loading}
@@ -105,8 +106,8 @@ function SubmitPage(props) {
             Submit
           </Button>
         </Paper>
-      </Container>
-    </Paper>
+      </Paper>
+    </Container>
   );
 }
 
