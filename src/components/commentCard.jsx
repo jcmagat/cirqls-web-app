@@ -91,6 +91,10 @@ function CommentCard(props) {
     setReplyFormOpen(true);
   };
 
+  const handleReplyFormClose = () => {
+    setReplyFormOpen(false);
+  };
+
   return (
     <Paper elevation={0}>
       <Card className={classes.comment}>
@@ -171,7 +175,9 @@ function CommentCard(props) {
       <Paper className={classes.replyForm} elevation={0}>
         <CommentForm
           open={replyFormOpen}
-          isReply={true}
+          showCancelButton={true}
+          onCancel={handleReplyFormClose}
+          onSubmit={handleReplyFormClose}
           parent_comment_id={props.comment.comment_id}
           post_id={props.comment.post_id}
           finishAddComment={props.finishAddComment}

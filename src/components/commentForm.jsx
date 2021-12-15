@@ -17,6 +17,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CommentForm(props) {
+  // Maybe have onClose and onSubmit
+
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -31,6 +33,8 @@ function CommentForm(props) {
   });
 
   const handleAddComment = () => {
+    setMessage("");
+
     addComment({
       variables: {
         parent_comment_id: props.parent_comment_id,
@@ -41,12 +45,17 @@ function CommentForm(props) {
   };
 
   function finishAddComment(data) {
-    setOpen(false);
+    if (props.onSubmit) {
+      props.onSubmit();
+    }
     props.finishAddComment(data);
   }
 
   const handleCancel = () => {
-    setOpen(false);
+    setMessage("");
+    if (props.onCancel) {
+      props.onCancel();
+    }
   };
 
   return (
@@ -69,7 +78,7 @@ function CommentForm(props) {
           </Paper>
 
           <Paper className={classes.buttons} elevation={0}>
-            {props.isReply && (
+            {props.showCancelButton && (
               <Button
                 className={classes.cancelButton}
                 variant="outlined"

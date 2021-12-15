@@ -84,7 +84,6 @@ function PostPage(props) {
             <Grid item>
               <CommentForm
                 open={true}
-                isReply={false}
                 parent_comment_id={null}
                 post_id={post.post_id}
                 finishAddComment={finishAddComment}
