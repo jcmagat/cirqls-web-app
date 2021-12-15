@@ -33,8 +33,6 @@ function CommentForm(props) {
   });
 
   const handleAddComment = () => {
-    setMessage("");
-
     addComment({
       variables: {
         parent_comment_id: props.parent_comment_id,
@@ -45,6 +43,8 @@ function CommentForm(props) {
   };
 
   function finishAddComment(data) {
+    setMessage("");
+
     if (props.onSubmit) {
       props.onSubmit();
     }
@@ -67,6 +67,7 @@ function CommentForm(props) {
               <TextField
                 id="comment"
                 label="Comment"
+                value={message}
                 variant="outlined"
                 multiline
                 rows={8}
