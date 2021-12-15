@@ -61,7 +61,9 @@ function PostPage(props) {
   };
 
   // Called in CommentForm when a comment has been added
+  // Also passed to CommentForm from CommentTree
   const finishAddComment = (data) => {
+    refetchPost();
     refetchComments();
   };
 
@@ -94,6 +96,7 @@ function PostPage(props) {
                 comments={comments}
                 comment_ids={post.comments_info.comment_ids}
                 handleCommentReactionChange={handleCommentReactionChange}
+                finishAddComment={finishAddComment}
               />
             </Grid>
           </Grid>
