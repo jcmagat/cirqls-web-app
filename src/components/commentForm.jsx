@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -11,15 +11,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: 8,
     float: "right",
   },
+  cancelButton: {
+    marginRight: 8,
+  },
 }));
 
 function CommentForm(props) {
   const classes = useStyles();
 
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
 
+  useEffect(() => {
+    setOpen(props.open);
+  }, [props.open]);
+
   const [addComment] = useMutation(ADD_COMMENT, {
-    onCompleted: props.handleAddComment,
+    onCompleted: finishAddComment,
   });
 
   const handleAddComment = () => {
@@ -32,33 +40,58 @@ function CommentForm(props) {
     });
   };
 
+  function finishAddComment(data) {
+    setOpen(false);
+    props.finishAddComment(data);
+  }
+
+  const handleCancel = () => {
+    setOpen(false);
+  };
+
   return (
     <Paper elevation={0}>
-      <Paper elevation={0}>
-        <form noValidate autoComplete="off">
-          <TextField
-            id="comment"
-            label="Comment"
-            variant="outlined"
-            multiline
-            rows={8}
-            fullWidth
-            onChange={(event) => setMessage(event.target.value)}
-            // disabled={loading}
-          />
-        </form>
-      </Paper>
+      {open && (
+        <Paper elevation={0}>
+          <Paper elevation={0}>
+            <form noValidate autoComplete="off">
+              <TextField
+                id="comment"
+                label="Comment"
+                variant="outlined"
+                multiline
+                rows={8}
+                fullWidth
+                onChange={(event) => setMessage(event.target.value)}
+                // disabled={loading}
+              />
+            </form>
+          </Paper>
 
-      <Paper className={classes.buttons} elevation={0}>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={handleAddComment}
-          // disabled={loading}
-        >
-          Comment
-        </Button>
-      </Paper>
+          <Paper className={classes.buttons} elevation={0}>
+            {props.isReply && (
+              <Button
+                className={classes.cancelButton}
+                variant="outlined"
+                color="secondary"
+                onClick={handleCancel}
+                // disabled={loading}
+              >
+                Cancel
+              </Button>
+            )}
+
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleAddComment}
+              disabled={!message}
+            >
+              Comment
+            </Button>
+          </Paper>
+        </Paper>
+      )}
     </Paper>
   );
 }

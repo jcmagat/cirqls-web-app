@@ -168,14 +168,15 @@ function CommentCard(props) {
         </CardActions>
       </Card>
 
-      {replyFormOpen && (
-        <Paper className={classes.replyForm} elevation={0}>
-          <CommentForm
-            parent_comment_id={props.comment.comment_id}
-            post_id={props.comment.post_id}
-          />
-        </Paper>
-      )}
+      <Paper className={classes.replyForm} elevation={0}>
+        <CommentForm
+          open={replyFormOpen}
+          isReply={true}
+          parent_comment_id={props.comment.comment_id}
+          post_id={props.comment.post_id}
+          finishAddComment={props.finishAddComment}
+        />
+      </Paper>
     </Paper>
   );
 }

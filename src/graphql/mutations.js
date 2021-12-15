@@ -84,6 +84,12 @@ export const ADD_COMMENT = gql`
       username
       message
       created_since
+      reactions {
+        likes
+        dislikes
+        total
+        auth_user_reaction
+      }
     }
   }
 `;

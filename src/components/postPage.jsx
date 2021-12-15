@@ -61,7 +61,7 @@ function PostPage(props) {
   };
 
   // Called in CommentForm when a comment has been added
-  const handleAddComment = (data) => {
+  const finishAddComment = (data) => {
     refetchComments();
   };
 
@@ -81,9 +81,11 @@ function PostPage(props) {
 
             <Grid item>
               <CommentForm
+                open={true}
+                isReply={false}
                 parent_comment_id={null}
                 post_id={post.post_id}
-                handleAddComment={handleAddComment}
+                finishAddComment={finishAddComment}
               />
             </Grid>
 
