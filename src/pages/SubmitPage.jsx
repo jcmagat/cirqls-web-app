@@ -5,7 +5,7 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import NavBar from "./navBar";
+import NavBar from "../components/NavBar";
 import { useMutation } from "@apollo/client";
 import { ADD_POST } from "../graphql/mutations";
 

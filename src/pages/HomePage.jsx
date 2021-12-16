@@ -3,8 +3,8 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
 import Grid from "@material-ui/core/Grid";
-import PostCard from "./postCard";
-import NavBar from "./navBar";
+import PostCard from "../components/PostCard";
+import NavBar from "../components/NavBar";
 import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
 

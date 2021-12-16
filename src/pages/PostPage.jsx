@@ -4,10 +4,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import NavBar from "./navBar";
-import PostCard from "./postCard";
-import CommentForm from "./commentForm";
-import CommentTree from "./commentTree";
+import NavBar from "../components/NavBar";
+import PostCard from "../components/PostCard";
+import CommentForm from "../components/CommentForm";
+import CommentTree from "../components/CommentTree";
 import { useQuery } from "@apollo/client";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 

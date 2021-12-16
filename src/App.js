@@ -1,10 +1,10 @@
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import HomePage from "./components/homePage";
-import LoginPage from "./components/loginPage";
-import SignupPage from "./components/signupPage";
-import SubmitPage from "./components/submitPage";
-import PostPage from "./components/postPage";
-import NotFoundPage from "./components/notFoundPage";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./pages/LoginPage";
+import SignupPage from "./pages/SignupPage";
+import SubmitPage from "./pages/SubmitPage";
+import PostPage from "./pages/PostPage";
+import NotFoundPage from "./pages/NotFoundPage";
 import {
   createHttpLink,
   ApolloClient,

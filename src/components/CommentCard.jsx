@@ -12,7 +12,7 @@ import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import Typography from "@material-ui/core/Typography";
-import CommentForm from "./commentForm";
+import CommentForm from "./CommentForm";
 import { useMutation } from "@apollo/client";
 import {
   ADD_COMMENT_REACTION,
