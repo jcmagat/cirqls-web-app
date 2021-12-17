@@ -94,6 +94,14 @@ export const ADD_COMMENT = gql`
   }
 `;
 
+export const DELETE_COMMENT = gql`
+  mutation DeleteComment($comment_id: Int!) {
+    deleteComment(comment_id: $comment_id) {
+      comment_id
+    }
+  }
+`;
+
 export const ADD_COMMENT_REACTION = gql`
   mutation AddCommentReaction($comment_id: Int!, $reaction: String!) {
     addCommentReaction(comment_id: $comment_id, reaction: $reaction) {

@@ -19,6 +19,7 @@ function CommentTree(props) {
           comment={comment}
           handleCommentReactionChange={props.handleCommentReactionChange}
           finishAddComment={props.finishAddComment}
+          removeComment={props.removeComment}
         />
 
         {Array.isArray(comment.child_comments)

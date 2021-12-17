@@ -11,10 +11,12 @@ import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
+import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Typography from "@material-ui/core/Typography";
 import CommentForm from "./CommentForm";
 import { useMutation } from "@apollo/client";
 import {
+  DELETE_COMMENT,
   ADD_COMMENT_REACTION,
   DELETE_COMMENT_REACTION,
 } from "../graphql/mutations";
@@ -53,6 +55,10 @@ function CommentCard(props) {
     }
   }, [authUserReaction]);
 
+  const [deleteComment] = useMutation(DELETE_COMMENT, {
+    onCompleted: props.removeComment,
+  });
+
   const [addCommentReaction] = useMutation(ADD_COMMENT_REACTION, {
     onCompleted: props.handleCommentReactionChange,
   });
@@ -60,6 +66,14 @@ function CommentCard(props) {
   const [deleteCommentReaction] = useMutation(DELETE_COMMENT_REACTION, {
     onCompleted: props.handleCommentReactionChange,
   });
+
+  const handleDeleteComment = (comment_id) => {
+    deleteComment({
+      variables: {
+        comment_id: comment_id,
+      },
+    });
+  };
 
   const handleLikeComment = (comment_id) => {
     addCommentReaction({
@@ -168,6 +182,15 @@ function CommentCard(props) {
           <IconButton onClick={handleReplyButtonClick}>
             <ChatBubbleOutlineIcon />
             <Typography>Reply</Typography>
+          </IconButton>
+
+          <IconButton
+            onClick={(comment_id) =>
+              handleDeleteComment(props.comment.comment_id, comment_id)
+            }
+          >
+            <DeleteOutlinedIcon />
+            <Typography>Delete</Typography>
           </IconButton>
         </CardActions>
       </Card>

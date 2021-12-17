@@ -67,6 +67,13 @@ function PostPage(props) {
     refetchComments();
   };
 
+  // Called in CommentCard when a comment has been deleted
+  // Passed to CommentCard from CommentTree
+  const removeComment = (data) => {
+    refetchPost();
+    refetchComments();
+  };
+
   return (
     <Container component="main">
       <NavBar />
@@ -96,6 +103,7 @@ function PostPage(props) {
                 comment_ids={post.comments_info.comment_ids}
                 handleCommentReactionChange={handleCommentReactionChange}
                 finishAddComment={finishAddComment}
+                removeComment={removeComment}
               />
             </Grid>
           </Grid>
