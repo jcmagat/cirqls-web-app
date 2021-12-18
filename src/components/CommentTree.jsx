@@ -6,10 +6,10 @@ import ChevronRightIcon from "@material-ui/icons/ChevronRight";
 import CommentCard from "./CommentCard";
 
 function CommentTree(props) {
-  const [commentIds, setCommentIds] = useState([]);
+  const [expanded, setExpanded] = useState([]);
 
   useEffect(() => {
-    setCommentIds(props.comment_ids);
+    setExpanded(props.comment_ids.map(String));
   }, [props.comment_ids]);
 
   const renderCommentTree = (comment) => {
@@ -33,9 +33,10 @@ function CommentTree(props) {
 
   return (
     <TreeView
-      expanded={commentIds.map(String)}
+      expanded={expanded}
       defaultCollapseIcon={<ExpandMoreIcon />}
       defaultExpandIcon={<ChevronRightIcon />}
+      onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
     >
       {props.comments.map((comment) => renderCommentTree(comment))}
     </TreeView>
