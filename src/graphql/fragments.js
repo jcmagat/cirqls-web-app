@@ -5,6 +5,7 @@ export const COMMENT_FRAGMENT = gql`
     comment_id
     parent_comment_id
     post_id
+    user_id
     username
     message
     created_since

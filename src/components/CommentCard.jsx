@@ -36,6 +36,9 @@ const useStyles = makeStyles({
 function CommentCard(props) {
   const classes = useStyles();
 
+  const isAuthUsersComment =
+    parseInt(localStorage.getItem("user_id")) === props.comment.user_id;
+
   const authUserReaction = props.comment.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
@@ -184,14 +187,16 @@ function CommentCard(props) {
             <Typography>Reply</Typography>
           </IconButton>
 
-          <IconButton
-            onClick={(comment_id) =>
-              handleDeleteComment(props.comment.comment_id, comment_id)
-            }
-          >
-            <DeleteOutlinedIcon />
-            <Typography>Delete</Typography>
-          </IconButton>
+          {isAuthUsersComment && (
+            <IconButton
+              onClick={(comment_id) =>
+                handleDeleteComment(props.comment.comment_id, comment_id)
+              }
+            >
+              <DeleteOutlinedIcon />
+              <Typography>Delete</Typography>
+            </IconButton>
+          )}
         </CardActions>
       </Card>
 
