@@ -17,7 +17,6 @@ function CommentTree(props) {
       <TreeItem key={comment.comment_id} nodeId={comment.comment_id.toString()}>
         <CommentCard
           comment={comment}
-          handleCommentReactionChange={props.handleCommentReactionChange}
           finishAddComment={props.finishAddComment}
           removeComment={props.removeComment}
         />

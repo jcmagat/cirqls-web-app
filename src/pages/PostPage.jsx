@@ -49,12 +49,6 @@ function PostPage(props) {
     }
   }, [getCommentsData]);
 
-  // Called in CommentCard when a comment has been liked or disliked
-  // Passed to CommentCard from CommentTree
-  const handleCommentReactionChange = (data) => {
-    refetchComments();
-  };
-
   // Called in PostCard when the post has been liked or disliked
   const handlePostReactionChange = (data) => {
     refetchPost();
@@ -101,7 +95,6 @@ function PostPage(props) {
               <CommentTree
                 comments={comments}
                 comment_ids={post.comments_info.comment_ids}
-                handleCommentReactionChange={handleCommentReactionChange}
                 finishAddComment={finishAddComment}
                 removeComment={removeComment}
               />
