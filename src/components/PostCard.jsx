@@ -28,6 +28,7 @@ import {
   ADD_POST_REACTION,
   DELETE_POST_REACTION,
 } from "../graphql/mutations";
+import { GET_POSTS } from "../graphql/queries";
 
 const useStyles = makeStyles({
   pos: {
@@ -64,16 +65,16 @@ function PostCard(props) {
   const [deletePost, { loading: deletePostLoading }] = useMutation(
     DELETE_POST,
     {
-      onCompleted: props.removePost,
+      refetchQueries: [GET_POSTS],
     }
   );
 
   const [addPostReaction] = useMutation(ADD_POST_REACTION, {
-    onCompleted: props.handlePostReactionChange,
+    refetchQueries: [GET_POSTS],
   });
 
   const [deletePostReaction] = useMutation(DELETE_POST_REACTION, {
-    onCompleted: props.handlePostReactionChange,
+    refetchQueries: [GET_POSTS],
   });
 
   const handleLikePost = (post_id) => {

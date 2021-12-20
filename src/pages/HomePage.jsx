@@ -20,24 +20,13 @@ function HomePage(props) {
   const [posts, setPosts] = useState([]);
 
   // eslint-disable-next-line
-  const { loading, error, data, refetch } = useQuery(GET_POSTS);
+  const { loading, error, data } = useQuery(GET_POSTS);
 
   useEffect(() => {
     if (data) {
       setPosts(data.posts);
     }
   }, [data]);
-
-  // Called in postCard when a post has been deleted
-  const removePost = (data) => {
-    const deletedPost = data.deletePost;
-    setPosts(posts.filter((post) => post.post_id !== deletedPost.post_id));
-  };
-
-  // Called in postCard when a post has been liked or disliked
-  const handlePostReactionChange = (data) => {
-    refetch();
-  };
 
   return (
     <Paper elevation={0}>
@@ -46,11 +35,7 @@ function HomePage(props) {
         <Grid container spacing={2} direction="column-reverse">
           {posts.map((post) => (
             <Grid item key={post.post_id}>
-              <PostCard
-                post={post}
-                removePost={removePost}
-                handlePostReactionChange={handlePostReactionChange}
-              />
+              <PostCard post={post} />
             </Grid>
           ))}
         </Grid>
