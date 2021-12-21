@@ -114,8 +114,12 @@ export const ADD_COMMENT_REACTION = gql`
   mutation AddCommentReaction($comment_id: Int!, $reaction: String!) {
     addCommentReaction(comment_id: $comment_id, reaction: $reaction) {
       comment_id
-      username
-      reaction
+      reactions {
+        likes
+        dislikes
+        total
+        auth_user_reaction
+      }
     }
   }
 `;
@@ -124,8 +128,12 @@ export const DELETE_COMMENT_REACTION = gql`
   mutation DeleteCommentReaction($comment_id: Int!) {
     deleteCommentReaction(comment_id: $comment_id) {
       comment_id
-      username
-      reaction
+      reactions {
+        likes
+        dislikes
+        total
+        auth_user_reaction
+      }
     }
   }
 `;

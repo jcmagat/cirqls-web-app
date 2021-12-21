@@ -66,17 +66,9 @@ function CommentCard(props) {
     ],
   });
 
-  const [addCommentReaction] = useMutation(ADD_COMMENT_REACTION, {
-    refetchQueries: [
-      { query: GET_COMMENTS, variables: { post_id: props.comment.post_id } },
-    ],
-  });
+  const [addCommentReaction] = useMutation(ADD_COMMENT_REACTION);
 
-  const [deleteCommentReaction] = useMutation(DELETE_COMMENT_REACTION, {
-    refetchQueries: [
-      { query: GET_COMMENTS, variables: { post_id: props.comment.post_id } },
-    ],
-  });
+  const [deleteCommentReaction] = useMutation(DELETE_COMMENT_REACTION);
 
   const handleDeleteComment = (comment_id) => {
     deleteComment({

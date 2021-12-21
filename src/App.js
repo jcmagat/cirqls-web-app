@@ -34,6 +34,9 @@ const cache = new InMemoryCache({
     Post: {
       keyFields: ["post_id"],
     },
+    Comment: {
+      keyFields: ["comment_id"],
+    },
   },
 });
 
