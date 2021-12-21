@@ -51,8 +51,12 @@ export const ADD_POST_REACTION = gql`
   mutation AddPostReaction($post_id: Int!, $reaction: String!) {
     addPostReaction(post_id: $post_id, reaction: $reaction) {
       post_id
-      username
-      reaction
+      reactions {
+        likes
+        dislikes
+        total
+        auth_user_reaction
+      }
     }
   }
 `;
@@ -61,8 +65,12 @@ export const DELETE_POST_REACTION = gql`
   mutation DeletePostReaction($post_id: Int!) {
     deletePostReaction(post_id: $post_id) {
       post_id
-      username
-      reaction
+      reactions {
+        likes
+        dislikes
+        total
+        auth_user_reaction
+      }
     }
   }
 `;

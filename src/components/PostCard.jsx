@@ -69,13 +69,9 @@ function PostCard(props) {
     }
   );
 
-  const [addPostReaction] = useMutation(ADD_POST_REACTION, {
-    refetchQueries: [GET_POSTS],
-  });
+  const [addPostReaction] = useMutation(ADD_POST_REACTION);
 
-  const [deletePostReaction] = useMutation(DELETE_POST_REACTION, {
-    refetchQueries: [GET_POSTS],
-  });
+  const [deletePostReaction] = useMutation(DELETE_POST_REACTION);
 
   const handleLikePost = (post_id) => {
     addPostReaction({
