@@ -26,16 +26,13 @@ function PostPage(props) {
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
 
-  const { data: getPostData, refetch: refetchPost } = useQuery(GET_POST, {
+  const { data: getPostData } = useQuery(GET_POST, {
     variables: { post_id: post_id },
   });
 
-  const { data: getCommentsData, refetch: refetchComments } = useQuery(
-    GET_COMMENTS,
-    {
-      variables: { post_id: post_id },
-    }
-  );
+  const { data: getCommentsData } = useQuery(GET_COMMENTS, {
+    variables: { post_id: post_id },
+  });
 
   useEffect(() => {
     if (getPostData) {
@@ -48,13 +45,6 @@ function PostPage(props) {
       setComments(getCommentsData.comments);
     }
   }, [getCommentsData]);
-
-  // Called in CommentCard when a comment has been deleted
-  // Passed to CommentCard from CommentTree
-  const removeComment = (data) => {
-    refetchPost();
-    refetchComments();
-  };
 
   return (
     <Container component="main">
@@ -79,7 +69,6 @@ function PostPage(props) {
               <CommentTree
                 comments={comments}
                 comment_ids={post.comments_info.comment_ids}
-                removeComment={removeComment}
               />
             </Grid>
           </Grid>

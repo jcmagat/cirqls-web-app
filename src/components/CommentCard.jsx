@@ -21,7 +21,7 @@ import {
   DELETE_COMMENT_REACTION,
 } from "../graphql/mutations";
 import { Paper } from "@material-ui/core";
-import { GET_COMMENTS } from "../graphql/queries";
+import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 
 const useStyles = makeStyles({
   comment: {
@@ -60,7 +60,10 @@ function CommentCard(props) {
   }, [authUserReaction]);
 
   const [deleteComment] = useMutation(DELETE_COMMENT, {
-    onCompleted: props.removeComment,
+    refetchQueries: [
+      { query: GET_POST, variables: { post_id: props.comment.post_id } },
+      { query: GET_COMMENTS, variables: { post_id: props.comment.post_id } },
+    ],
   });
 
   const [addCommentReaction] = useMutation(ADD_COMMENT_REACTION, {
