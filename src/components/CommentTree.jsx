@@ -15,11 +15,7 @@ function CommentTree(props) {
   const renderCommentTree = (comment) => {
     return (
       <TreeItem key={comment.comment_id} nodeId={comment.comment_id.toString()}>
-        <CommentCard
-          comment={comment}
-          finishAddComment={props.finishAddComment}
-          removeComment={props.removeComment}
-        />
+        <CommentCard comment={comment} removeComment={props.removeComment} />
 
         {Array.isArray(comment.child_comments)
           ? comment.child_comments.map((comments) =>

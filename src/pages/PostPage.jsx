@@ -49,18 +49,6 @@ function PostPage(props) {
     }
   }, [getCommentsData]);
 
-  // Called in PostCard when the post has been liked or disliked
-  const handlePostReactionChange = (data) => {
-    refetchPost();
-  };
-
-  // Called in CommentForm when a comment has been added
-  // Also passed to CommentForm from CommentTree
-  const finishAddComment = (data) => {
-    refetchPost();
-    refetchComments();
-  };
-
   // Called in CommentCard when a comment has been deleted
   // Passed to CommentCard from CommentTree
   const removeComment = (data) => {
@@ -76,10 +64,7 @@ function PostPage(props) {
         <Paper className={classes.paper} elevation={0}>
           <Grid container spacing={2} direction="column">
             <Grid item>
-              <PostCard
-                post={post}
-                handlePostReactionChange={handlePostReactionChange}
-              />
+              <PostCard post={post} />
             </Grid>
 
             <Grid item>
@@ -87,7 +72,6 @@ function PostPage(props) {
                 open={true}
                 parent_comment_id={null}
                 post_id={post.post_id}
-                finishAddComment={finishAddComment}
               />
             </Grid>
 
@@ -95,7 +79,6 @@ function PostPage(props) {
               <CommentTree
                 comments={comments}
                 comment_ids={post.comments_info.comment_ids}
-                finishAddComment={finishAddComment}
                 removeComment={removeComment}
               />
             </Grid>

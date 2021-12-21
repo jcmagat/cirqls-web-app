@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useMutation } from "@apollo/client";
 import { ADD_COMMENT } from "../graphql/mutations";
+import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -17,8 +18,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function CommentForm(props) {
-  // Maybe have onClose and onSubmit
-
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
@@ -30,6 +29,10 @@ function CommentForm(props) {
 
   const [addComment] = useMutation(ADD_COMMENT, {
     onCompleted: finishAddComment,
+    refetchQueries: [
+      { query: GET_POST, variables: { post_id: props.post_id } },
+      { query: GET_COMMENTS, variables: { post_id: props.post_id } },
+    ],
   });
 
   const handleAddComment = () => {
@@ -48,7 +51,6 @@ function CommentForm(props) {
     if (props.onSubmit) {
       props.onSubmit();
     }
-    props.finishAddComment(data);
   }
 
   const handleCancel = () => {
