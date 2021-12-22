@@ -8,8 +8,9 @@ import NavBar from "../components/NavBar";
 import PostCard from "../components/PostCard";
 import CommentForm from "../components/CommentForm";
 import CommentTree from "../components/CommentTree";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
+import { ADD_COMMENT } from "../graphql/mutations";
 
 const useStyles = makeStyles({
   paper: {
@@ -34,6 +35,16 @@ function PostPage(props) {
     variables: { post_id: post_id },
   });
 
+  const [addComment] = useMutation(ADD_COMMENT, {
+    refetchQueries: [
+      { query: GET_POST, variables: { post_id: post ? post.post_id : null } },
+      {
+        query: GET_COMMENTS,
+        variables: { post_id: post ? post.post_id : null },
+      },
+    ],
+  });
+
   useEffect(() => {
     if (getPostData) {
       setPost(getPostData.post);
@@ -46,6 +57,16 @@ function PostPage(props) {
     }
   }, [getCommentsData]);
 
+  const handleAddComment = (message) => {
+    addComment({
+      variables: {
+        parent_comment_id: null,
+        post_id: post.post_id,
+        message: message,
+      },
+    });
+  };
+
   return (
     <Container component="main">
       <NavBar />
@@ -57,13 +78,13 @@ function PostPage(props) {
               <PostCard post={post} />
             </Grid>
 
-            {/* <Grid item>
+            <Grid item>
               <CommentForm
                 open={true}
-                parent_comment_id={null}
-                post_id={post.post_id}
+                showCancelButton={false}
+                onSubmit={handleAddComment}
               />
-            </Grid> */}
+            </Grid>
 
             <Grid item>
               <CommentTree
