@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
@@ -19,9 +20,10 @@ import {
   DELETE_COMMENT,
   ADD_COMMENT_REACTION,
   DELETE_COMMENT_REACTION,
+  ADD_COMMENT,
 } from "../graphql/mutations";
-import { Paper } from "@material-ui/core";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
+import { COMMENT_FRAGMENT } from "../graphql/fragments";
 
 const useStyles = makeStyles({
   comment: {
@@ -70,6 +72,28 @@ function CommentCard(props) {
 
   const [deleteCommentReaction] = useMutation(DELETE_COMMENT_REACTION);
 
+  const [addCommentReply] = useMutation(ADD_COMMENT, {
+    onCompleted: handleReplyFormClose,
+    refetchQueries: [
+      { query: GET_POST, variables: { post_id: props.comment.post_id } },
+    ],
+    update(cache, { data: { addComment } }) {
+      cache.modify({
+        id: cache.identify(props.comment),
+        fields: {
+          child_comments(existingCommentRefs = []) {
+            const newCommentRef = cache.writeFragment({
+              data: addComment,
+              fragment: COMMENT_FRAGMENT,
+            });
+
+            return [newCommentRef, ...existingCommentRefs];
+          },
+        },
+      });
+    },
+  });
+
   const handleDeleteComment = (comment_id) => {
     deleteComment({
       variables: {
@@ -104,13 +128,23 @@ function CommentCard(props) {
     });
   };
 
+  const handleAddCommentReply = (message) => {
+    addCommentReply({
+      variables: {
+        parent_comment_id: props.comment.comment_id,
+        post_id: props.comment.post_id,
+        message: message,
+      },
+    });
+  };
+
   const handleReplyButtonClick = () => {
     setReplyFormOpen(true);
   };
 
-  const handleReplyFormClose = () => {
+  function handleReplyFormClose() {
     setReplyFormOpen(false);
-  };
+  }
 
   return (
     <Paper elevation={0}>
@@ -205,10 +239,7 @@ function CommentCard(props) {
           open={replyFormOpen}
           showCancelButton={true}
           onCancel={handleReplyFormClose}
-          onSubmit={handleReplyFormClose}
-          parent_comment_id={props.comment.comment_id}
-          post_id={props.comment.post_id}
-          comment={props.comment}
+          onSubmit={handleAddCommentReply}
         />
       </Paper>
     </Paper>

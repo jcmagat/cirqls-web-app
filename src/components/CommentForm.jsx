@@ -3,10 +3,6 @@ import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
-import { useMutation } from "@apollo/client";
-import { ADD_COMMENT } from "../graphql/mutations";
-import { GET_POST } from "../graphql/queries";
-import { COMMENT_FRAGMENT } from "../graphql/fragments";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -28,49 +24,19 @@ function CommentForm(props) {
     setOpen(props.open);
   }, [props.open]);
 
-  const [addComment] = useMutation(ADD_COMMENT, {
-    onCompleted: finishAddComment,
-    refetchQueries: [
-      { query: GET_POST, variables: { post_id: props.post_id } },
-    ],
-    update(cache, { data: { addComment } }) {
-      cache.modify({
-        id: cache.identify(props.comment),
-        broadcast: false,
-        fields: {
-          child_comments(existingCommentRefs = [], { readField }) {
-            const newCommentRef = cache.writeFragment({
-              data: addComment,
-              fragment: COMMENT_FRAGMENT,
-            });
-
-            return [newCommentRef, ...existingCommentRefs];
-          },
-        },
-      });
-    },
-  });
-
-  const handleAddComment = () => {
-    addComment({
-      variables: {
-        parent_comment_id: props.parent_comment_id,
-        post_id: props.post_id,
-        message: message,
-      },
-    });
-  };
-
-  function finishAddComment(data) {
-    setMessage("");
+  const addComment = (event) => {
+    event.preventDefault();
 
     if (props.onSubmit) {
-      props.onSubmit();
+      props.onSubmit(message);
     }
-  }
+
+    setMessage("");
+  };
 
   const handleCancel = () => {
     setMessage("");
+
     if (props.onCancel) {
       props.onCancel();
     }
@@ -80,8 +46,8 @@ function CommentForm(props) {
     <Paper elevation={0}>
       {open && (
         <Paper elevation={0}>
-          <Paper elevation={0}>
-            <form noValidate autoComplete="off">
+          <form noValidate autoComplete="off" onSubmit={addComment}>
+            <Paper elevation={0}>
               <TextField
                 id="comment"
                 label="Comment"
@@ -93,31 +59,31 @@ function CommentForm(props) {
                 onChange={(event) => setMessage(event.target.value)}
                 // disabled={loading}
               />
-            </form>
-          </Paper>
+            </Paper>
 
-          <Paper className={classes.buttons} elevation={0}>
-            {props.showCancelButton && (
+            <Paper className={classes.buttons} elevation={0}>
+              {props.showCancelButton && (
+                <Button
+                  className={classes.cancelButton}
+                  variant="outlined"
+                  color="secondary"
+                  onClick={handleCancel}
+                  // disabled={loading}
+                >
+                  Cancel
+                </Button>
+              )}
+
               <Button
-                className={classes.cancelButton}
-                variant="outlined"
-                color="secondary"
-                onClick={handleCancel}
-                // disabled={loading}
+                type="submit"
+                variant="contained"
+                color="primary"
+                disabled={!message}
               >
-                Cancel
+                Submit
               </Button>
-            )}
-
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleAddComment}
-              disabled={!message}
-            >
-              Comment
-            </Button>
-          </Paper>
+            </Paper>
+          </form>
         </Paper>
       )}
     </Paper>
