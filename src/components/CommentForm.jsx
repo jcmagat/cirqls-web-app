@@ -5,7 +5,8 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { useMutation } from "@apollo/client";
 import { ADD_COMMENT } from "../graphql/mutations";
-import { GET_POST, GET_COMMENTS } from "../graphql/queries";
+import { GET_POST } from "../graphql/queries";
+import { COMMENT_FRAGMENT } from "../graphql/fragments";
 
 const useStyles = makeStyles((theme) => ({
   buttons: {
@@ -31,8 +32,23 @@ function CommentForm(props) {
     onCompleted: finishAddComment,
     refetchQueries: [
       { query: GET_POST, variables: { post_id: props.post_id } },
-      { query: GET_COMMENTS, variables: { post_id: props.post_id } },
     ],
+    update(cache, { data: { addComment } }) {
+      cache.modify({
+        id: cache.identify(props.comment),
+        broadcast: false,
+        fields: {
+          child_comments(existingCommentRefs = [], { readField }) {
+            const newCommentRef = cache.writeFragment({
+              data: addComment,
+              fragment: COMMENT_FRAGMENT,
+            });
+
+            return [newCommentRef, ...existingCommentRefs];
+          },
+        },
+      });
+    },
   });
 
   const handleAddComment = () => {

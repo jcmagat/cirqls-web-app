@@ -208,7 +208,7 @@ function CommentCard(props) {
           onSubmit={handleReplyFormClose}
           parent_comment_id={props.comment.comment_id}
           post_id={props.comment.post_id}
-          finishAddComment={props.finishAddComment}
+          comment={props.comment}
         />
       </Paper>
     </Paper>

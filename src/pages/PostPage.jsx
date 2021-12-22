@@ -57,13 +57,13 @@ function PostPage(props) {
               <PostCard post={post} />
             </Grid>
 
-            <Grid item>
+            {/* <Grid item>
               <CommentForm
                 open={true}
                 parent_comment_id={null}
                 post_id={post.post_id}
               />
-            </Grid>
+            </Grid> */}
 
             <Grid item>
               <CommentTree

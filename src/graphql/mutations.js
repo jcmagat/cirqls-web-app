@@ -89,6 +89,7 @@ export const ADD_COMMENT = gql`
       comment_id
       parent_comment_id
       post_id
+      user_id
       username
       message
       created_since
@@ -97,6 +98,9 @@ export const ADD_COMMENT = gql`
         dislikes
         total
         auth_user_reaction
+      }
+      child_comments {
+        comment_id
       }
     }
   }
