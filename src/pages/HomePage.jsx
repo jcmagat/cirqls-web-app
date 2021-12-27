@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
 import Container from "@material-ui/core/Container";
-import Grid from "@material-ui/core/Grid";
-import PostCard from "../components/PostCard";
+import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/NavBar";
+import PostList from "../components/PostList";
 import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
 
@@ -29,18 +28,13 @@ function HomePage(props) {
   }, [data]);
 
   return (
-    <Paper elevation={0}>
+    <Container component="main">
       <NavBar />
-      <Container className={classes.postCards}>
-        <Grid container spacing={2} direction="column-reverse">
-          {posts.map((post) => (
-            <Grid item key={post.post_id}>
-              <PostCard post={post} />
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
-    </Paper>
+
+      <Paper className={classes.postCards} elevation={0}>
+        <PostList posts={posts} />
+      </Paper>
+    </Container>
   );
 }
 

@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import SignupPage from "./pages/SignupPage";
 import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
+import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import {
   createHttpLink,
@@ -64,6 +65,9 @@ function App() {
           </Route>
           <Route path="/post/:id">
             <PostPage />
+          </Route>
+          <Route path="/profile/:username">
+            <ProfilePage />
           </Route>
           <Route>
             <NotFoundPage />
