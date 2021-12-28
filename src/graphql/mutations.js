@@ -11,7 +11,7 @@ export const REGISTER = gql`
 export const LOGIN = gql`
   mutation Mutation($username: String!, $password: String!) {
     login(username: $username, password: $password) {
-      user_id
+      username
       accessToken
       refreshToken
       accessTokenExpiration
@@ -26,7 +26,6 @@ export const ADD_POST = gql`
       post_id
       title
       description
-      user_id
       username
       created_since
       reactions {
@@ -89,7 +88,6 @@ export const ADD_COMMENT = gql`
       comment_id
       parent_comment_id
       post_id
-      user_id
       username
       message
       created_since

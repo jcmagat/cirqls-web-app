@@ -40,7 +40,7 @@ function PostCard(props) {
   const classes = useStyles();
 
   const isAuthUsersPost =
-    parseInt(localStorage.getItem("user_id")) === props.post.user_id;
+    localStorage.getItem("username") === props.post.username;
 
   const authUserReaction = props.post.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);

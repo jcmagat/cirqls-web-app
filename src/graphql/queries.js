@@ -18,7 +18,6 @@ export const GET_USER = gql`
         post_id
         title
         description
-        user_id
         username
         created_since
         reactions {
@@ -41,7 +40,6 @@ export const GET_POSTS = gql`
       post_id
       title
       description
-      user_id
       username
       created_since
       reactions {
@@ -63,7 +61,6 @@ export const GET_POST = gql`
       post_id
       title
       description
-      user_id
       username
       created_since
       reactions {

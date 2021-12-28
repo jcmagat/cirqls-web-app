@@ -40,7 +40,7 @@ function CommentCard(props) {
   const classes = useStyles();
 
   const isAuthUsersComment =
-    parseInt(localStorage.getItem("user_id")) === props.comment.user_id;
+    localStorage.getItem("username") === props.comment.username;
 
   const authUserReaction = props.comment.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);

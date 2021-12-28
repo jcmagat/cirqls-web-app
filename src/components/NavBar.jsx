@@ -35,7 +35,7 @@ function NavBar(props) {
   const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
 
   const handleLogout = () => {
-    localStorage.removeItem("user_id");
+    localStorage.removeItem("username");
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     history.push("/");
