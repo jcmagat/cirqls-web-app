@@ -85,7 +85,10 @@ function NavBar(props) {
                 }}
               >
                 <ButtonGroup orientation="vertical">
-                  <IconButton>
+                  <IconButton
+                    component={Link}
+                    to={`/profile/${localStorage.getItem("username")}`}
+                  >
                     <AccountCircleOutlinedIcon />
                     <Typography>Profile</Typography>
                   </IconButton>

@@ -20,6 +20,24 @@ export const LOGIN = gql`
   }
 `;
 
+export const FOLLOW = gql`
+  mutation Follow($username: String!) {
+    follow(username: $username) {
+      follower_id
+      followed_id
+    }
+  }
+`;
+
+export const UNFOLLOW = gql`
+  mutation Unfollow($username: String!) {
+    unfollow(username: $username) {
+      follower_id
+      followed_id
+    }
+  }
+`;
+
 export const ADD_POST = gql`
   mutation AddPost($title: String!, $description: String!) {
     addPost(title: $title, description: $description) {
