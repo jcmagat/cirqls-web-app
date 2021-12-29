@@ -1,5 +1,7 @@
 import { gql } from "@apollo/client";
 
+/* ========== Auth Mutations ========== */
+
 export const REGISTER = gql`
   mutation Mutation($email: String!, $username: String!, $password: String!) {
     register(email: $email, username: $username, password: $password) {
@@ -20,11 +22,16 @@ export const LOGIN = gql`
   }
 `;
 
+/* ========== User Mutations ========== */
+
 export const FOLLOW = gql`
   mutation Follow($username: String!) {
     follow(username: $username) {
-      follower_id
-      followed_id
+      username
+      followers {
+        count
+        usernames
+      }
     }
   }
 `;
@@ -32,11 +39,16 @@ export const FOLLOW = gql`
 export const UNFOLLOW = gql`
   mutation Unfollow($username: String!) {
     unfollow(username: $username) {
-      follower_id
-      followed_id
+      username
+      followers {
+        count
+        usernames
+      }
     }
   }
 `;
+
+/* ========== Post Mutations ========== */
 
 export const ADD_POST = gql`
   mutation AddPost($title: String!, $description: String!) {
@@ -91,6 +103,8 @@ export const DELETE_POST_REACTION = gql`
     }
   }
 `;
+
+/* ========== Comment Mutations ========== */
 
 export const ADD_COMMENT = gql`
   mutation AddComment(

@@ -21,15 +21,6 @@ function ProfileHeader(props) {
   const authUser = localStorage.getItem("username");
   const isAuthUsersProfile = authUser === props.user.username;
 
-  const memberSinceDate = new Date(props.user.created_at).toLocaleDateString(
-    "en-us",
-    {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    }
-  );
-
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
@@ -40,10 +31,8 @@ function ProfileHeader(props) {
     }
   }, [authUser, props.user]);
 
-  // TODO: update user in cache
   const [follow] = useMutation(FOLLOW);
 
-  // TODO: update user in cache
   const [unfollow] = useMutation(UNFOLLOW);
 
   const handleFollow = () => {
@@ -61,6 +50,15 @@ function ProfileHeader(props) {
       },
     });
   };
+
+  const memberSinceDate = new Date(props.user.created_at).toLocaleDateString(
+    "en-us",
+    {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }
+  );
 
   return (
     <Paper elevation={0}>

@@ -32,6 +32,9 @@ const authLink = setContext((_, { headers }) => {
 
 const cache = new InMemoryCache({
   typePolicies: {
+    User: {
+      keyFields: ["username"],
+    },
     Post: {
       keyFields: ["post_id"],
     },
