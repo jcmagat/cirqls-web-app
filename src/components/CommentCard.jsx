@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardActions from "@material-ui/core/CardActions";
 import CardContent from "@material-ui/core/CardContent";
-import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
@@ -149,23 +149,18 @@ function CommentCard(props) {
   return (
     <Paper elevation={0}>
       <Card className={classes.comment}>
-        <CardContent>
-          <Grid container spacing={1}>
-            <Grid item>
-              <AccountCircleOutlinedIcon />
-            </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">
-                {props.comment.username}
-              </Typography>
-            </Grid>
-            <Grid item>
-              <Typography variant="subtitle1">
-                {props.comment.created_since}
-              </Typography>
-            </Grid>
-          </Grid>
+        <CardHeader
+          avatar={
+            <Avatar>{props.comment.username.charAt(0).toUpperCase()}</Avatar>
+          }
+          title={props.comment.username}
+          subheader={props.comment.created_since}
+          titleTypographyProps={{
+            variant: "body1",
+          }}
+        />
 
+        <CardContent>
           <Typography variant="h6">{props.comment.message}</Typography>
         </CardContent>
 

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
+import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
+import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
@@ -135,15 +137,16 @@ function PostCard(props) {
 
   return (
     <Card style={disableIfLoading(deletePostLoading)}>
+      <CardHeader
+        avatar={<Avatar>{props.post.username.charAt(0).toUpperCase()}</Avatar>}
+        title={props.post.title}
+        subheader={`posted ${props.post.created_since} by ${props.post.username}`}
+        titleTypographyProps={{
+          variant: "h6",
+        }}
+      />
+
       <CardContent>
-        <Typography variant="h5">{props.post.title}</Typography>
-        <Typography
-          className={classes.pos}
-          variant="subtitle2"
-          color="textSecondary"
-        >
-          posted {props.post.created_since} by {props.post.username}
-        </Typography>
         <Typography variant="body1">{props.post.description}</Typography>
       </CardContent>
 
