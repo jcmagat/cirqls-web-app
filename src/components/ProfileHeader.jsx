@@ -79,8 +79,12 @@ function ProfileHeader(props) {
 
         <Grid item>
           <ButtonGroup variant="text">
-            <Button>{props.user.following.count} Following</Button>
-            <Button>{props.user.followers.count} Followers</Button>
+            <Button onClick={props.showFollowing}>
+              {props.user.following.count} Following
+            </Button>
+            <Button onClick={props.showFollowers}>
+              {props.user.followers.count} Followers
+            </Button>
             <Button>{100} Likes</Button>
           </ButtonGroup>
         </Grid>

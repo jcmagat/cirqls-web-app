@@ -5,13 +5,16 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/NavBar";
 import ProfileHeader from "../components/ProfileHeader";
-import PostList from "../components/PostList";
+import ProfileTabBar from "../components/ProfileTabBar";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../graphql/queries";
 
 const useStyles = makeStyles({
   paper: {
     marginTop: 80,
+  },
+  tabs: {
+    marginTop: 16,
   },
 });
 
@@ -22,7 +25,8 @@ function ProfilePage(props) {
   const classes = useStyles();
 
   const [user, setUser] = useState();
-  const [posts, setPosts] = useState([]);
+
+  const [tab, setTab] = useState("overview");
 
   const { data: getUserData } = useQuery(GET_USER, {
     variables: {
@@ -33,9 +37,20 @@ function ProfilePage(props) {
   useEffect(() => {
     if (getUserData) {
       setUser(getUserData.user);
-      setPosts(getUserData.user.posts);
     }
   }, [getUserData]);
+
+  const handleChangeTab = (newTab) => {
+    setTab(newTab);
+  };
+
+  const showFollowing = () => {
+    setTab("following");
+  };
+
+  const showFollowers = () => {
+    setTab("followers");
+  };
 
   return (
     <Container component="main">
@@ -43,9 +58,15 @@ function ProfilePage(props) {
 
       {user && (
         <Paper className={classes.paper} elevation={0}>
-          <ProfileHeader user={user} />
+          <ProfileHeader
+            user={user}
+            showFollowing={showFollowing}
+            showFollowers={showFollowers}
+          />
 
-          <PostList posts={posts} />
+          <Paper className={classes.tabs} elevation={0}>
+            <ProfileTabBar tab={tab} onChange={handleChangeTab} user={user} />
+          </Paper>
         </Paper>
       )}
     </Container>
