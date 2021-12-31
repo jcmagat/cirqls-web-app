@@ -24,7 +24,9 @@ function ProfileHeader(props) {
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
-    if (props.user.followers.usernames.includes(authUser)) {
+    if (
+      props.user.followers.some((follower) => follower.username === authUser)
+    ) {
       setFollowed(true);
     } else {
       setFollowed(false);
@@ -80,10 +82,10 @@ function ProfileHeader(props) {
         <Grid item>
           <ButtonGroup variant="text">
             <Button onClick={props.showFollowing}>
-              {props.user.following.count} Following
+              {props.user.following.length} Following
             </Button>
             <Button onClick={props.showFollowers}>
-              {props.user.followers.count} Followers
+              {props.user.followers.length} Followers
             </Button>
             <Button>{100} Likes</Button>
           </ButtonGroup>

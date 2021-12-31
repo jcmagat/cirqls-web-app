@@ -7,12 +7,12 @@ export const GET_USER = gql`
       username
       created_at
       following {
-        count
-        usernames
+        username
+        followed_at
       }
       followers {
-        count
-        usernames
+        username
+        followed_at
       }
       posts {
         post_id

@@ -29,8 +29,8 @@ export const FOLLOW = gql`
     follow(username: $username) {
       username
       followers {
-        count
-        usernames
+        username
+        followed_at
       }
     }
   }
@@ -41,8 +41,8 @@ export const UNFOLLOW = gql`
     unfollow(username: $username) {
       username
       followers {
-        count
-        usernames
+        username
+        followed_at
       }
     }
   }

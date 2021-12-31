@@ -5,6 +5,7 @@ import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import PostList from "./PostList";
+import FollowList from "./FollowList";
 
 function ProfileTabBar(props) {
   return (
@@ -32,9 +33,13 @@ function ProfileTabBar(props) {
 
         <TabPanel value="comments">Comments</TabPanel>
 
-        <TabPanel value="following">Following</TabPanel>
+        <TabPanel value="following">
+          <FollowList users={props.user.following} type="following" />
+        </TabPanel>
 
-        <TabPanel value="followers">Followers</TabPanel>
+        <TabPanel value="followers">
+          <FollowList users={props.user.followers} type="follower" />
+        </TabPanel>
       </TabContext>
     </Paper>
   );

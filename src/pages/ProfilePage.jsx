@@ -65,7 +65,7 @@ function ProfilePage(props) {
           />
 
           <Paper className={classes.tabs} elevation={0}>
-            <ProfileTabBar tab={tab} onChange={handleChangeTab} user={user} />
+            <ProfileTabBar user={user} tab={tab} onChange={handleChangeTab} />
           </Paper>
         </Paper>
       )}
