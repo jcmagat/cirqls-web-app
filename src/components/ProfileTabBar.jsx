@@ -8,6 +8,9 @@ import PostList from "./PostList";
 import FollowList from "./FollowList";
 
 function ProfileTabBar(props) {
+  const isAuthUsersProfile =
+    localStorage.getItem("username") === props.user.username;
+
   return (
     <Paper elevation={0}>
       <TabContext value={props.tab}>
@@ -34,11 +37,19 @@ function ProfileTabBar(props) {
         <TabPanel value="comments">Comments</TabPanel>
 
         <TabPanel value="following">
-          <FollowList users={props.user.following} type="following" />
+          <FollowList
+            users={props.user.following}
+            type="following"
+            isAuthUsersProfile={isAuthUsersProfile}
+          />
         </TabPanel>
 
         <TabPanel value="followers">
-          <FollowList users={props.user.followers} type="follower" />
+          <FollowList
+            users={props.user.followers}
+            type="follower"
+            isAuthUsersProfile={isAuthUsersProfile}
+          />
         </TabPanel>
       </TabContext>
     </Paper>
