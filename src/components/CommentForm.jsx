@@ -24,7 +24,7 @@ function CommentForm(props) {
     setOpen(props.open);
   }, [props.open]);
 
-  const addComment = (event) => {
+  const handleSubmit = (event) => {
     event.preventDefault();
 
     if (props.onSubmit) {
@@ -46,7 +46,7 @@ function CommentForm(props) {
     <Paper elevation={0}>
       {open && (
         <Paper elevation={0}>
-          <form noValidate autoComplete="off" onSubmit={addComment}>
+          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
             <Paper elevation={0}>
               <TextField
                 id="comment"
@@ -56,6 +56,7 @@ function CommentForm(props) {
                 multiline
                 rows={8}
                 fullWidth
+                autoFocus={props.autoFocus}
                 onChange={(event) => setMessage(event.target.value)}
                 // disabled={loading}
               />

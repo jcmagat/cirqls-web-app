@@ -81,6 +81,7 @@ function PostPage(props) {
             <Grid item>
               <CommentForm
                 open={true}
+                autoFocus={false}
                 showCancelButton={false}
                 onSubmit={handleAddComment}
               />

@@ -232,6 +232,7 @@ function CommentCard(props) {
       <Paper className={classes.replyForm} elevation={0}>
         <CommentForm
           open={replyFormOpen}
+          autoFocus={true}
           showCancelButton={true}
           onCancel={handleReplyFormClose}
           onSubmit={handleAddCommentReply}
