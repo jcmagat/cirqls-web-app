@@ -1,6 +1,8 @@
 import { gql } from "@apollo/client";
 import { COMMENT_FRAGMENT } from "./fragments";
 
+/* ========== User Queries ========== */
+
 export const GET_USER = gql`
   query User($username: String!) {
     user(username: $username) {
@@ -33,6 +35,26 @@ export const GET_USER = gql`
     }
   }
 `;
+
+export const GET_AUTH_USER = gql`
+  query AuthUser {
+    authUser {
+      username
+      created_at
+      following {
+        username
+      }
+      followers {
+        username
+      }
+      posts {
+        post_id
+      }
+    }
+  }
+`;
+
+/* ========== Post Queries ========== */
 
 export const GET_POSTS = gql`
   query Posts {
@@ -76,6 +98,8 @@ export const GET_POST = gql`
     }
   }
 `;
+
+/* ========== Comment Queries ========== */
 
 export const GET_COMMENTS = gql`
   ${COMMENT_FRAGMENT}

@@ -3,6 +3,58 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import {
+  createHttpLink,
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+} from "@apollo/client";
+import { setContext } from "@apollo/client/link/context";
+import { AuthUserProvider } from "./context/AuthUserContext";
+
+const httpLink = createHttpLink({
+  uri: "/graphql",
+  credentials: "same-origin",
+});
+
+const authLink = setContext((_, { headers }) => {
+  const token = localStorage.getItem("token");
+
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : "",
+    },
+  };
+});
+
+const cache = new InMemoryCache({
+  typePolicies: {
+    User: {
+      keyFields: ["username"],
+    },
+    Post: {
+      keyFields: ["post_id"],
+    },
+    Comment: {
+      keyFields: ["comment_id"],
+    },
+  },
+});
+
+const client = new ApolloClient({
+  link: authLink.concat(httpLink),
+  cache: cache,
+});
+
+ReactDOM.render(
+  <ApolloProvider client={client}>
+    <AuthUserProvider>
+      <App />
+    </AuthUserProvider>
+  </ApolloProvider>,
+  document.getElementById("root")
+);
 
 // ReactDOM.render(
 //   <React.StrictMode>
@@ -10,8 +62,6 @@ import reportWebVitals from "./reportWebVitals";
 //   </React.StrictMode>,
 //   document.getElementById("root")
 // );
-
-ReactDOM.render(<App />, document.getElementById("root"));
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
