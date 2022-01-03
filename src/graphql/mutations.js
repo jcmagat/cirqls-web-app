@@ -54,19 +54,6 @@ export const ADD_POST = gql`
   mutation AddPost($title: String!, $description: String!) {
     addPost(title: $title, description: $description) {
       post_id
-      title
-      description
-      username
-      created_since
-      reactions {
-        likes
-        dislikes
-        total
-        auth_user_reaction
-      }
-      comments_info {
-        total
-      }
     }
   }
 `;
