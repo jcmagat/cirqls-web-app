@@ -10,7 +10,7 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
   return (
-    <BrowserRouter forceRefresh={true}>
+    <BrowserRouter>
       <Switch>
         <Route exact path="/">
           <HomePage />

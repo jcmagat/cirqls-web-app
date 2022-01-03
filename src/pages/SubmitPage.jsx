@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import NavBar from "../components/NavBar";
 import { useMutation } from "@apollo/client";
 import { ADD_POST } from "../graphql/mutations";
+import { POST_FRAGMENT } from "../graphql/fragments";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -38,6 +39,20 @@ function SubmitPage(props) {
 
   const [addPost, { loading }] = useMutation(ADD_POST, {
     onCompleted: finishAddPost,
+    update(cache, { data: { addPost } }) {
+      cache.modify({
+        fields: {
+          posts(existingPostRefs = []) {
+            const newPostRef = cache.writeFragment({
+              data: addPost,
+              fragment: POST_FRAGMENT,
+            });
+
+            return [...existingPostRefs, newPostRef];
+          },
+        },
+      });
+    },
   });
 
   const handleAddPost = () => {

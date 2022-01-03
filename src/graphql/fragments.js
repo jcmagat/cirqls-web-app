@@ -1,5 +1,24 @@
 import { gql } from "@apollo/client";
 
+export const POST_FRAGMENT = gql`
+  fragment PostFragment on Post {
+    post_id
+    title
+    description
+    username
+    created_since
+    reactions {
+      likes
+      dislikes
+      total
+      auth_user_reaction
+    }
+    comments_info {
+      total
+    }
+  }
+`;
+
 export const COMMENT_FRAGMENT = gql`
   fragment CommentFragment on Comment {
     comment_id

@@ -64,6 +64,9 @@ export const ADD_POST = gql`
         total
         auth_user_reaction
       }
+      comments_info {
+        total
+      }
     }
   }
 `;

@@ -9,7 +9,7 @@ export const useAuthUser = () => {
 };
 
 export function AuthUserProvider(props) {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState();
 
   const { data } = useQuery(GET_AUTH_USER);
 

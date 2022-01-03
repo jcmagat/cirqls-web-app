@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Paper from "@material-ui/core/Paper";
@@ -14,6 +14,7 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import { Link } from "react-router-dom";
+import { useAuthUser } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   title: {
@@ -28,16 +29,19 @@ function NavBar(props) {
   const classes = useStyles();
   const history = useHistory();
 
-  const [isLoggedIn, setIsLoggedIn] = useState(
-    Boolean(localStorage.getItem("token"))
-  );
+  const authUser = useAuthUser();
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
+
+  useEffect(() => {
+    setIsLoggedIn(Boolean(authUser));
+  }, [authUser]);
 
   const handleLogout = () => {
     localStorage.removeItem("username");
     localStorage.removeItem("token");
-    setIsLoggedIn(false);
     history.push("/");
   };
 
