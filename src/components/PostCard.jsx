@@ -31,6 +31,7 @@ import {
   DELETE_POST_REACTION,
 } from "../graphql/mutations";
 import { GET_POSTS } from "../graphql/queries";
+import { useAuthUser } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   pos: {
@@ -41,8 +42,9 @@ const useStyles = makeStyles({
 function PostCard(props) {
   const classes = useStyles();
 
-  const isAuthUsersPost =
-    localStorage.getItem("username") === props.post.username;
+  const authUser = useAuthUser();
+
+  const isAuthUsersPost = authUser && authUser.username === props.post.username;
 
   const authUserReaction = props.post.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);

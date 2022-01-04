@@ -8,6 +8,7 @@ import Button from "@material-ui/core/Button";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW } from "../graphql/mutations";
+import { useAuthUser } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   button: {
@@ -18,14 +19,19 @@ const useStyles = makeStyles({
 function ProfileHeader(props) {
   const classes = useStyles();
 
-  const authUser = localStorage.getItem("username");
-  const isAuthUsersProfile = authUser === props.user.username;
+  const authUser = useAuthUser();
+
+  const isAuthUsersProfile =
+    authUser && authUser.username === props.user.username;
 
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
     if (
-      props.user.followers.some((follower) => follower.username === authUser)
+      authUser &&
+      props.user.followers.some(
+        (follower) => follower.username === authUser.username
+      )
     ) {
       setFollowed(true);
     } else {

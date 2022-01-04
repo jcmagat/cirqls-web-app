@@ -24,6 +24,7 @@ import {
 } from "../graphql/mutations";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 import { COMMENT_FRAGMENT } from "../graphql/fragments";
+import { useAuthUser } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   comment: {
@@ -39,8 +40,10 @@ const useStyles = makeStyles({
 function CommentCard(props) {
   const classes = useStyles();
 
+  const authUser = useAuthUser();
+
   const isAuthUsersComment =
-    localStorage.getItem("username") === props.comment.username;
+    authUser && authUser.username === props.comment.username;
 
   const authUserReaction = props.comment.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);

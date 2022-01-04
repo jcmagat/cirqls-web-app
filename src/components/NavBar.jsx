@@ -40,7 +40,6 @@ function NavBar(props) {
   }, [authUser]);
 
   const handleLogout = () => {
-    localStorage.removeItem("username");
     localStorage.removeItem("token");
     history.push("/");
   };
@@ -91,7 +90,7 @@ function NavBar(props) {
                 <ButtonGroup orientation="vertical">
                   <IconButton
                     component={Link}
-                    to={`/profile/${localStorage.getItem("username")}`}
+                    to={`/profile/${authUser.username}`}
                   >
                     <AccountCircleOutlinedIcon />
                     <Typography>Profile</Typography>

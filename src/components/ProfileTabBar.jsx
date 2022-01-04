@@ -6,10 +6,13 @@ import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import PostList from "./PostList";
 import FollowList from "./FollowList";
+import { useAuthUser } from "../context/AuthUserContext";
 
 function ProfileTabBar(props) {
+  const authUser = useAuthUser();
+
   const isAuthUsersProfile =
-    localStorage.getItem("username") === props.user.username;
+    authUser && authUser.username === props.user.username;
 
   return (
     <Paper elevation={0}>
