@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, REMOVE_FOLLOWER } from "../graphql/mutations";
 import { useAuthUser } from "../context/AuthUserContext";
+import { useProfileUser } from "../context/ProfileUserContext";
 
 const useStyles = makeStyles({
   card: {
@@ -65,6 +66,7 @@ function ButtonForAuthUser(props) {
     });
   };
 
+  // TODO: add a follow back button to followers
   return (
     <Paper elevation={0}>
       {props.type === "following" ? (
@@ -163,6 +165,12 @@ function ButtonForNotAuthUser(props) {
 function FollowCard(props) {
   const classes = useStyles();
 
+  const authUser = useAuthUser();
+  const profileUser = useProfileUser();
+
+  const isAuthUsersProfile =
+    authUser && authUser.username === profileUser.username;
+
   const followSinceDate = new Date(props.user.followed_at).toLocaleDateString(
     "en-us",
     {
@@ -184,7 +192,7 @@ function FollowCard(props) {
       </CardActionArea>
 
       <Paper className={classes.paper} elevation={0}>
-        {props.isAuthUsersProfile ? (
+        {isAuthUsersProfile ? (
           <ButtonForAuthUser user={props.user} type={props.type} />
         ) : (
           <ButtonForNotAuthUser user={props.user} type={props.type} />

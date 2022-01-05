@@ -9,6 +9,7 @@ import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined"
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW } from "../graphql/mutations";
 import { useAuthUser } from "../context/AuthUserContext";
+import { useProfileUser } from "../context/ProfileUserContext";
 
 const useStyles = makeStyles({
   button: {
@@ -20,16 +21,17 @@ function ProfileHeader(props) {
   const classes = useStyles();
 
   const authUser = useAuthUser();
+  const profileUser = useProfileUser();
 
   const isAuthUsersProfile =
-    authUser && authUser.username === props.user.username;
+    authUser && authUser.username === profileUser.username;
 
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
     if (
       authUser &&
-      props.user.followers.some(
+      profileUser.followers.some(
         (follower) => follower.username === authUser.username
       )
     ) {
@@ -37,7 +39,7 @@ function ProfileHeader(props) {
     } else {
       setFollowed(false);
     }
-  }, [authUser, props.user]);
+  }, [authUser, profileUser]);
 
   const [follow] = useMutation(FOLLOW);
 
@@ -46,7 +48,7 @@ function ProfileHeader(props) {
   const handleFollow = () => {
     follow({
       variables: {
-        username: props.user.username,
+        username: profileUser.username,
       },
     });
   };
@@ -54,12 +56,12 @@ function ProfileHeader(props) {
   const handleUnfollow = () => {
     unfollow({
       variables: {
-        username: props.user.username,
+        username: profileUser.username,
       },
     });
   };
 
-  const memberSinceDate = new Date(props.user.created_at).toLocaleDateString(
+  const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
     "en-us",
     {
       month: "long",
@@ -76,7 +78,7 @@ function ProfileHeader(props) {
         </Grid>
 
         <Grid item>
-          <Typography variant="h6">{`@${props.user.username}`}</Typography>
+          <Typography variant="h6">{`@${profileUser.username}`}</Typography>
         </Grid>
 
         <Grid item>
@@ -88,10 +90,10 @@ function ProfileHeader(props) {
         <Grid item>
           <ButtonGroup variant="text">
             <Button onClick={props.showFollowing}>
-              {props.user.following.length} Following
+              {profileUser.following.length} Following
             </Button>
             <Button onClick={props.showFollowers}>
-              {props.user.followers.length} Followers
+              {profileUser.followers.length} Followers
             </Button>
             <Button>{100} Likes</Button>
           </ButtonGroup>

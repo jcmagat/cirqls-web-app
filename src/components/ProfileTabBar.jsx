@@ -6,13 +6,10 @@ import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import PostList from "./PostList";
 import FollowList from "./FollowList";
-import { useAuthUser } from "../context/AuthUserContext";
+import { useProfileUser } from "../context/ProfileUserContext";
 
 function ProfileTabBar(props) {
-  const authUser = useAuthUser();
-
-  const isAuthUsersProfile =
-    authUser && authUser.username === props.user.username;
+  const profileUser = useProfileUser();
 
   return (
     <Paper elevation={0}>
@@ -30,29 +27,21 @@ function ProfileTabBar(props) {
         </TabList>
 
         <TabPanel value="overview">
-          <PostList posts={props.user.posts} />
+          <PostList posts={profileUser.posts} />
         </TabPanel>
 
         <TabPanel value="posts">
-          <PostList posts={props.user.posts} />
+          <PostList posts={profileUser.posts} />
         </TabPanel>
 
         <TabPanel value="comments">Comments</TabPanel>
 
         <TabPanel value="following">
-          <FollowList
-            users={props.user.following}
-            type="following"
-            isAuthUsersProfile={isAuthUsersProfile}
-          />
+          <FollowList users={profileUser.following} type="following" />
         </TabPanel>
 
         <TabPanel value="followers">
-          <FollowList
-            users={props.user.followers}
-            type="follower"
-            isAuthUsersProfile={isAuthUsersProfile}
-          />
+          <FollowList users={profileUser.followers} type="follower" />
         </TabPanel>
       </TabContext>
     </Paper>

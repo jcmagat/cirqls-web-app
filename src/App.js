@@ -7,6 +7,7 @@ import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
 import ProfilePage from "./pages/ProfilePage";
 import NotFoundPage from "./pages/NotFoundPage";
+import { ProfileUserProvider } from "./context/ProfileUserContext";
 
 function App() {
   return (
@@ -28,7 +29,9 @@ function App() {
           <PostPage />
         </Route>
         <Route path="/profile/:username">
-          <ProfilePage />
+          <ProfileUserProvider>
+            <ProfilePage />
+          </ProfileUserProvider>
         </Route>
         <Route>
           <NotFoundPage />

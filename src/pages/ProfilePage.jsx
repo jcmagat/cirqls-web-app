@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/NavBar";
 import ProfileHeader from "../components/ProfileHeader";
 import ProfileTabBar from "../components/ProfileTabBar";
-import { useQuery } from "@apollo/client";
-import { GET_USER } from "../graphql/queries";
+import { useProfileUser } from "../context/ProfileUserContext";
 
 const useStyles = makeStyles({
   paper: {
@@ -19,26 +17,11 @@ const useStyles = makeStyles({
 });
 
 function ProfilePage(props) {
-  const location = useLocation();
-  const username = location.pathname.split("/")[2];
-
   const classes = useStyles();
 
-  const [user, setUser] = useState();
+  const user = useProfileUser();
 
   const [tab, setTab] = useState("overview");
-
-  const { data: getUserData } = useQuery(GET_USER, {
-    variables: {
-      username: username,
-    },
-  });
-
-  useEffect(() => {
-    if (getUserData) {
-      setUser(getUserData.user);
-    }
-  }, [getUserData]);
 
   const handleChangeTab = (newTab) => {
     setTab(newTab);
@@ -59,13 +42,12 @@ function ProfilePage(props) {
       {user && (
         <Paper className={classes.paper} elevation={0}>
           <ProfileHeader
-            user={user}
             showFollowing={showFollowing}
             showFollowers={showFollowers}
           />
 
           <Paper className={classes.tabs} elevation={0}>
-            <ProfileTabBar user={user} tab={tab} onChange={handleChangeTab} />
+            <ProfileTabBar tab={tab} onChange={handleChangeTab} />
           </Paper>
         </Paper>
       )}

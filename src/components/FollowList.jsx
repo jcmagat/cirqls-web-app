@@ -9,11 +9,7 @@ function FollowList(props) {
       <Grid container spacing={2} direction="column">
         {props.users.map((user) => (
           <Grid item key={user.username}>
-            <FollowCard
-              user={user}
-              type={props.type}
-              isAuthUsersProfile={props.isAuthUsersProfile}
-            />
+            <FollowCard user={user} type={props.type} />
           </Grid>
         ))}
       </Grid>
