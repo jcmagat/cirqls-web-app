@@ -31,6 +31,8 @@ const useStyles = makeStyles({
 function ButtonForAuthUser(props) {
   const classes = useStyles();
 
+  const profileUser = useProfileUser();
+
   const [unfollow] = useMutation(UNFOLLOW);
   const [removeFollower] = useMutation(REMOVE_FOLLOWER);
 
@@ -39,9 +41,19 @@ function ButtonForAuthUser(props) {
       variables: {
         username: props.user.username,
       },
-      // update(cache, result) {
-      //   console.log(cache);
-      // },
+      update(cache, { data: { unfollow } }) {
+        cache.modify({
+          id: cache.identify(profileUser),
+          fields: {
+            following(existingFollowingRefs = [], { readField }) {
+              return existingFollowingRefs.filter(
+                (followingRef) =>
+                  readField("username", followingRef) !== unfollow.username
+              );
+            },
+          },
+        });
+      },
     });
   };
 
@@ -50,19 +62,19 @@ function ButtonForAuthUser(props) {
       variables: {
         username: props.user.username,
       },
-      // update(cache, result) {
-      //   cache.modify({
-      //     id: 'User:{"username":"jcmagat"}',
-      //     fields: {
-      //       followers(existingFollowerRefs = [], { readField }) {
-      //         return existingFollowerRefs.filter(
-      //           (followerRef) =>
-      //             readField("username", followerRef) !== props.user.username
-      //         );
-      //       },
-      //     },
-      //   });
-      // },
+      update(cache, { data: { removeFollower } }) {
+        cache.modify({
+          id: cache.identify(profileUser),
+          fields: {
+            followers(existingFollowerRefs = [], { readField }) {
+              return existingFollowerRefs.filter(
+                (followerRef) =>
+                  readField("username", followerRef) !== removeFollower.username
+              );
+            },
+          },
+        });
+      },
     });
   };
 

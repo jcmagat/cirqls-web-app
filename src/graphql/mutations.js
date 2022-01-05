@@ -52,7 +52,6 @@ export const REMOVE_FOLLOWER = gql`
   mutation RemoveFollower($username: String!) {
     removeFollower(username: $username) {
       username
-      followed_at
     }
   }
 `;
