@@ -48,6 +48,15 @@ export const UNFOLLOW = gql`
   }
 `;
 
+export const REMOVE_FOLLOWER = gql`
+  mutation RemoveFollower($username: String!) {
+    removeFollower(username: $username) {
+      username
+      followed_at
+    }
+  }
+`;
+
 /* ========== Post Mutations ========== */
 
 export const ADD_POST = gql`

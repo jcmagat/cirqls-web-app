@@ -11,13 +11,19 @@ export const useAuthUser = () => {
 export function AuthUserProvider(props) {
   const [user, setUser] = useState();
 
-  const { data } = useQuery(GET_AUTH_USER);
+  const { data } = useQuery(GET_AUTH_USER, {
+    onError: handleError,
+  });
 
   useEffect(() => {
     if (data) {
       setUser(data.authUser);
     }
   }, [data]);
+
+  function handleError(error) {
+    console.error(error.message);
+  }
 
   return (
     <AuthUserContext.Provider value={user}>
