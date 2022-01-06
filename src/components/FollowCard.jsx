@@ -29,6 +29,7 @@ const useStyles = makeStyles({
   },
   button: {
     height: 32,
+    whiteSpace: "nowrap",
   },
 });
 
@@ -56,6 +57,10 @@ function ButtonForAuthUser(props) {
 
   const [unfollow] = useMutation(UNFOLLOW);
   const [removeFollower] = useMutation(REMOVE_FOLLOWER);
+
+  const [follow] = useMutation(FOLLOW, {
+    onCompleted: useAuthUserUpdate(),
+  });
 
   const handleUnfollow = () => {
     unfollow({
@@ -99,6 +104,14 @@ function ButtonForAuthUser(props) {
     });
   };
 
+  const handleFollow = () => {
+    follow({
+      variables: {
+        username: props.user.username,
+      },
+    });
+  };
+
   return (
     <Paper elevation={0}>
       {props.type === "following" ? (
@@ -135,9 +148,9 @@ function ButtonForAuthUser(props) {
               className={classes.button}
               variant="outlined"
               color="primary"
-              // onClick={handleFollow}
+              onClick={handleFollow}
             >
-              FollowBack
+              Follow Back
             </Button>
           )}
         </Paper>
