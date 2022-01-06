@@ -3,15 +3,20 @@ import { useQuery } from "@apollo/client";
 import { GET_AUTH_USER } from "../graphql/queries";
 
 const AuthUserContext = createContext();
+const AuthUserUpdateContext = createContext();
 
 export const useAuthUser = () => {
   return useContext(AuthUserContext);
 };
 
+export const useAuthUserUpdate = () => {
+  return useContext(AuthUserUpdateContext);
+};
+
 export function AuthUserProvider(props) {
   const [user, setUser] = useState();
 
-  const { data } = useQuery(GET_AUTH_USER, {
+  const { data, refetch } = useQuery(GET_AUTH_USER, {
     onError: handleError,
   });
 
@@ -25,9 +30,15 @@ export function AuthUserProvider(props) {
     console.error(error.message);
   }
 
+  const handleUpdate = () => {
+    refetch();
+  };
+
   return (
     <AuthUserContext.Provider value={user}>
-      {props.children}
+      <AuthUserUpdateContext.Provider value={handleUpdate}>
+        {props.children}
+      </AuthUserUpdateContext.Provider>
     </AuthUserContext.Provider>
   );
 }

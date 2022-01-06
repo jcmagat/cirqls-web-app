@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, REMOVE_FOLLOWER } from "../graphql/mutations";
-import { useAuthUser } from "../context/AuthUserContext";
+import { useAuthUser, useAuthUserUpdate } from "../context/AuthUserContext";
 import { useProfileUser } from "../context/ProfileUserContext";
 
 const useStyles = makeStyles({
@@ -17,13 +17,18 @@ const useStyles = makeStyles({
     display: "flex",
     justifyContent: "space-between",
   },
-  paper: {
+  buttonPaper: {
     display: "flex",
     alignItems: "center",
+    marginRight: 16,
+  },
+  twoButtons: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
   },
   button: {
     height: 32,
-    marginRight: 16,
   },
 });
 
@@ -31,7 +36,23 @@ const useStyles = makeStyles({
 function ButtonForAuthUser(props) {
   const classes = useStyles();
 
+  const authUser = useAuthUser();
   const profileUser = useProfileUser();
+
+  const [followed, setFollowed] = useState(false);
+
+  useEffect(() => {
+    if (
+      authUser &&
+      authUser.following.some(
+        (followed) => followed.username === props.user.username
+      )
+    ) {
+      setFollowed(true);
+    } else {
+      setFollowed(false);
+    }
+  }, [authUser, props.user]);
 
   const [unfollow] = useMutation(UNFOLLOW);
   const [removeFollower] = useMutation(REMOVE_FOLLOWER);
@@ -78,7 +99,6 @@ function ButtonForAuthUser(props) {
     });
   };
 
-  // TODO: add a follow back button to followers
   return (
     <Paper elevation={0}>
       {props.type === "following" ? (
@@ -91,14 +111,36 @@ function ButtonForAuthUser(props) {
           Unfollow
         </Button>
       ) : (
-        <Button
-          className={classes.button}
-          variant="outlined"
-          color="secondary"
-          onClick={handleRemoveFollower}
-        >
-          Remove
-        </Button>
+        <Paper className={classes.twoButtons} elevation={0}>
+          <Button
+            className={classes.button}
+            variant="outlined"
+            color="secondary"
+            onClick={handleRemoveFollower}
+          >
+            Remove
+          </Button>
+
+          {followed ? (
+            <Button
+              className={classes.button}
+              variant="outlined"
+              color="primary"
+              onClick={handleUnfollow}
+            >
+              Following
+            </Button>
+          ) : (
+            <Button
+              className={classes.button}
+              variant="outlined"
+              color="primary"
+              // onClick={handleFollow}
+            >
+              FollowBack
+            </Button>
+          )}
+        </Paper>
       )}
     </Paper>
   );
@@ -121,11 +163,18 @@ function ButtonForNotAuthUser(props) {
       )
     ) {
       setFollowed(true);
+    } else {
+      setFollowed(false);
     }
+  }, [authUser, props.user]);
+
+  const [follow] = useMutation(FOLLOW, {
+    onCompleted: useAuthUserUpdate(),
   });
 
-  const [follow] = useMutation(FOLLOW);
-  const [unfollow] = useMutation(UNFOLLOW);
+  const [unfollow] = useMutation(UNFOLLOW, {
+    onCompleted: useAuthUserUpdate(),
+  });
 
   const handleFollow = () => {
     follow({
@@ -203,7 +252,7 @@ function FollowCard(props) {
         />
       </CardActionArea>
 
-      <Paper className={classes.paper} elevation={0}>
+      <Paper className={classes.buttonPaper} elevation={0}>
         {isAuthUsersProfile ? (
           <ButtonForAuthUser user={props.user} type={props.type} />
         ) : (
