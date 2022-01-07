@@ -16,6 +16,15 @@ const useStyles = makeStyles({
   },
 });
 
+export const TABS = {
+  OVERVIEW: "overview",
+  POSTS: "posts",
+  COMMENTS: "comments",
+  FOLLOWING: "following",
+  FOLLOWERS: "followers",
+  SAVED: "saved",
+};
+
 function ProfilePage(props) {
   const classes = useStyles();
 
@@ -27,27 +36,16 @@ function ProfilePage(props) {
     setTab(newTab);
   };
 
-  const showFollowing = () => {
-    setTab("following");
-  };
-
-  const showFollowers = () => {
-    setTab("followers");
-  };
-
   return (
     <Container component="main">
       <NavBar />
 
       {user && (
         <Paper className={classes.paper} elevation={0}>
-          <ProfileHeader
-            showFollowing={showFollowing}
-            showFollowers={showFollowers}
-          />
+          <ProfileHeader handleChangeTab={handleChangeTab} />
 
           <Paper className={classes.tabs} elevation={0}>
-            <ProfileTabBar tab={tab} onChange={handleChangeTab} />
+            <ProfileTabBar tab={tab} handleChangeTab={handleChangeTab} />
           </Paper>
         </Paper>
       )}

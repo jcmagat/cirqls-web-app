@@ -10,6 +10,7 @@ import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW } from "../graphql/mutations";
 import { useAuthUser } from "../context/AuthUserContext";
 import { useProfileUser } from "../context/ProfileUserContext";
+import { TABS } from "../pages/ProfilePage";
 
 const useStyles = makeStyles({
   button: {
@@ -89,10 +90,10 @@ function ProfileHeader(props) {
 
         <Grid item>
           <ButtonGroup variant="text">
-            <Button onClick={props.showFollowing}>
+            <Button onClick={() => props.handleChangeTab(TABS.FOLLOWING)}>
               {profileUser.following.length} Following
             </Button>
-            <Button onClick={props.showFollowers}>
+            <Button onClick={() => props.handleChangeTab(TABS.FOLLOWERS)}>
               {profileUser.followers.length} Followers
             </Button>
             <Button>{100} Likes</Button>
@@ -109,7 +110,12 @@ function ProfileHeader(props) {
               >
                 Edit Profile
               </Button>
-              <Button variant="outlined">Saved Posts</Button>
+              <Button
+                variant="outlined"
+                onClick={() => props.handleChangeTab(TABS.SAVED)}
+              >
+                Saved Posts
+              </Button>
             </Paper>
           ) : (
             <Paper elevation={0}>
