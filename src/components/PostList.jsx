@@ -6,13 +6,15 @@ import PostCard from "../components/PostCard";
 function PostList(props) {
   return (
     <Paper elevation={0}>
-      <Grid container spacing={2} direction="column-reverse">
-        {props.posts.map((post) => (
-          <Grid item key={post.post_id}>
-            <PostCard post={post} />
-          </Grid>
-        ))}
-      </Grid>
+      {props.posts && (
+        <Grid container spacing={2} direction="column-reverse">
+          {props.posts.map((post) => (
+            <Grid item key={post.post_id}>
+              <PostCard post={post} />
+            </Grid>
+          ))}
+        </Grid>
+      )}
     </Paper>
   );
 }

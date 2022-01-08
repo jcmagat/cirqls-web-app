@@ -46,7 +46,9 @@ function ProfileTabBar(props) {
           <FollowList users={profileUser.followers} type="follower" />
         </TabPanel>
 
-        <TabPanel value={TABS.SAVED}>Saved</TabPanel>
+        <TabPanel value={TABS.SAVED}>
+          <PostList posts={profileUser.saved_posts} />
+        </TabPanel>
       </TabContext>
     </Paper>
   );

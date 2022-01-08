@@ -1,9 +1,10 @@
 import { gql } from "@apollo/client";
-import { COMMENT_FRAGMENT } from "./fragments";
+import { POST_FRAGMENT, COMMENT_FRAGMENT } from "./fragments";
 
 /* ========== User Queries ========== */
 
 export const GET_USER = gql`
+  ${POST_FRAGMENT}
   query User($username: String!) {
     user(username: $username) {
       username
@@ -17,20 +18,10 @@ export const GET_USER = gql`
         followed_at
       }
       posts {
-        post_id
-        title
-        description
-        username
-        created_since
-        reactions {
-          likes
-          dislikes
-          total
-          auth_user_reaction
-        }
-        comments_info {
-          total
-        }
+        ...PostFragment
+      }
+      saved_posts {
+        ...PostFragment
       }
     }
   }

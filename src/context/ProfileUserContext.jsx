@@ -19,6 +19,7 @@ export function ProfileUserProvider(props) {
     variables: {
       username: username,
     },
+    errorPolicy: "all",
     onError: handleError,
   });
 
