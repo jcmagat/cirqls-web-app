@@ -50,12 +50,11 @@ function PostCard(props) {
 
   const isAuthUsersPost = authUser && authUser.username === props.post.username;
 
+  /* ========== Like/Dislike Post ========== */
+
   const authUserReaction = props.post.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
-
-  const [moreMenuAnchor, setMoreMenuAnchor] = useState(null);
-  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   useEffect(() => {
     if (authUserReaction === "like") {
@@ -70,39 +69,31 @@ function PostCard(props) {
     }
   }, [authUserReaction]);
 
-  const [deletePost, { loading: deletePostLoading }] = useMutation(
-    DELETE_POST,
-    {
-      refetchQueries: [GET_POSTS],
-    }
-  );
-
   const [addPostReaction] = useMutation(ADD_POST_REACTION);
-
   const [deletePostReaction] = useMutation(DELETE_POST_REACTION);
 
-  const handleLikePost = (post_id) => {
+  const handleLikePost = () => {
     addPostReaction({
       variables: {
-        post_id: post_id,
+        post_id: props.post.post_id,
         reaction: "like",
       },
     });
   };
 
-  const handleDislikePost = (post_id) => {
+  const handleDislikePost = () => {
     addPostReaction({
       variables: {
-        post_id: post_id,
+        post_id: props.post.post_id,
         reaction: "dislike",
       },
     });
   };
 
-  const handleDeletePostReaction = (post_id) => {
+  const handleDeletePostReaction = () => {
     deletePostReaction({
       variables: {
-        post_id: post_id,
+        post_id: props.post.post_id,
       },
     });
   };
@@ -147,15 +138,27 @@ function PostCard(props) {
 
   /* ========== Delete Post ========== */
 
-  const handleDeletePost = (post_id) => {
+  const [deletePost, { loading: deletePostLoading }] = useMutation(
+    DELETE_POST,
+    {
+      refetchQueries: [GET_POSTS],
+    }
+  );
+
+  const handleDeletePost = () => {
     handleDeleteDialogClose();
 
     deletePost({
       variables: {
-        post_id: post_id,
+        post_id: props.post.post_id,
       },
     });
   };
+
+  /* ========== More Menu, Delete Dialog, Etc. ========== */
+
+  const [moreMenuAnchor, setMoreMenuAnchor] = useState(null);
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   const handleMoreMenuOpen = (event) => {
     setMoreMenuAnchor(event.currentTarget);
@@ -198,17 +201,11 @@ function PostCard(props) {
 
       <CardActions disableSpacing>
         {liked ? (
-          <IconButton
-            onClick={(post_id) =>
-              handleDeletePostReaction(props.post.post_id, post_id)
-            }
-          >
+          <IconButton onClick={handleDeletePostReaction}>
             <ThumbUpIcon />
           </IconButton>
         ) : (
-          <IconButton
-            onClick={(post_id) => handleLikePost(props.post.post_id, post_id)}
-          >
+          <IconButton onClick={handleLikePost}>
             <ThumbUpOutlinedIcon />
           </IconButton>
         )}
@@ -218,19 +215,11 @@ function PostCard(props) {
         </Typography>
 
         {disliked ? (
-          <IconButton
-            onClick={(post_id) =>
-              handleDeletePostReaction(props.post.post_id, post_id)
-            }
-          >
+          <IconButton onClick={handleDeletePostReaction}>
             <ThumbDownIcon />
           </IconButton>
         ) : (
-          <IconButton
-            onClick={(post_id) =>
-              handleDislikePost(props.post.post_id, post_id)
-            }
-          >
+          <IconButton onClick={handleDislikePost}>
             <ThumbDownOutlinedIcon />
           </IconButton>
         )}
@@ -297,9 +286,7 @@ function PostCard(props) {
             <Button
               color="secondary"
               variant="contained"
-              onClick={(post_id) =>
-                handleDeletePost(props.post.post_id, post_id)
-              }
+              onClick={handleDeletePost}
             >
               Delete
             </Button>
