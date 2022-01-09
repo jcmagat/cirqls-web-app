@@ -102,6 +102,22 @@ export const DELETE_POST_REACTION = gql`
   }
 `;
 
+export const SAVE_POST = gql`
+  mutation SavePost($post_id: Int!) {
+    savePost(post_id: $post_id) {
+      post_id
+    }
+  }
+`;
+
+export const UNSAVE_POST = gql`
+  mutation UnsavePost($post_id: Int!) {
+    unsavePost(post_id: $post_id) {
+      post_id
+    }
+  }
+`;
+
 /* ========== Comment Mutations ========== */
 
 export const ADD_COMMENT = gql`

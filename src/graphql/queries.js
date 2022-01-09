@@ -41,6 +41,9 @@ export const GET_AUTH_USER = gql`
       posts {
         post_id
       }
+      saved_posts {
+        post_id
+      }
     }
   }
 `;

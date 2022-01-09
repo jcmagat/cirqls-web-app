@@ -12,6 +12,8 @@ import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
 import ThumbUpIcon from "@material-ui/icons/ThumbUp";
 import ThumbDownIcon from "@material-ui/icons/ThumbDown";
 import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
+import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
+import BookmarkIcon from "@material-ui/icons/Bookmark";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
 import DeleteIcon from "@material-ui/icons/Delete";
 import FlagIcon from "@material-ui/icons/Flag";
@@ -29,9 +31,11 @@ import {
   DELETE_POST,
   ADD_POST_REACTION,
   DELETE_POST_REACTION,
+  SAVE_POST,
+  UNSAVE_POST,
 } from "../graphql/mutations";
 import { GET_POSTS } from "../graphql/queries";
-import { useAuthUser } from "../context/AuthUserContext";
+import { useAuthUser, useAuthUserUpdate } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   pos: {
@@ -102,6 +106,46 @@ function PostCard(props) {
       },
     });
   };
+
+  /* ========== Save/Unsave Post ========== */
+
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    if (
+      authUser &&
+      authUser.saved_posts.some((post) => post.post_id === props.post.post_id)
+    ) {
+      setSaved(true);
+    } else {
+      setSaved(false);
+    }
+  }, [authUser, props.post]);
+
+  const [savePost] = useMutation(SAVE_POST, {
+    onCompleted: useAuthUserUpdate(),
+  });
+  const [unsavePost] = useMutation(UNSAVE_POST, {
+    onCompleted: useAuthUserUpdate(),
+  });
+
+  const handleSavePost = () => {
+    savePost({
+      variables: {
+        post_id: props.post.post_id,
+      },
+    });
+  };
+
+  const handleUnsavePost = () => {
+    unsavePost({
+      variables: {
+        post_id: props.post.post_id,
+      },
+    });
+  };
+
+  /* ========== Delete Post ========== */
 
   const handleDeletePost = (post_id) => {
     handleDeleteDialogClose();
@@ -195,6 +239,18 @@ function PostCard(props) {
           <ChatBubbleOutlineIcon />
           <Typography>{`${props.post.comments_info.total} Comments`}</Typography>
         </IconButton>
+
+        {saved ? (
+          <IconButton onClick={handleUnsavePost}>
+            <BookmarkIcon />
+            <Typography>Unsave</Typography>
+          </IconButton>
+        ) : (
+          <IconButton onClick={handleSavePost}>
+            <BookmarkBorderIcon />
+            <Typography>Save</Typography>
+          </IconButton>
+        )}
 
         <IconButton onClick={handleMoreMenuOpen}>
           <MoreHorizIcon />
