@@ -1,40 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import NavBar from "../components/NavBar";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
+import { GET_COMMUNITIES } from "../graphql/queries";
 import { ADD_POST } from "../graphql/mutations";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles({
   paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    marginTop: 80,
   },
   form: {
-    width: "100%",
-    marginTop: theme.spacing(1),
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
   },
   buttons: {
     marginTop: 8,
+    display: "flex",
+    gap: 8,
     float: "right",
   },
-  cancelButton: {
-    marginRight: 8,
-  },
-}));
+});
 
 function SubmitPage(props) {
   const classes = useStyles();
   const history = useHistory();
 
+  const [communities, setCommunities] = useState([]);
+
+  const { data } = useQuery(GET_COMMUNITIES);
+
+  useEffect(() => {
+    if (data) {
+      setCommunities(data.communities);
+    }
+  }, [data]);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [communityId, setCommunityId] = useState();
 
   const [addPost, { loading }] = useMutation(ADD_POST, {
     onCompleted: finishAddPost,
@@ -45,6 +55,7 @@ function SubmitPage(props) {
       variables: {
         title: title,
         description: description,
+        community_id: communityId,
       },
     });
   };
@@ -61,35 +72,52 @@ function SubmitPage(props) {
     <Container component="main" maxWidth="md">
       <NavBar />
 
-      <Paper elevation={0}>
-        <Paper className={classes.paper} elevation={0}>
-          <form className={classes.form} noValidate autoComplete="off">
-            <TextField
-              id="title"
-              label="Title"
-              variant="outlined"
-              margin="normal"
-              autoFocus
-              fullWidth
-              onChange={(event) => setTitle(event.target.value)}
-              disabled={loading}
-            />
-            <TextField
-              id="description"
-              label="Description"
-              variant="outlined"
-              multiline
-              rows={8}
-              fullWidth
-              onChange={(event) => setDescription(event.target.value)}
-              disabled={loading}
-            />
-          </form>
-        </Paper>
+      <Paper className={classes.paper} elevation={0}>
+        <form className={classes.form} noValidate autoComplete="off">
+          <TextField
+            select
+            id="community"
+            label="Community"
+            variant="outlined"
+            onChange={(event) => setCommunityId(parseInt(event.target.value))}
+            disabled={loading}
+          >
+            <MenuItem value="" disabled>
+              Community
+            </MenuItem>
+            {communities.map((community) => (
+              <MenuItem
+                key={community.community_id}
+                value={community.community_id}
+              >
+                {community.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <TextField
+            id="title"
+            label="Title"
+            variant="outlined"
+            fullWidth
+            onChange={(event) => setTitle(event.target.value)}
+            disabled={loading}
+          />
+
+          <TextField
+            id="description"
+            label="Description"
+            variant="outlined"
+            multiline
+            rows={8}
+            fullWidth
+            onChange={(event) => setDescription(event.target.value)}
+            disabled={loading}
+          />
+        </form>
 
         <Paper className={classes.buttons} elevation={0}>
           <Button
-            className={classes.cancelButton}
             variant="outlined"
             color="secondary"
             onClick={handleCancel}
@@ -101,7 +129,7 @@ function SubmitPage(props) {
             variant="contained"
             color="primary"
             onClick={handleAddPost}
-            disabled={loading}
+            disabled={!communityId || !title || !description || loading}
           >
             Submit
           </Button>

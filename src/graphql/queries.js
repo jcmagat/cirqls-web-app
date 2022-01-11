@@ -48,6 +48,17 @@ export const GET_AUTH_USER = gql`
   }
 `;
 
+/* ========== Community Queries ========== */
+
+export const GET_COMMUNITIES = gql`
+  query Communities {
+    communities {
+      community_id
+      name
+    }
+  }
+`;
+
 /* ========== Post Queries ========== */
 
 export const GET_POSTS = gql`

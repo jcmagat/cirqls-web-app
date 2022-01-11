@@ -59,8 +59,16 @@ export const REMOVE_FOLLOWER = gql`
 /* ========== Post Mutations ========== */
 
 export const ADD_POST = gql`
-  mutation AddPost($title: String!, $description: String!) {
-    addPost(title: $title, description: $description) {
+  mutation AddPost(
+    $title: String!
+    $description: String!
+    $community_id: Int!
+  ) {
+    addPost(
+      title: $title
+      description: $description
+      community_id: $community_id
+    ) {
       post_id
     }
   }

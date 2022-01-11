@@ -60,7 +60,7 @@ function NavBar(props) {
             <DashboardIcon fontSize="large" />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
-            Bulletin Board
+            Cirqls
           </Typography>
 
           {isLoggedIn ? (
