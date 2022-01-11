@@ -187,15 +187,20 @@ function PostCard(props) {
   return (
     <Card style={disableIfLoading(deletePostLoading)}>
       <CardHeader
-        avatar={<Avatar>{props.post.username.charAt(0).toUpperCase()}</Avatar>}
-        title={props.post.title}
-        subheader={`posted ${props.post.created_since} by ${props.post.username}`}
+        avatar={
+          <Avatar component={Link} to={`/profile/${props.post.username}`}>
+            {props.post.username.charAt(0).toUpperCase()}
+          </Avatar>
+        }
+        title={props.post.username}
+        subheader={`posted ${props.post.created_since} in ${props.post.community.name}`}
         titleTypographyProps={{
-          variant: "h6",
+          variant: "subtitle1",
         }}
       />
 
       <CardContent>
+        <Typography variant="h6">{props.post.title}</Typography>
         <Typography variant="body1">{props.post.description}</Typography>
       </CardContent>
 

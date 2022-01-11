@@ -7,6 +7,9 @@ export const POST_FRAGMENT = gql`
     description
     username
     created_since
+    community {
+      name
+    }
     reactions {
       likes
       dislikes
@@ -15,6 +18,7 @@ export const POST_FRAGMENT = gql`
     }
     comments_info {
       total
+      comment_ids
     }
   }
 `;

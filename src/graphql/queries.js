@@ -62,44 +62,19 @@ export const GET_COMMUNITIES = gql`
 /* ========== Post Queries ========== */
 
 export const GET_POSTS = gql`
+  ${POST_FRAGMENT}
   query Posts {
     posts {
-      post_id
-      title
-      description
-      username
-      created_since
-      reactions {
-        likes
-        dislikes
-        total
-        auth_user_reaction
-      }
-      comments_info {
-        total
-      }
+      ...PostFragment
     }
   }
 `;
 
 export const GET_POST = gql`
+  ${POST_FRAGMENT}
   query Post($post_id: Int!) {
     post(post_id: $post_id) {
-      post_id
-      title
-      description
-      username
-      created_since
-      reactions {
-        likes
-        dislikes
-        total
-        auth_user_reaction
-      }
-      comments_info {
-        total
-        comment_ids
-      }
+      ...PostFragment
     }
   }
 `;
