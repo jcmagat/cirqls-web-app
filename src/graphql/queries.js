@@ -59,6 +59,22 @@ export const GET_COMMUNITIES = gql`
   }
 `;
 
+export const GET_COMMUNITY = gql`
+  ${POST_FRAGMENT}
+  query Community($name: String!) {
+    community(name: $name) {
+      community_id
+      name
+      title
+      description
+      created_at
+      posts {
+        ...PostFragment
+      }
+    }
+  }
+`;
+
 /* ========== Post Queries ========== */
 
 export const GET_POSTS = gql`

@@ -9,7 +9,7 @@ import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
-import DashboardIcon from "@material-ui/icons/Dashboard";
+import TollIcon from "@material-ui/icons/Toll";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
@@ -57,7 +57,7 @@ function NavBar(props) {
       <AppBar color="inherit">
         <Toolbar>
           <IconButton edge="start" color="inherit" component={Link} to={"/"}>
-            <DashboardIcon fontSize="large" />
+            <TollIcon fontSize="large" />
           </IconButton>
           <Typography variant="h6" className={classes.title}>
             Cirqls
