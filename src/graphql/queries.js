@@ -68,6 +68,9 @@ export const GET_COMMUNITY = gql`
       title
       description
       created_at
+      members {
+        username
+      }
       posts {
         ...PostFragment
       }

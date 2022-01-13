@@ -8,6 +8,7 @@ export const POST_FRAGMENT = gql`
     username
     created_since
     community {
+      community_id
       name
     }
     reactions {

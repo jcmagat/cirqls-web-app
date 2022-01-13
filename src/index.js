@@ -38,6 +38,14 @@ const cache = new InMemoryCache({
         },
       },
     },
+    Community: {
+      keyFields: ["community_id"],
+      fields: {
+        members: {
+          merge: false,
+        },
+      },
+    },
     Post: {
       keyFields: ["post_id"],
     },

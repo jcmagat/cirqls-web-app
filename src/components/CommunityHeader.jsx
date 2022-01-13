@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
+import { useAuthUser } from "../context/AuthUserContext";
+import { useMutation } from "@apollo/client";
+import { JOIN, LEAVE } from "../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
-import { Button } from "@material-ui/core";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
   parentPaper: {
@@ -23,10 +26,46 @@ const useStyles = makeStyles({
   },
 });
 
-function CommunityHeader({ community }) {
+function CommunityHeader(props) {
   const classes = useStyles();
 
-  const startedDate = new Date(community.created_at).toLocaleDateString(
+  const authUser = useAuthUser();
+
+  const [joined, setJoined] = useState(false);
+
+  useEffect(() => {
+    if (
+      authUser &&
+      props.community.members.some(
+        (member) => member.username === authUser.username
+      )
+    ) {
+      setJoined(true);
+    } else {
+      setJoined(false);
+    }
+  }, [authUser, props.community]);
+
+  const [join] = useMutation(JOIN);
+  const [leave] = useMutation(LEAVE);
+
+  const handleJoin = () => {
+    join({
+      variables: {
+        community_id: props.community.community_id,
+      },
+    });
+  };
+
+  const handleLeave = () => {
+    leave({
+      variables: {
+        community_id: props.community.community_id,
+      },
+    });
+  };
+
+  const startedDate = new Date(props.community.created_at).toLocaleDateString(
     "en-us",
     {
       month: "long",
@@ -39,19 +78,25 @@ function CommunityHeader({ community }) {
     <Paper elevation={0}>
       <Paper className={classes.parentPaper} elevation={0}>
         <Paper className={classes.logoPaper} elevation={0}>
-          <Avatar>{community.name.charAt(0).toUpperCase()}</Avatar>
+          <Avatar>{props.community.name.charAt(0).toUpperCase()}</Avatar>
 
           <Paper elevation={0}>
-            <Typography variant="h5">{community.title}</Typography>
-            <Typography variant="subtitle1">{`c/${community.name}`}</Typography>
+            <Typography variant="h5">{`${props.community.name}: ${props.community.title}`}</Typography>
             <Typography variant="body2">{`Started ${startedDate}`}</Typography>
+            <Typography variant="body2">{`${props.community.members.length} members`}</Typography>
           </Paper>
         </Paper>
 
         <Paper className={classes.buttonPaper} elevation={0}>
-          <Button variant="contained" color="primary">
-            Join
-          </Button>
+          {joined ? (
+            <Button variant="outlined" color="primary" onClick={handleLeave}>
+              Joined
+            </Button>
+          ) : (
+            <Button variant="contained" color="primary" onClick={handleJoin}>
+              Join
+            </Button>
+          )}
         </Paper>
       </Paper>
     </Paper>

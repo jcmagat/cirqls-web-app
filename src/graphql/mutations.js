@@ -56,6 +56,30 @@ export const REMOVE_FOLLOWER = gql`
   }
 `;
 
+/* ========== Community Mutations ========== */
+
+export const JOIN = gql`
+  mutation Join($community_id: Int!) {
+    join(community_id: $community_id) {
+      community_id
+      members {
+        username
+      }
+    }
+  }
+`;
+
+export const LEAVE = gql`
+  mutation Leave($community_id: Int!) {
+    leave(community_id: $community_id) {
+      community_id
+      members {
+        username
+      }
+    }
+  }
+`;
+
 /* ========== Post Mutations ========== */
 
 export const ADD_POST = gql`
