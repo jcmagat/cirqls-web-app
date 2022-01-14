@@ -9,6 +9,7 @@ import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { ProfileUserProvider } from "./context/ProfileUserContext";
+import { CommunityProvider } from "./context/CommunityContext";
 
 function App() {
   return (
@@ -33,7 +34,9 @@ function App() {
         </Route>
 
         <Route path="/community/:name">
-          <CommunityPage />
+          <CommunityProvider>
+            <CommunityPage />
+          </CommunityProvider>
         </Route>
 
         <Route path="/submit">

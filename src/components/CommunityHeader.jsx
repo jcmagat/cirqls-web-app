@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useAuthUser } from "../context/AuthUserContext";
+import { useCommunity } from "../context/CommunityContext";
 import { useMutation } from "@apollo/client";
 import { JOIN, LEAVE } from "../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
@@ -30,21 +31,20 @@ function CommunityHeader(props) {
   const classes = useStyles();
 
   const authUser = useAuthUser();
+  const community = useCommunity();
 
   const [joined, setJoined] = useState(false);
 
   useEffect(() => {
     if (
       authUser &&
-      props.community.members.some(
-        (member) => member.username === authUser.username
-      )
+      community.members.some((member) => member.username === authUser.username)
     ) {
       setJoined(true);
     } else {
       setJoined(false);
     }
-  }, [authUser, props.community]);
+  }, [authUser, community]);
 
   const [join] = useMutation(JOIN);
   const [leave] = useMutation(LEAVE);
@@ -52,7 +52,7 @@ function CommunityHeader(props) {
   const handleJoin = () => {
     join({
       variables: {
-        community_id: props.community.community_id,
+        community_id: community.community_id,
       },
     });
   };
@@ -60,12 +60,12 @@ function CommunityHeader(props) {
   const handleLeave = () => {
     leave({
       variables: {
-        community_id: props.community.community_id,
+        community_id: community.community_id,
       },
     });
   };
 
-  const startedDate = new Date(props.community.created_at).toLocaleDateString(
+  const startedDate = new Date(community.created_at).toLocaleDateString(
     "en-us",
     {
       month: "long",
@@ -78,12 +78,12 @@ function CommunityHeader(props) {
     <Paper elevation={0}>
       <Paper className={classes.parentPaper} elevation={0}>
         <Paper className={classes.logoPaper} elevation={0}>
-          <Avatar>{props.community.name.charAt(0).toUpperCase()}</Avatar>
+          <Avatar>{community.name.charAt(0).toUpperCase()}</Avatar>
 
           <Paper elevation={0}>
-            <Typography variant="h5">{`${props.community.name}: ${props.community.title}`}</Typography>
+            <Typography variant="h5">{`${community.name}: ${community.title}`}</Typography>
             <Typography variant="body2">{`Started ${startedDate}`}</Typography>
-            <Typography variant="body2">{`${props.community.members.length} members`}</Typography>
+            <Typography variant="body2">{`${community.members.length} members`}</Typography>
           </Paper>
         </Paper>
 

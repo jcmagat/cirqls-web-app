@@ -6,8 +6,11 @@ import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import PostList from "./PostList";
 import { COMMUNITY_TABS } from "../pages/CommunityPage";
+import { useCommunity } from "../context/CommunityContext";
 
-function CommunityTabBar({ tab, handleChangeTab, posts }) {
+function CommunityTabBar({ tab, handleChangeTab }) {
+  const community = useCommunity();
+
   return (
     <Paper elevation={0}>
       <TabContext value={tab}>
@@ -21,7 +24,7 @@ function CommunityTabBar({ tab, handleChangeTab, posts }) {
         </TabList>
 
         <TabPanel value={COMMUNITY_TABS.POSTS}>
-          <PostList posts={posts} />
+          <PostList posts={community.posts} />
         </TabPanel>
 
         <TabPanel value={COMMUNITY_TABS.ABOUT}>
