@@ -10,6 +10,7 @@ import {
   ApolloProvider,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
+import { onError } from "@apollo/client/link/error";
 import { AuthUserProvider } from "./context/AuthUserContext";
 
 const httpLink = createHttpLink({
@@ -26,6 +27,23 @@ const authLink = setContext((_, { headers }) => {
       authorization: token ? `Bearer ${token}` : "",
     },
   };
+});
+
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach((error) => {
+      console.log(
+        `[GraphQL error]: Message: ${error.message}, Path: ${error.path}`
+      );
+
+      if (error.extensions.code === "UNAUTHENTICATED") {
+        console.log("TODO: Either redirect to /login or show a popup");
+      }
+    });
+
+  if (networkError) {
+    console.log(`[Network error]: ${networkError}`);
+  }
 });
 
 const cache = new InMemoryCache({
@@ -56,8 +74,16 @@ const cache = new InMemoryCache({
 });
 
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: errorLink.concat(authLink.concat(httpLink)),
   cache: cache,
+  defaultOptions: {
+    query: {
+      errorPolicy: "all",
+    },
+    mutate: {
+      errorPolicy: "all",
+    },
+  },
 });
 
 ReactDOM.render(
