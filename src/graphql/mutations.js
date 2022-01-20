@@ -217,3 +217,21 @@ export const DELETE_COMMENT_REACTION = gql`
     }
   }
 `;
+
+/* ========== Message Mutations ========== */
+
+export const SEND_MESSAGE = gql`
+  mutation SendMessage($recipient: String!, $message: String!) {
+    sendMessage(recipient: $recipient, message: $message) {
+      message_id
+      message
+      sent_at
+      sender {
+        username
+      }
+      recipient {
+        username
+      }
+    }
+  }
+`;

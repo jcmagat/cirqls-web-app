@@ -5,6 +5,9 @@ import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
 import { makeStyles } from "@material-ui/styles";
+import { useMutation } from "@apollo/client";
+import { SEND_MESSAGE } from "../../graphql/mutations";
+import { useState } from "react";
 
 const useStyles = makeStyles({
   paper: {
@@ -12,8 +15,21 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageForm(props) {
+function MessageForm({ user }) {
   const classes = useStyles();
+
+  const [message, setMessage] = useState("");
+
+  const [sendMessage] = useMutation(SEND_MESSAGE);
+
+  const handleSend = () => {
+    sendMessage({
+      variables: {
+        recipient: user,
+        message: message,
+      },
+    });
+  };
 
   return (
     <Paper className={classes.paper} elevation={0}>
@@ -24,11 +40,12 @@ function MessageForm(props) {
             label="Message"
             variant="outlined"
             fullWidth
+            onChange={(event) => setMessage(event.target.value)}
           />
         </Grid>
 
         <Grid item xs={1}>
-          <IconButton color="primary">
+          <IconButton color="primary" onClick={handleSend}>
             <SendIcon />
           </IconButton>
         </Grid>

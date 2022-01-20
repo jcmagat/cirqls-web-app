@@ -20,7 +20,7 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageArea({ messages }) {
+function MessageArea({ messages, user }) {
   const classes = useStyles();
 
   const authUser = useAuthUser();
@@ -47,7 +47,7 @@ function MessageArea({ messages }) {
               ))}
           </List>
 
-          <MessageForm />
+          <MessageForm user={user} />
         </Paper>
       )}
     </Paper>

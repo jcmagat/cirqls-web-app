@@ -175,14 +175,14 @@ export const GET_MESSAGES = gql`
   query Messages($username: String!) {
     messages(username: $username) {
       message_id
+      message
+      sent_at
       sender {
         username
       }
       recipient {
         username
       }
-      message
-      sent_at
     }
   }
 `;

@@ -39,7 +39,7 @@ function MessagesPage(props) {
         <NavBar />
 
         <Paper className={classes.paper}>
-          <MessageArea messages={messages} />
+          <MessageArea messages={messages} user={username} />
         </Paper>
       </Paper>
     </Container>
