@@ -168,3 +168,21 @@ export const GET_COMMENTS = gql`
     }
   }
 `;
+
+/* ========== Message Queries ========== */
+
+export const GET_MESSAGES = gql`
+  query Messages($username: String!) {
+    messages(username: $username) {
+      message_id
+      sender {
+        username
+      }
+      recipient {
+        username
+      }
+      message
+      sent_at
+    }
+  }
+`;

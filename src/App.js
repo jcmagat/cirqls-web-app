@@ -7,6 +7,7 @@ import ProfilePage from "./pages/ProfilePage";
 import CommunityPage from "./pages/CommunityPage";
 import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
+import MessagePage from "./pages/MessagePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";
@@ -45,6 +46,10 @@ function App() {
 
         <Route path="/post/:id">
           <PostPage />
+        </Route>
+
+        <Route path="/message/:username">
+          <MessagePage />
         </Route>
 
         <Route>
