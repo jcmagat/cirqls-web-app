@@ -23,6 +23,8 @@ function MessageForm({ user }) {
   const [sendMessage] = useMutation(SEND_MESSAGE);
 
   const handleSend = () => {
+    setMessage("");
+
     sendMessage({
       variables: {
         recipient: user,
@@ -38,6 +40,7 @@ function MessageForm({ user }) {
           <TextField
             id="message"
             label="Message"
+            value={message}
             variant="outlined"
             fullWidth
             onChange={(event) => setMessage(event.target.value)}

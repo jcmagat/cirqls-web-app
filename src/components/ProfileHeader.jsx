@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuthUser } from "../context/AuthUserContext";
+import { useProfileUser } from "../context/ProfileUserContext";
+import { useMutation } from "@apollo/client";
+import { FOLLOW, UNFOLLOW } from "../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import { useMutation } from "@apollo/client";
-import { FOLLOW, UNFOLLOW } from "../graphql/mutations";
-import { useAuthUser } from "../context/AuthUserContext";
-import { useProfileUser } from "../context/ProfileUserContext";
 import { TABS } from "../pages/ProfilePage";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   button: {
@@ -138,7 +139,13 @@ function ProfileHeader(props) {
                   Follow
                 </Button>
               )}
-              <Button variant="outlined">Message</Button>
+              <Button
+                variant="outlined"
+                component={Link}
+                to={`/message/${profileUser.username}`}
+              >
+                Message
+              </Button>
             </Paper>
           )}
         </Grid>
