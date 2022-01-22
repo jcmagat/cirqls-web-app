@@ -11,6 +11,7 @@ import MessagePage from "./pages/MessagePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";
+import { MessagesProvider } from "./context/MessagesContext";
 
 function App() {
   return (
@@ -49,7 +50,9 @@ function App() {
         </Route>
 
         <Route path="/message/:username">
-          <MessagePage />
+          <MessagesProvider>
+            <MessagePage />
+          </MessagesProvider>
         </Route>
 
         <Route>

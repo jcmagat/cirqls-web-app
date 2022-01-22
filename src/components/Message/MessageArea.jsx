@@ -1,11 +1,12 @@
 import React from "react";
+import { makeStyles } from "@material-ui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
+import { useMessages } from "../../context/MessagesContext";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import MessageCard from "./MessageCard";
 import MessageForm from "./MessageForm";
-import { makeStyles } from "@material-ui/styles";
 
 const useStyles = makeStyles({
   messageList: {
@@ -20,10 +21,11 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageArea({ messages, user }) {
+function MessageArea(props) {
   const classes = useStyles();
 
   const authUser = useAuthUser();
+  const messages = useMessages();
 
   return (
     <Paper elevation={0}>
@@ -47,7 +49,7 @@ function MessageArea({ messages, user }) {
               ))}
           </List>
 
-          <MessageForm user={user} />
+          <MessageForm />
         </Paper>
       )}
     </Paper>

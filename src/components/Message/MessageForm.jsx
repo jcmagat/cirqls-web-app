@@ -1,13 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
+import { makeStyles } from "@material-ui/styles";
+import { useMessageSender } from "../../context/MessagesContext";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
 import SendIcon from "@material-ui/icons/Send";
-import { makeStyles } from "@material-ui/styles";
-import { useMutation } from "@apollo/client";
-import { SEND_MESSAGE } from "../../graphql/mutations";
-import { useState } from "react";
-import { MESSAGE_FRAGMENT } from "../../graphql/fragments";
 
 const useStyles = makeStyles({
   paper: {
@@ -17,42 +14,22 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageForm({ user }) {
+function MessageForm(props) {
   const classes = useStyles();
+
+  const sendMessage = useMessageSender();
 
   const [message, setMessage] = useState("");
 
-  const [sendMessage] = useMutation(SEND_MESSAGE);
-
-  const handleSend = (event) => {
+  const handleSendMessage = (event) => {
     event.preventDefault();
 
+    sendMessage(message);
     setMessage("");
-
-    sendMessage({
-      variables: {
-        recipient: user,
-        message: message,
-      },
-      update(cache, { data: { sendMessage } }) {
-        cache.modify({
-          fields: {
-            messages(existingMessageRefs = []) {
-              const newMessageRef = cache.writeFragment({
-                data: sendMessage,
-                fragment: MESSAGE_FRAGMENT,
-              });
-
-              return [newMessageRef, ...existingMessageRefs];
-            },
-          },
-        });
-      },
-    });
   };
 
   return (
-    <form onSubmit={handleSend}>
+    <form onSubmit={handleSendMessage}>
       <Paper className={classes.paper} elevation={0}>
         <TextField
           id="message"
