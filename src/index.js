@@ -8,10 +8,15 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
+  split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
+import { WebSocketLink } from "@apollo/client/link/ws";
+import { getMainDefinition } from "@apollo/client/utilities";
 import { AuthUserProvider } from "./context/AuthUserContext";
+
+const token = localStorage.getItem("token");
 
 const httpLink = createHttpLink({
   uri: "/graphql",
@@ -19,8 +24,6 @@ const httpLink = createHttpLink({
 });
 
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem("token");
-
   return {
     headers: {
       ...headers,
@@ -46,6 +49,30 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
   }
 });
 
+const wsLink = new WebSocketLink({
+  uri: "ws://localhost:5000/subscriptions",
+  options: {
+    reconnect: true,
+    connectionParams: {
+      headers: {
+        authorization: token ? `Bearer ${token}` : "",
+      },
+    },
+  },
+});
+
+const splitLink = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query);
+    return (
+      definition.kind === "OperationDefinition" &&
+      definition.operation === "subscription"
+    );
+  },
+  wsLink,
+  errorLink.concat(authLink.concat(httpLink))
+);
+
 const cache = new InMemoryCache({
   typePolicies: {
     User: {
@@ -70,11 +97,14 @@ const cache = new InMemoryCache({
     Comment: {
       keyFields: ["comment_id"],
     },
+    Message: {
+      keyFields: ["message_id"],
+    },
   },
 });
 
 const client = new ApolloClient({
-  link: errorLink.concat(authLink.concat(httpLink)),
+  link: splitLink,
   cache: cache,
   defaultOptions: {
     query: {

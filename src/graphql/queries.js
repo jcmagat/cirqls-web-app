@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { POST_FRAGMENT, COMMENT_FRAGMENT } from "./fragments";
+import { POST_FRAGMENT, COMMENT_FRAGMENT, MESSAGE_FRAGMENT } from "./fragments";
 
 /* ========== User Queries ========== */
 
@@ -172,17 +172,10 @@ export const GET_COMMENTS = gql`
 /* ========== Message Queries ========== */
 
 export const GET_MESSAGES = gql`
+  ${MESSAGE_FRAGMENT}
   query Messages($username: String!) {
     messages(username: $username) {
-      message_id
-      message
-      sent_at
-      sender {
-        username
-      }
-      recipient {
-        username
-      }
+      ...MessageFragment
     }
   }
 `;

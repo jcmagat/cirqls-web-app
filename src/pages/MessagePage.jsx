@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
-import { useQuery } from "@apollo/client";
+import { useQuery, useSubscription } from "@apollo/client";
 import { GET_MESSAGES } from "../graphql/queries";
+import { NEW_MESSAGE } from "../graphql/subscriptions";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/NavBar";
@@ -21,17 +22,28 @@ function MessagesPage(props) {
 
   const [messages, setMessages] = useState([]);
 
-  const { data } = useQuery(GET_MESSAGES, {
+  const { data: getMessagesData } = useQuery(GET_MESSAGES, {
     variables: {
       username: username,
     },
   });
 
   useEffect(() => {
-    if (data) {
-      setMessages(data.messages);
+    if (getMessagesData) {
+      setMessages(getMessagesData.messages);
     }
-  }, [data]);
+  }, [getMessagesData]);
+
+  const { data: newMessageData } = useSubscription(NEW_MESSAGE);
+
+  useEffect(() => {
+    if (newMessageData) {
+      setMessages((prevMessages) => [
+        newMessageData.newMessage,
+        ...prevMessages,
+      ]);
+    }
+  }, [newMessageData]);
 
   return (
     <Container>

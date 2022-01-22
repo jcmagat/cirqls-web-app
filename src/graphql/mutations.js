@@ -1,4 +1,5 @@
 import { gql } from "@apollo/client";
+import { MESSAGE_FRAGMENT } from "./fragments";
 
 /* ========== Auth Mutations ========== */
 
@@ -221,17 +222,10 @@ export const DELETE_COMMENT_REACTION = gql`
 /* ========== Message Mutations ========== */
 
 export const SEND_MESSAGE = gql`
+  ${MESSAGE_FRAGMENT}
   mutation SendMessage($recipient: String!, $message: String!) {
     sendMessage(recipient: $recipient, message: $message) {
-      message_id
-      message
-      sent_at
-      sender {
-        username
-      }
-      recipient {
-        username
-      }
+      ...MessageFragment
     }
   }
 `;

@@ -40,3 +40,17 @@ export const COMMENT_FRAGMENT = gql`
     }
   }
 `;
+
+export const MESSAGE_FRAGMENT = gql`
+  fragment MessageFragment on Message {
+    message_id
+    message
+    sent_at
+    sender {
+      username
+    }
+    recipient {
+      username
+    }
+  }
+`;
