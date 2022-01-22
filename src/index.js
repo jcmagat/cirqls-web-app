@@ -50,7 +50,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const wsLink = new WebSocketLink({
-  uri: "ws://cirqls-backend.herokuapp.com/subscriptions",
+  uri: "wss://cirqls-backend.herokuapp.com/subscriptions",
   options: {
     reconnect: true,
     connectionParams: {
