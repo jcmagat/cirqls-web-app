@@ -8,6 +8,7 @@ import MessageArea from "../components/Message/MessageArea";
 const useStyles = makeStyles({
   paper: {
     marginTop: 80,
+    height: "85vh",
   },
 });
 

@@ -9,9 +9,16 @@ import MessageCard from "./MessageCard";
 import MessageForm from "./MessageForm";
 
 const useStyles = makeStyles({
-  messageList: {
-    maxHeight: 650,
-    overflow: "auto",
+  paper: {
+    height: "100%",
+  },
+  area: {
+    height: "100%",
+    display: "flex",
+    flexDirection: "column",
+  },
+  messages: {
+    flexGrow: 1,
   },
   leftMessage: {
     justifyContent: "flex-start",
@@ -28,10 +35,10 @@ function MessageArea(props) {
   const messages = useMessages();
 
   return (
-    <Paper elevation={0}>
-      {authUser && (
-        <Paper elevation={0}>
-          <List className={classes.messageList}>
+    <Paper className={classes.paper} elevation={0}>
+      {authUser && messages && (
+        <Paper className={classes.area} elevation={0}>
+          <List className={classes.messages}>
             {messages
               .slice()
               .reverse()

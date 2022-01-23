@@ -10,6 +10,8 @@ import IconButton from "@material-ui/core/IconButton";
 import Popover from "@material-ui/core/Popover";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TollIcon from "@material-ui/icons/Toll";
+import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
+import AddIcon from "@material-ui/icons/Add";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
@@ -65,15 +67,13 @@ function NavBar(props) {
 
           {isLoggedIn ? (
             <Paper elevation={0}>
-              <Button
-                className={classes.leftButton}
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={"/submit"}
-              >
-                Create a New Post
-              </Button>
+              <IconButton component={Link} to={"/submit"}>
+                <AddIcon />
+              </IconButton>
+
+              <IconButton component={Link} to={"/"}>
+                <ChatOutlinedIcon />
+              </IconButton>
 
               <IconButton onClick={handleAccountMenuOpen}>
                 <AccountCircleIcon fontSize="large" />
