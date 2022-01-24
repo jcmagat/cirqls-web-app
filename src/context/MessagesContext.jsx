@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useQuery, useSubscription, useMutation } from "@apollo/client";
-import { GET_MESSAGES } from "../graphql/queries";
+import { GET_CONVERSATION } from "../graphql/queries";
 import { NEW_MESSAGE } from "../graphql/subscriptions";
 import { SEND_MESSAGE } from "../graphql/mutations";
 
@@ -23,7 +23,7 @@ export function MessagesProvider(props) {
 
   /* ========== Get Messages ========== */
 
-  const { data: getMessagesData } = useQuery(GET_MESSAGES, {
+  const { data: getConversationData } = useQuery(GET_CONVERSATION, {
     variables: {
       username: username,
     },
@@ -31,10 +31,10 @@ export function MessagesProvider(props) {
   });
 
   useEffect(() => {
-    if (getMessagesData) {
-      setMessages(getMessagesData.messages);
+    if (getConversationData) {
+      setMessages(getConversationData.conversation);
     }
-  }, [getMessagesData]);
+  }, [getConversationData]);
 
   /* ========== Receive New Message ========== */
 

@@ -171,10 +171,10 @@ export const GET_COMMENTS = gql`
 
 /* ========== Message Queries ========== */
 
-export const GET_MESSAGES = gql`
+export const GET_CONVERSATION = gql`
   ${MESSAGE_FRAGMENT}
-  query Messages($username: String!) {
-    messages(username: $username) {
+  query Conversation($username: String!) {
+    conversation(username: $username) {
       ...MessageFragment
     }
   }

@@ -19,6 +19,7 @@ const useStyles = makeStyles({
   },
   messages: {
     flexGrow: 1,
+    overflowY: "auto",
   },
   leftMessage: {
     justifyContent: "flex-start",
