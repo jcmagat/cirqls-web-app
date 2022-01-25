@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
-import { useAuthUser } from "../context/AuthUserContext";
-import { useCommunity } from "../context/CommunityContext";
+import { useAuthUser } from "../../context/AuthUserContext";
+import { useCommunity } from "../../context/CommunityContext";
 import { useMutation } from "@apollo/client";
-import { JOIN, LEAVE } from "../graphql/mutations";
+import { JOIN, LEAVE } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";

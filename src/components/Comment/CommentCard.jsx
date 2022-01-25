@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuthUser } from "../../context/AuthUserContext";
+import { useMutation } from "@apollo/client";
+import {
+  DELETE_COMMENT,
+  ADD_COMMENT_REACTION,
+  DELETE_COMMENT_REACTION,
+  ADD_COMMENT,
+} from "../../graphql/mutations";
+import { GET_POST, GET_COMMENTS } from "../../graphql/queries";
+import { COMMENT_FRAGMENT } from "../../graphql/fragments";
 import Paper from "@material-ui/core/Paper";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -15,16 +25,6 @@ import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Typography from "@material-ui/core/Typography";
 import CommentForm from "./CommentForm";
-import { useMutation } from "@apollo/client";
-import {
-  DELETE_COMMENT,
-  ADD_COMMENT_REACTION,
-  DELETE_COMMENT_REACTION,
-  ADD_COMMENT,
-} from "../graphql/mutations";
-import { GET_POST, GET_COMMENTS } from "../graphql/queries";
-import { COMMENT_FRAGMENT } from "../graphql/fragments";
-import { useAuthUser } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   comment: {

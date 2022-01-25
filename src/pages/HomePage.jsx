@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useQuery } from "@apollo/client";
+import { GET_POSTS } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/NavBar";
-import PostList from "../components/PostList";
-import { useQuery } from "@apollo/client";
-import { GET_POSTS } from "../graphql/queries";
+import PostList from "../components/Post/PostList";
 
 const useStyles = makeStyles({
   postCards: {

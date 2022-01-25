@@ -1,13 +1,13 @@
 import React from "react";
+import { useProfileUser } from "../../context/ProfileUserContext";
 import Paper from "@material-ui/core/Paper";
 import Tab from "@material-ui/core/Tab";
 import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
-import PostList from "./PostList";
+import PostList from "../Post/PostList";
 import FollowList from "./FollowList";
-import { useProfileUser } from "../context/ProfileUserContext";
-import { TABS } from "../pages/ProfilePage";
+import { TABS } from "../../pages/ProfilePage";
 
 function ProfileTabBar(props) {
   const profileUser = useProfileUser();

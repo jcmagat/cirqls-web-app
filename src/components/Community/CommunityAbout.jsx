@@ -1,5 +1,5 @@
 import React from "react";
-import { useCommunity } from "../context/CommunityContext";
+import { useCommunity } from "../../context/CommunityContext";
 import { Paper, Typography } from "@material-ui/core";
 
 function CommunityAbout(props) {

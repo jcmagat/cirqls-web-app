@@ -1,5 +1,15 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
+import { useMutation } from "@apollo/client";
+import {
+  DELETE_POST,
+  ADD_POST_REACTION,
+  DELETE_POST_REACTION,
+  SAVE_POST,
+  UNSAVE_POST,
+} from "../../graphql/mutations";
+import { GET_POSTS } from "../../graphql/queries";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -26,16 +36,6 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import {
-  DELETE_POST,
-  ADD_POST_REACTION,
-  DELETE_POST_REACTION,
-  SAVE_POST,
-  UNSAVE_POST,
-} from "../graphql/mutations";
-import { GET_POSTS } from "../graphql/queries";
-import { useAuthUser, useAuthUserUpdate } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   pos: {

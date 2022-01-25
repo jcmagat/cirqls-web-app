@@ -4,8 +4,8 @@ import { useCommunity } from "../context/CommunityContext";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/NavBar";
-import CommunityHeader from "../components/CommunityHeader";
-import CommunityTabBar from "../components/CommunityTabBar";
+import CommunityHeader from "../components/Community/CommunityHeader";
+import CommunityTabBar from "../components/Community/CommunityTabBar";
 
 const useStyles = makeStyles({
   paper: {

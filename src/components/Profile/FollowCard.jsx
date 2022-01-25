@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/styles";
+import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
+import { useProfileUser } from "../../context/ProfileUserContext";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -8,9 +10,7 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { FOLLOW, UNFOLLOW, REMOVE_FOLLOWER } from "../graphql/mutations";
-import { useAuthUser, useAuthUserUpdate } from "../context/AuthUserContext";
-import { useProfileUser } from "../context/ProfileUserContext";
+import { FOLLOW, UNFOLLOW, REMOVE_FOLLOWER } from "../../graphql/mutations";
 
 const useStyles = makeStyles({
   card: {
