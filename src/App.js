@@ -49,7 +49,7 @@ function App() {
           <PostPage />
         </Route>
 
-        <Route path="/message/:username">
+        <Route path="/messages">
           <MessagesProvider>
             <MessagePage />
           </MessagesProvider>

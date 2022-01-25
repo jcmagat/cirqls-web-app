@@ -71,7 +71,7 @@ function NavBar(props) {
                 <AddIcon />
               </IconButton>
 
-              <IconButton component={Link} to={"/"}>
+              <IconButton component={Link} to={"/messages"}>
                 <ChatOutlinedIcon />
               </IconButton>
 

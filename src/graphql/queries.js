@@ -171,6 +171,20 @@ export const GET_COMMENTS = gql`
 
 /* ========== Message Queries ========== */
 
+export const GET_CONVERSATIONS = gql`
+  ${MESSAGE_FRAGMENT}
+  query Conversations {
+    conversations {
+      user {
+        username
+      }
+      messages {
+        ...MessageFragment
+      }
+    }
+  }
+`;
+
 export const GET_CONVERSATION = gql`
   ${MESSAGE_FRAGMENT}
   query Conversation($username: String!) {

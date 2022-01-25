@@ -142,7 +142,7 @@ function ProfileHeader(props) {
               <Button
                 variant="outlined"
                 component={Link}
-                to={`/message/${profileUser.username}`}
+                to={`/messages?user=${profileUser.username}`}
               >
                 Message
               </Button>

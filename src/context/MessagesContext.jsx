@@ -1,12 +1,18 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 import { useQuery, useSubscription, useMutation } from "@apollo/client";
-import { GET_CONVERSATION } from "../graphql/queries";
+import { GET_CONVERSATIONS } from "../graphql/queries";
 import { NEW_MESSAGE } from "../graphql/subscriptions";
 import { SEND_MESSAGE } from "../graphql/mutations";
 
+const ConversationsContext = createContext();
 const MessagesContext = createContext();
 const MessageSenderContext = createContext();
+
+export const useConversations = () => {
+  return useContext(ConversationsContext);
+};
 
 export const useMessages = () => {
   return useContext(MessagesContext);
@@ -17,24 +23,34 @@ export const useMessageSender = () => {
 };
 
 export function MessagesProvider(props) {
-  const { username } = useParams();
+  const { search } = useLocation();
+  const { user } = queryString.parse(search);
 
   const [messages, setMessages] = useState([]);
 
-  /* ========== Get Messages ========== */
+  /* ========== Get Conversations ========== */
 
-  const { data: getConversationData } = useQuery(GET_CONVERSATION, {
-    variables: {
-      username: username,
-    },
-    onError: handleError,
-  });
+  const [conversations, setConversations] = useState([]);
+
+  const { data: getConversationsData } = useQuery(GET_CONVERSATIONS);
 
   useEffect(() => {
-    if (getConversationData) {
-      setMessages(getConversationData.conversation);
+    if (getConversationsData) {
+      setConversations(getConversationsData.conversations);
     }
-  }, [getConversationData]);
+  }, [getConversationsData]);
+
+  /* ========== Set Messages ========== */
+
+  useEffect(() => {
+    if (!user) return;
+
+    const conversation = conversations.find((el) => el.user.username === user);
+
+    if (conversation) {
+      setMessages(conversation.messages);
+    }
+  }, [user, conversations]);
 
   /* ========== Receive New Message ========== */
 
@@ -57,25 +73,23 @@ export function MessagesProvider(props) {
   });
 
   const handleSendMessage = (message) => {
+    if (!user) return;
+
     sendMessage({
       variables: {
-        recipient: username,
+        recipient: user,
         message: message,
       },
     });
   };
 
-  /* ========== Error Handling, Etc. ========== */
-
-  function handleError(error) {
-    console.error(error.message);
-  }
-
   return (
-    <MessagesContext.Provider value={messages}>
-      <MessageSenderContext.Provider value={handleSendMessage}>
-        {props.children}
-      </MessageSenderContext.Provider>
-    </MessagesContext.Provider>
+    <ConversationsContext.Provider value={conversations}>
+      <MessagesContext.Provider value={messages}>
+        <MessageSenderContext.Provider value={handleSendMessage}>
+          {props.children}
+        </MessageSenderContext.Provider>
+      </MessagesContext.Provider>
+    </ConversationsContext.Provider>
   );
 }
