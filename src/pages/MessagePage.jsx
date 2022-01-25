@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
+import Divider from "@material-ui/core/Divider";
 import NavBar from "../components/NavBar";
 import MessageList from "../components/Message/MessageList";
 import MessageArea from "../components/Message/MessageArea";
@@ -11,6 +12,9 @@ const useStyles = makeStyles({
     marginTop: 80,
     height: "85vh",
     display: "flex",
+  },
+  messageList: {
+    width: "20%",
   },
   messageArea: {
     flexGrow: 1,
@@ -26,9 +30,13 @@ function MessagesPage(props) {
         <NavBar />
 
         <Paper className={classes.paper}>
-          <MessageList />
+          <Paper className={classes.messageList} elevation={0}>
+            <MessageList />
+          </Paper>
 
-          <Paper className={classes.messageArea} elevation={1}>
+          <Divider orientation="vertical" />
+
+          <Paper className={classes.messageArea} elevation={0}>
             <MessageArea />
           </Paper>
         </Paper>
