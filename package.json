@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
+    "apollo-upload-client": "^17.0.0",
     "graphql": "^15.6.1",
     "query-string": "^7.1.0",
     "react": "^17.0.2",
@@ -43,5 +44,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "https://cirqls-backend.herokuapp.com"
+  "proxy": "http://localhost:5000"
 }

@@ -1,19 +1,16 @@
-import {
-  createHttpLink,
-  ApolloClient,
-  InMemoryCache,
-  split,
-} from "@apollo/client";
+import { ApolloClient, InMemoryCache, split } from "@apollo/client";
+import { createUploadLink } from "apollo-upload-client";
 import { setContext } from "@apollo/client/link/context";
 import { onError } from "@apollo/client/link/error";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 
-const subscriptionUri = "wss://cirqls-backend.herokuapp.com/subscriptions";
+const subscriptionUri = "ws://localhost:5000/subscriptions";
 
 const token = localStorage.getItem("token");
 
-const httpLink = createHttpLink({
+// Apollo Terminating Link, similar to HttpLink
+const uploadLink = createUploadLink({
   uri: "/graphql",
   credentials: "same-origin",
 });
@@ -65,7 +62,7 @@ const splitLink = split(
     );
   },
   wsLink,
-  errorLink.concat(authLink.concat(httpLink))
+  errorLink.concat(authLink.concat(uploadLink))
 );
 
 const cache = new InMemoryCache({
