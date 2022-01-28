@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useQuery } from "@apollo/client";
+import { GET_COMMUNITIES } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
 import NavBar from "../components/NavBar";
-import { useQuery } from "@apollo/client";
-import { GET_COMMUNITIES } from "../graphql/queries";
 import SubmitTabBar from "../components/Submit/SubmitTabBar";
 
 const useStyles = makeStyles({

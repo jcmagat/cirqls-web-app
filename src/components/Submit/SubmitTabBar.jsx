@@ -5,7 +5,7 @@ import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
 import SubmitTextPostForm from "./SubmitTextPostForm";
-import SubmitFilePostForm from "./SubmitFilePostForm";
+import SubmitMediaPostForm from "./SubmitMediaPostForm";
 
 function SubmitTabBar({ communityId }) {
   const [tab, setTab] = useState("Text");
@@ -26,7 +26,7 @@ function SubmitTabBar({ communityId }) {
         </TabPanel>
 
         <TabPanel value={"Files"}>
-          <SubmitFilePostForm />
+          <SubmitMediaPostForm communityId={communityId} />
         </TabPanel>
       </TabContext>
     </Paper>

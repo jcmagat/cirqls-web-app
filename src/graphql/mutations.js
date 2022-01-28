@@ -83,17 +83,25 @@ export const LEAVE = gql`
 
 /* ========== Post Mutations ========== */
 
-export const ADD_POST = gql`
-  mutation AddPost(
+export const ADD_TEXT_POST = gql`
+  mutation AddTextPost(
     $title: String!
     $description: String!
     $community_id: Int!
   ) {
-    addPost(
+    addTextPost(
       title: $title
       description: $description
       community_id: $community_id
     ) {
+      post_id
+    }
+  }
+`;
+
+export const ADD_MEDIA_POST = gql`
+  mutation AddMediaPost($title: String!, $media: Upload!, $community_id: Int!) {
+    addMediaPost(title: $title, media: $media, community_id: $community_id) {
       post_id
     }
   }
@@ -226,14 +234,6 @@ export const SEND_MESSAGE = gql`
   mutation SendMessage($recipient: String!, $message: String!) {
     sendMessage(recipient: $recipient, message: $message) {
       ...MessageFragment
-    }
-  }
-`;
-
-export const UPLOAD_FILE = gql`
-  mutation UploadFile($file: Upload!) {
-    uploadFile(file: $file) {
-      url
     }
   }
 `;

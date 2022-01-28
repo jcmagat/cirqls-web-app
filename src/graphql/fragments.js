@@ -4,7 +4,6 @@ export const POST_FRAGMENT = gql`
   fragment PostFragment on Post {
     post_id
     title
-    description
     username
     created_since
     community {
@@ -20,6 +19,12 @@ export const POST_FRAGMENT = gql`
     comments_info {
       total
       comment_ids
+    }
+    ... on TextPost {
+      description
+    }
+    ... on MediaPost {
+      media_src
     }
   }
 `;

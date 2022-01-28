@@ -2,10 +2,11 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
-import { ADD_TEXT_POST } from "../../graphql/mutations";
+import { ADD_MEDIA_POST } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
+import { DropzoneArea } from "material-ui-dropzone";
 
 const useStyles = makeStyles({
   form: {
@@ -21,29 +22,33 @@ const useStyles = makeStyles({
   },
 });
 
-function SubmitTextPostForm({ communityId }) {
+function SubmitMediaPostForm({ communityId }) {
   const classes = useStyles();
   const history = useHistory();
 
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
+  const [media, setMedia] = useState();
 
-  const [addTextPost, { loading }] = useMutation(ADD_TEXT_POST, {
-    onCompleted: finishAddTextPost,
+  const [addMediaPost, { loading }] = useMutation(ADD_MEDIA_POST, {
+    onCompleted: finishAddMediaPost,
   });
 
-  const handleAddTextPost = () => {
-    addTextPost({
+  const handleSetMedia = (loadedFiles) => {
+    setMedia(loadedFiles[0]);
+  };
+
+  const handleAddMediaPost = () => {
+    addMediaPost({
       variables: {
         title: title,
-        description: description,
+        media: media,
         community_id: communityId,
       },
     });
   };
 
-  function finishAddTextPost(data) {
-    history.push(`/post/${data.addTextPost.post_id}`);
+  function finishAddMediaPost(data) {
+    history.push(`/post/${data.addMediaPost.post_id}`);
   }
 
   const handleCancel = () => {
@@ -62,15 +67,10 @@ function SubmitTextPostForm({ communityId }) {
           disabled={loading}
         />
 
-        <TextField
-          id="description"
-          label="Description"
-          variant="outlined"
-          multiline
-          rows={8}
-          fullWidth
-          onChange={(event) => setDescription(event.target.value)}
-          disabled={loading}
+        <DropzoneArea
+          filesLimit={1}
+          acceptedFiles={["image/jpeg"]}
+          onChange={handleSetMedia}
         />
       </form>
 
@@ -86,8 +86,8 @@ function SubmitTextPostForm({ communityId }) {
         <Button
           variant="contained"
           color="primary"
-          onClick={handleAddTextPost}
-          disabled={!communityId || !title || !description || loading}
+          onClick={handleAddMediaPost}
+          disabled={!communityId || !title || !media || loading}
         >
           Submit
         </Button>
@@ -96,4 +96,4 @@ function SubmitTextPostForm({ communityId }) {
   );
 }
 
-export default SubmitTextPostForm;
+export default SubmitMediaPostForm;

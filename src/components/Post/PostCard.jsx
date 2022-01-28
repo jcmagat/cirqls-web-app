@@ -202,6 +202,7 @@ function PostCard(props) {
       <CardContent>
         <Typography variant="h6">{props.post.title}</Typography>
         <Typography variant="body1">{props.post.description}</Typography>
+        <img src={props.post.media_src} alt="" />
       </CardContent>
 
       <CardActions disableSpacing>
