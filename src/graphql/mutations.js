@@ -3,10 +3,18 @@ import { MESSAGE_FRAGMENT } from "./fragments";
 
 /* ========== Auth Mutations ========== */
 
+export const SIGNUP = gql`
+  mutation Signup($email: String!) {
+    signup(email: $email) {
+      success
+    }
+  }
+`;
+
 export const REGISTER = gql`
-  mutation Mutation($email: String!, $username: String!, $password: String!) {
-    register(email: $email, username: $username, password: $password) {
-      registered
+  mutation Register($token: String!, $username: String!, $password: String!) {
+    register(token: $token, username: $username, password: $password) {
+      success
     }
   }
 `;

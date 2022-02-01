@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { useParams } from "react-router-dom";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -33,16 +34,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignupPage(props) {
+function SignUpPage(props) {
   const history = useHistory();
   const classes = useStyles();
 
-  const [email, setEmail] = useState("");
+  const { token } = useParams();
+
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const [emailError, setEmailError] = useState("");
   const [usernameError, setUsernameError] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
@@ -59,12 +60,10 @@ function SignupPage(props) {
     onError: handleError,
   });
 
-  const handleRegister = (event) => {
-    event.preventDefault();
-
+  const handleRegister = () => {
     register({
       variables: {
-        email: email,
+        token: token,
         username: username,
         password: password,
       },
@@ -76,17 +75,10 @@ function SignupPage(props) {
   }
 
   function handleError(error) {
-    if (error.message.includes("Email")) {
-      setEmailError(error.message);
-    } else if (error.message.includes("Username")) {
+    if (error.message.includes("Username")) {
       setUsernameError(error.message);
     }
   }
-
-  const handleEmailChange = (email) => {
-    setEmail(email);
-    setEmailError("");
-  };
 
   const handleUsernameChange = (username) => {
     setUsername(username);
@@ -102,21 +94,7 @@ function SignupPage(props) {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleRegister}>
-          <TextField
-            variant="outlined"
-            margin="normal"
-            required
-            fullWidth
-            type="email"
-            id="email"
-            label="Email"
-            autoFocus
-            onChange={(event) => handleEmailChange(event.target.value)}
-            disabled={loading}
-            error={Boolean(emailError)}
-            helperText={emailError}
-          />
+        <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -154,23 +132,21 @@ function SignupPage(props) {
             helperText={confirmPasswordError}
           />
           <Button
+            className={classes.submit}
             fullWidth
-            type="submit"
             variant="contained"
             color="primary"
-            className={classes.submit}
+            onClick={handleRegister}
             disabled={
-              !email ||
               !username ||
               !password ||
               !confirmPassword ||
-              Boolean(emailError) ||
               Boolean(usernameError) ||
               Boolean(confirmPasswordError) ||
               loading
             }
           >
-            Signup
+            Sign Up
           </Button>
         </form>
         <Typography component={Link} to={"/login"}>
@@ -182,4 +158,4 @@ function SignupPage(props) {
   );
 }
 
-export default SignupPage;
+export default SignUpPage;

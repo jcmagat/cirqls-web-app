@@ -16,6 +16,7 @@ import AddIcon from "@material-ui/icons/Add";
 import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
+import SignUpDialog from "./SignUpDialog";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -35,8 +36,6 @@ function NavBar(props) {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
-
   useEffect(() => {
     setIsLoggedIn(Boolean(authUser));
   }, [authUser]);
@@ -46,6 +45,10 @@ function NavBar(props) {
     history.push("/");
   };
 
+  /* ========== Account Menu ========== */
+
+  const [accountMenuAnchor, setAccountMenuAnchor] = useState(null);
+
   const handleAccountMenuOpen = (event) => {
     setAccountMenuAnchor(event.currentTarget);
   };
@@ -54,8 +57,16 @@ function NavBar(props) {
     setAccountMenuAnchor(null);
   };
 
-  const handleSignUpClick = () => {
-    console.log("signup");
+  /* ========== Sign Up ========== */
+
+  const [signUpDialogOpen, setSignUpDialogOpen] = useState(false);
+
+  const handleOpenSignUpDialog = () => {
+    setSignUpDialogOpen(true);
+  };
+
+  const handleCloseSignUpDialog = () => {
+    setSignUpDialogOpen(false);
   };
 
   return (
@@ -122,10 +133,15 @@ function NavBar(props) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={handleSignUpClick}
+                onClick={handleOpenSignUpDialog}
               >
                 Sign Up
               </Button>
+
+              <SignUpDialog
+                open={signUpDialogOpen}
+                onClose={handleCloseSignUpDialog}
+              />
             </Paper>
           )}
         </Toolbar>

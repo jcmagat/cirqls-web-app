@@ -2,7 +2,7 @@ import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
-import SignupPage from "./pages/SignupPage";
+import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
 import CommunityPage from "./pages/CommunityPage";
 import SubmitPage from "./pages/SubmitPage";
@@ -26,7 +26,7 @@ function App() {
         </Route>
 
         <Route path="/signup/:token">
-          <SignupPage />
+          <SignUpPage />
         </Route>
 
         <Route path="/profile/:username">
