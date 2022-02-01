@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Divider from "@material-ui/core/Divider";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navigation/NavBar";
 import MessageList from "../components/Message/MessageList";
 import MessageArea from "../components/Message/MessageArea";
 

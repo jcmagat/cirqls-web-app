@@ -25,7 +25,7 @@ function App() {
           <LoginPage />
         </Route>
 
-        <Route path="/signup">
+        <Route path="/signup/:token">
           <SignupPage />
         </Route>
 

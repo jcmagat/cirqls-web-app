@@ -7,7 +7,7 @@ import { ADD_COMMENT } from "../graphql/mutations";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navigation/NavBar";
 import PostCard from "../components/Post/PostCard";
 import CommentForm from "../components/Comment/CommentForm";
 import CommentTree from "../components/Comment/CommentTree";

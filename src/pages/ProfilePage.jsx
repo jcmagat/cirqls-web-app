@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useProfileUser } from "../context/ProfileUserContext";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navigation/NavBar";
 import ProfileHeader from "../components/Profile/ProfileHeader";
 import ProfileTabBar from "../components/Profile/ProfileTabBar";
 

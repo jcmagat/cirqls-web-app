@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/styles";
 import { useCommunity } from "../context/CommunityContext";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navigation/NavBar";
 import CommunityHeader from "../components/Community/CommunityHeader";
 import CommunityTabBar from "../components/Community/CommunityTabBar";
 

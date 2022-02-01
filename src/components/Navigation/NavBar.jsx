@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuthUser } from "../../context/AuthUserContext";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,7 +17,6 @@ import AccountCircleIcon from "@material-ui/icons/AccountCircle";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import { Link } from "react-router-dom";
-import { useAuthUser } from "../context/AuthUserContext";
 
 const useStyles = makeStyles({
   title: {
@@ -52,6 +52,10 @@ function NavBar(props) {
 
   const handleAccountMenuClose = () => {
     setAccountMenuAnchor(null);
+  };
+
+  const handleSignUpClick = () => {
+    console.log("signup");
   };
 
   return (
@@ -98,7 +102,7 @@ function NavBar(props) {
 
                   <IconButton onClick={handleLogout}>
                     <ExitToAppOutlinedIcon />
-                    <Typography>Logout</Typography>
+                    <Typography>Log Out</Typography>
                   </IconButton>
                 </ButtonGroup>
               </Popover>
@@ -118,8 +122,7 @@ function NavBar(props) {
               <Button
                 variant="contained"
                 color="primary"
-                component={Link}
-                to={"/signup"}
+                onClick={handleSignUpClick}
               >
                 Sign Up
               </Button>

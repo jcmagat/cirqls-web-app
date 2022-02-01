@@ -4,7 +4,7 @@ import { useQuery } from "@apollo/client";
 import { GET_POSTS } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import NavBar from "../components/NavBar";
+import NavBar from "../components/Navigation/NavBar";
 import PostList from "../components/Post/PostList";
 
 const useStyles = makeStyles({
