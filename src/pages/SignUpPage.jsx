@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useParams } from "react-router-dom";
+import { useMutation } from "@apollo/client";
+import { REGISTER } from "../graphql/mutations";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -11,8 +13,6 @@ import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined"
 import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { REGISTER } from "../graphql/mutations";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -60,7 +60,9 @@ function SignUpPage(props) {
     onError: handleError,
   });
 
-  const handleRegister = () => {
+  const handleRegister = (event) => {
+    event.preventDefault();
+
     register({
       variables: {
         token: token,
@@ -94,14 +96,15 @@ function SignUpPage(props) {
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
-        <form className={classes.form} noValidate>
+        <form className={classes.form} noValidate onSubmit={handleRegister}>
           <TextField
             variant="outlined"
             margin="normal"
-            required
-            fullWidth
             id="username"
             label="Username"
+            required
+            fullWidth
+            autoFocus
             onChange={(event) => handleUsernameChange(event.target.value)}
             disabled={loading}
             error={Boolean(usernameError)}
@@ -110,22 +113,22 @@ function SignUpPage(props) {
           <TextField
             variant="outlined"
             margin="normal"
-            required
-            fullWidth
             type="password"
             id="password"
             label="Password"
+            required
+            fullWidth
             onChange={(event) => setPassword(event.target.value)}
             disabled={loading}
           />
           <TextField
             variant="outlined"
             margin="normal"
-            required
-            fullWidth
             type="password"
             id="confirm-password"
             label="Confirm Password"
+            required
+            fullWidth
             onChange={(event) => setConfirmPassword(event.target.value)}
             disabled={loading}
             error={Boolean(confirmPasswordError)}
@@ -136,7 +139,7 @@ function SignUpPage(props) {
             fullWidth
             variant="contained"
             color="primary"
-            onClick={handleRegister}
+            type="submit"
             disabled={
               !username ||
               !password ||
