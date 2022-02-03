@@ -103,10 +103,7 @@ function NavBar(props) {
                 }}
               >
                 <ButtonGroup orientation="vertical">
-                  <IconButton
-                    component={Link}
-                    to={`/profile/${authUser.username}`}
-                  >
+                  <IconButton component={Link} to={`/u/${authUser.username}`}>
                     <AccountCircleOutlinedIcon />
                     <Typography>Profile</Typography>
                   </IconButton>

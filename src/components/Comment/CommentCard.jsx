@@ -25,6 +25,7 @@ import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
 import Typography from "@material-ui/core/Typography";
 import CommentForm from "./CommentForm";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   comment: {
@@ -154,13 +155,25 @@ function CommentCard(props) {
       <Card className={classes.comment}>
         <CardHeader
           avatar={
-            <Avatar>{props.comment.username.charAt(0).toUpperCase()}</Avatar>
+            <Avatar component={Link} to={`/u/${props.comment.username}`}>
+              {props.comment.username.charAt(0).toUpperCase()}
+            </Avatar>
           }
-          title={props.comment.username}
-          subheader={props.comment.created_since}
-          titleTypographyProps={{
-            variant: "body1",
-          }}
+          disableTypography
+          title={
+            <Typography
+              variant="subtitle2"
+              component={Link}
+              to={`/u/${props.comment.username}`}
+            >
+              {`u/${props.comment.username}`}
+            </Typography>
+          }
+          subheader={
+            <Typography variant="subtitle2">
+              {props.comment.created_since}
+            </Typography>
+          }
         />
 
         <CardContent>

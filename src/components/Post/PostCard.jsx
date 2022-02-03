@@ -15,6 +15,7 @@ import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
 import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
+import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
@@ -38,8 +39,9 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  pos: {
-    marginBottom: 12,
+  subheader: {
+    display: "flex",
+    gap: 6,
   },
 });
 
@@ -188,15 +190,28 @@ function PostCard(props) {
     <Card style={disableIfLoading(deletePostLoading)}>
       <CardHeader
         avatar={
-          <Avatar component={Link} to={`/profile/${props.post.username}`}>
-            {props.post.username.charAt(0).toUpperCase()}
+          <Avatar component={Link} to={`/c/${props.post.community.name}`}>
+            {props.post.community.name.charAt(0).toUpperCase()}
           </Avatar>
         }
-        title={props.post.username}
-        subheader={`posted ${props.post.created_since} in ${props.post.community.name}`}
-        titleTypographyProps={{
-          variant: "subtitle1",
-        }}
+        disableTypography
+        title={
+          <Typography
+            variant="subtitle2"
+            component={Link}
+            to={`/c/${props.post.community.name}`}
+          >{`c/${props.post.community.name}`}</Typography>
+        }
+        subheader={
+          <Paper className={classes.subheader} elevation={0}>
+            <Typography
+              variant="subtitle2"
+              component={Link}
+              to={`/u/${props.post.username}`}
+            >{`u/${props.post.username}`}</Typography>
+            <Typography variant="subtitle2">{`⋅ ${props.post.created_since}`}</Typography>
+          </Paper>
+        }
       />
 
       <CardContent>

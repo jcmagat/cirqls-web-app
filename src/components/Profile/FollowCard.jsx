@@ -255,7 +255,7 @@ function FollowCard(props) {
 
   return (
     <Card className={classes.card}>
-      <CardActionArea component={Link} to={`/profile/${props.user.username}`}>
+      <CardActionArea component={Link} to={`/u/${props.user.username}`}>
         <CardHeader
           avatar={
             <Avatar>{props.user.username.charAt(0).toUpperCase()}</Avatar>

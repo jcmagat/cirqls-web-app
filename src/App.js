@@ -1,5 +1,8 @@
 import React from "react";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { ProfileUserProvider } from "./context/ProfileUserContext";
+import { CommunityProvider } from "./context/CommunityContext";
+import { MessagesProvider } from "./context/MessagesContext";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
@@ -9,9 +12,6 @@ import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
 import MessagePage from "./pages/MessagePage";
 import NotFoundPage from "./pages/NotFoundPage";
-import { ProfileUserProvider } from "./context/ProfileUserContext";
-import { CommunityProvider } from "./context/CommunityContext";
-import { MessagesProvider } from "./context/MessagesContext";
 
 function App() {
   return (
@@ -29,13 +29,13 @@ function App() {
           <SignUpPage />
         </Route>
 
-        <Route path="/profile/:username">
+        <Route path="/u/:username">
           <ProfileUserProvider>
             <ProfilePage />
           </ProfileUserProvider>
         </Route>
 
-        <Route path="/community/:name">
+        <Route path="/c/:name">
           <CommunityProvider>
             <CommunityPage />
           </CommunityProvider>
