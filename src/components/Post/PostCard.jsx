@@ -50,7 +50,8 @@ function PostCard(props) {
 
   const authUser = useAuthUser();
 
-  const isAuthUsersPost = authUser && authUser.username === props.post.username;
+  const isAuthUsersPost =
+    authUser && authUser.username === props.post.poster.username;
 
   /* ========== Like/Dislike Post ========== */
 
@@ -207,8 +208,8 @@ function PostCard(props) {
             <Typography
               variant="subtitle2"
               component={Link}
-              to={`/u/${props.post.username}`}
-            >{`u/${props.post.username}`}</Typography>
+              to={`/u/${props.post.poster.username}`}
+            >{`u/${props.post.poster.username}`}</Typography>
             <Typography variant="subtitle2">{`⋅ ${props.post.created_since}`}</Typography>
           </Paper>
         }

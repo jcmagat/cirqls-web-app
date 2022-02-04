@@ -4,8 +4,10 @@ export const POST_FRAGMENT = gql`
   fragment PostFragment on Post {
     post_id
     title
-    username
     created_since
+    poster {
+      username
+    }
     community {
       community_id
       name
