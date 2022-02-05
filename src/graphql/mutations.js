@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { MESSAGE_FRAGMENT } from "./fragments";
+import { COMMENT_FRAGMENT, MESSAGE_FRAGMENT } from "./fragments";
 
 /* ========== Auth Mutations ========== */
 
@@ -170,6 +170,7 @@ export const UNSAVE_POST = gql`
 /* ========== Comment Mutations ========== */
 
 export const ADD_COMMENT = gql`
+  ${COMMENT_FRAGMENT}
   mutation AddComment(
     $parent_comment_id: Int
     $post_id: Int!
@@ -180,18 +181,7 @@ export const ADD_COMMENT = gql`
       post_id: $post_id
       message: $message
     ) {
-      comment_id
-      parent_comment_id
-      post_id
-      username
-      message
-      created_since
-      reactions {
-        likes
-        dislikes
-        total
-        auth_user_reaction
-      }
+      ...CommentFragment
       child_comments {
         comment_id
       }

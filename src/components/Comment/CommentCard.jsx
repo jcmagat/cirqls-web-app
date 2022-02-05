@@ -44,7 +44,7 @@ function CommentCard(props) {
   const authUser = useAuthUser();
 
   const isAuthUsersComment =
-    authUser && authUser.username === props.comment.username;
+    authUser && authUser.username === props.comment.commenter.username;
 
   const authUserReaction = props.comment.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
@@ -155,8 +155,11 @@ function CommentCard(props) {
       <Card className={classes.comment}>
         <CardHeader
           avatar={
-            <Avatar component={Link} to={`/u/${props.comment.username}`}>
-              {props.comment.username.charAt(0).toUpperCase()}
+            <Avatar
+              component={Link}
+              to={`/u/${props.comment.commenter.username}`}
+            >
+              {props.comment.commenter.username.charAt(0).toUpperCase()}
             </Avatar>
           }
           disableTypography
@@ -164,9 +167,9 @@ function CommentCard(props) {
             <Typography
               variant="subtitle2"
               component={Link}
-              to={`/u/${props.comment.username}`}
+              to={`/u/${props.comment.commenter.username}`}
             >
-              {`u/${props.comment.username}`}
+              {`u/${props.comment.commenter.username}`}
             </Typography>
           }
           subheader={
