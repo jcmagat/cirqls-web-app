@@ -5,6 +5,7 @@ import { POST_FRAGMENT, COMMENT_FRAGMENT, MESSAGE_FRAGMENT } from "./fragments";
 
 export const GET_USER = gql`
   ${POST_FRAGMENT}
+  ${COMMENT_FRAGMENT}
   query User($username: String!) {
     user(username: $username) {
       username
@@ -19,6 +20,9 @@ export const GET_USER = gql`
       }
       posts {
         ...PostFragment
+      }
+      comments {
+        ...CommentFragment
       }
       saved_posts {
         ...PostFragment

@@ -16,8 +16,7 @@ const useStyles = makeStyles({
   },
 });
 
-export const TABS = {
-  OVERVIEW: "overview",
+export const PROFILE_TABS = {
   POSTS: "posts",
   COMMENTS: "comments",
   FOLLOWING: "following",
@@ -30,7 +29,7 @@ function ProfilePage(props) {
 
   const user = useProfileUser();
 
-  const [tab, setTab] = useState("overview");
+  const [tab, setTab] = useState(PROFILE_TABS.POSTS);
 
   const handleChangeTab = (newTab) => {
     setTab(newTab);

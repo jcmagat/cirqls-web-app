@@ -10,7 +10,7 @@ import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import { TABS } from "../../pages/ProfilePage";
+import { PROFILE_TABS } from "../../pages/ProfilePage";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -91,10 +91,14 @@ function ProfileHeader(props) {
 
         <Grid item>
           <ButtonGroup variant="text">
-            <Button onClick={() => props.handleChangeTab(TABS.FOLLOWING)}>
+            <Button
+              onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWING)}
+            >
               {profileUser.following.length} Following
             </Button>
-            <Button onClick={() => props.handleChangeTab(TABS.FOLLOWERS)}>
+            <Button
+              onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWERS)}
+            >
               {profileUser.followers.length} Followers
             </Button>
             <Button>{100} Likes</Button>
@@ -113,7 +117,7 @@ function ProfileHeader(props) {
               </Button>
               <Button
                 variant="outlined"
-                onClick={() => props.handleChangeTab(TABS.SAVED)}
+                onClick={() => props.handleChangeTab(PROFILE_TABS.SAVED)}
               >
                 Saved Posts
               </Button>
