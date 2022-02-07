@@ -102,6 +102,15 @@ export const GET_POST = gql`
   }
 `;
 
+export const GET_HOME_PAGE_POSTS = gql`
+  ${POST_FRAGMENT}
+  query HomePagePosts {
+    homePagePosts {
+      ...PostFragment
+    }
+  }
+`;
+
 /* ========== Comment Queries ========== */
 
 export const GET_COMMENTS = gql`
