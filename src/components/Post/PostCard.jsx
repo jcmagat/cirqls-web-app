@@ -9,7 +9,7 @@ import {
   SAVE_POST,
   UNSAVE_POST,
 } from "../../graphql/mutations";
-import { GET_POSTS } from "../../graphql/queries";
+import { GET_HOME_PAGE_POSTS } from "../../graphql/queries";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
@@ -144,7 +144,7 @@ function PostCard(props) {
   const [deletePost, { loading: deletePostLoading }] = useMutation(
     DELETE_POST,
     {
-      refetchQueries: [GET_POSTS],
+      refetchQueries: [GET_HOME_PAGE_POSTS],
     }
   );
 

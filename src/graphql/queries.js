@@ -83,11 +83,19 @@ export const GET_COMMUNITY = gql`
 `;
 
 /* ========== Post Queries ========== */
-
-export const GET_POSTS = gql`
+export const GET_HOME_PAGE_POSTS = gql`
   ${POST_FRAGMENT}
-  query Posts {
-    posts {
+  query HomePagePosts {
+    homePagePosts {
+      ...PostFragment
+    }
+  }
+`;
+
+export const GET_EXPLORE_PAGE_POSTS = gql`
+  ${POST_FRAGMENT}
+  query ExplorePagePosts {
+    explorePagePosts {
       ...PostFragment
     }
   }
@@ -97,15 +105,6 @@ export const GET_POST = gql`
   ${POST_FRAGMENT}
   query Post($post_id: Int!) {
     post(post_id: $post_id) {
-      ...PostFragment
-    }
-  }
-`;
-
-export const GET_HOME_PAGE_POSTS = gql`
-  ${POST_FRAGMENT}
-  query HomePagePosts {
-    homePagePosts {
       ...PostFragment
     }
   }

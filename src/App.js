@@ -4,6 +4,7 @@ import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";
 import { MessagesProvider } from "./context/MessagesContext";
 import HomePage from "./pages/HomePage";
+import ExplorePage from "./pages/ExplorePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
@@ -19,6 +20,10 @@ function App() {
       <Switch>
         <Route exact path="/">
           <HomePage />
+        </Route>
+
+        <Route path="/explore">
+          <ExplorePage />
         </Route>
 
         <Route path="/login">
