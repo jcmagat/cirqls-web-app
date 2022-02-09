@@ -5,6 +5,7 @@ import { GET_HOME_PAGE_POSTS } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import NavBar from "../components/Navigation/NavBar";
+import HomePageNav from "../components/Navigation/HomePageNav";
 import PostList from "../components/Post/PostList";
 
 const useStyles = makeStyles({
@@ -17,12 +18,19 @@ function HomePage(props) {
   const classes = useStyles();
 
   const [posts, setPosts] = useState([]);
+  const [displayNav, setDisplayNav] = useState(false);
 
   const { data } = useQuery(GET_HOME_PAGE_POSTS);
 
   useEffect(() => {
-    if (data) {
-      setPosts(data.homePagePosts);
+    if (!data) return;
+
+    setPosts(data.homePagePosts);
+
+    if (data.homePagePosts.length === 0) {
+      setDisplayNav(true);
+    } else {
+      setDisplayNav(false);
     }
   }, [data]);
 
@@ -31,7 +39,7 @@ function HomePage(props) {
       <NavBar />
 
       <Paper className={classes.postCards} elevation={0}>
-        <PostList posts={posts} />
+        {displayNav ? <HomePageNav /> : <PostList posts={posts} />}
       </Paper>
     </Container>
   );
