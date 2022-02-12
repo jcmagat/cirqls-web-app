@@ -85,8 +85,8 @@ export const GET_COMMUNITY = gql`
 /* ========== Post Queries ========== */
 export const GET_HOME_PAGE_POSTS = gql`
   ${POST_FRAGMENT}
-  query HomePagePosts {
-    homePagePosts {
+  query HomePagePosts($sort: String!) {
+    homePagePosts(sort: $sort) {
       ...PostFragment
     }
   }
