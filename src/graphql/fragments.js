@@ -4,6 +4,7 @@ export const POST_FRAGMENT = gql`
   fragment PostFragment on Post {
     post_id
     title
+    created_at
     created_since
     poster {
       username

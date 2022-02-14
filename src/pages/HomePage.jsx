@@ -4,23 +4,15 @@ import { useQuery } from "@apollo/client";
 import { GET_HOME_PAGE_POSTS } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
 import NavBar from "../components/Navigation/NavBar";
 import HomePageNav from "../components/Navigation/HomePageNav";
 import PostList from "../components/Post/PostList";
+import SortSelect from "../components/Post/SortSelect";
+import { SORT_TYPES } from "../components/Post/SortSelect";
 
 const useStyles = makeStyles({
   postCards: {
     marginTop: 80,
-  },
-  sort: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 8,
-    marginBottom: 16,
   },
 });
 
@@ -29,7 +21,7 @@ function HomePage(props) {
 
   const [displayNav, setDisplayNav] = useState(false);
   const [posts, setPosts] = useState([]);
-  const [sort, setSort] = useState("new");
+  const [sort, setSort] = useState(SORT_TYPES.HOT);
 
   const { data } = useQuery(GET_HOME_PAGE_POSTS, {
     variables: {
@@ -49,6 +41,10 @@ function HomePage(props) {
     }
   }, [data]);
 
+  const handleChangeSort = (sort) => {
+    setSort(sort);
+  };
+
   return (
     <Container component="main">
       <NavBar />
@@ -58,17 +54,7 @@ function HomePage(props) {
           <HomePageNav />
         ) : (
           <Paper elevation={0}>
-            <Paper className={classes.sort} elevation={0}>
-              <Typography>Sort :</Typography>
-              <TextField
-                select
-                value={sort}
-                onChange={(event) => setSort(event.target.value)}
-              >
-                <MenuItem value={"new"}>New</MenuItem>
-                <MenuItem value={"top"}>Top</MenuItem>
-              </TextField>
-            </Paper>
+            <SortSelect sort={sort} handleChangeSort={handleChangeSort} />
 
             <PostList posts={posts} />
           </Paper>
