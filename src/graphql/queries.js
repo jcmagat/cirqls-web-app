@@ -94,8 +94,8 @@ export const GET_HOME_PAGE_POSTS = gql`
 
 export const GET_EXPLORE_PAGE_POSTS = gql`
   ${POST_FRAGMENT}
-  query ExplorePagePosts {
-    explorePagePosts {
+  query ExplorePagePosts($sort: String!) {
+    explorePagePosts(sort: $sort) {
       ...PostFragment
     }
   }
