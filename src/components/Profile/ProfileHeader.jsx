@@ -6,10 +6,14 @@ import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
+import Avatar from "@material-ui/core/Avatar";
+import Badge from "@material-ui/core/Badge";
+import IconButton from "@material-ui/core/IconButton";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 import { Link } from "react-router-dom";
 
@@ -27,6 +31,8 @@ function ProfileHeader(props) {
 
   const isAuthUsersProfile =
     authUser && authUser.username === profileUser.username;
+
+  /* ========== Follow/Unfollow User ========== */
 
   const [followed, setFollowed] = useState(false);
 
@@ -63,6 +69,31 @@ function ProfileHeader(props) {
     });
   };
 
+  /* ========== Edit Profile ========== */
+
+  const [newUsername, setNewUsername] = useState(profileUser.username);
+  const [isEditMode, setIsEditMode] = useState(false);
+
+  const handleEditProfile = () => {
+    setIsEditMode(true);
+  };
+
+  const handleSaveEdit = () => {
+    // Call mutation
+    setIsEditMode(false);
+  };
+
+  const handleCancelEdit = () => {
+    setNewUsername(profileUser.username);
+    setIsEditMode(false);
+  };
+
+  const handleChangePfp = () => {
+    console.log("edit pfp");
+  };
+
+  /* ========== Etc. ========== */
+
   const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
     "en-us",
     {
@@ -75,12 +106,48 @@ function ProfileHeader(props) {
   return (
     <Paper elevation={0}>
       <Grid container spacing={2} direction="column" alignItems="center">
+        {isEditMode && (
+          <Grid item>
+            <Button variant="contained" color="secondary">
+              Delete Account
+            </Button>
+          </Grid>
+        )}
+
         <Grid item>
-          <AccountCircleOutlinedIcon fontSize="large" />
+          {isEditMode ? (
+            <Badge
+              overlap="circular"
+              anchorOrigin={{
+                vertical: "bottom",
+                horizontal: "right",
+              }}
+              badgeContent={
+                <IconButton onClick={handleChangePfp}>
+                  <EditOutlinedIcon />
+                </IconButton>
+              }
+            >
+              <Avatar>{profileUser.username.charAt(0).toUpperCase()}</Avatar>
+            </Badge>
+          ) : (
+            <Avatar>{profileUser.username.charAt(0).toUpperCase()}</Avatar>
+          )}
         </Grid>
 
         <Grid item>
-          <Typography variant="h6">{`@${profileUser.username}`}</Typography>
+          {isEditMode ? (
+            <TextField
+              variant="outlined"
+              size="small"
+              id="username"
+              label="Username"
+              value={newUsername}
+              onChange={(event) => setNewUsername(event.target.value)}
+            />
+          ) : (
+            <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
+          )}
         </Grid>
 
         <Grid item>
@@ -108,19 +175,35 @@ function ProfileHeader(props) {
         <Grid item>
           {isAuthUsersProfile ? (
             <Paper elevation={0}>
-              <Button
-                className={classes.button}
-                variant="contained"
-                color="primary"
-              >
-                Edit Profile
-              </Button>
-              <Button
-                variant="outlined"
-                onClick={() => props.handleChangeTab(PROFILE_TABS.SAVED)}
-              >
-                Saved Posts
-              </Button>
+              {isEditMode ? (
+                <Paper elevation={0}>
+                  <Button
+                    className={classes.button}
+                    variant="outlined"
+                    color="secondary"
+                    onClick={handleCancelEdit}
+                  >
+                    Cancel
+                  </Button>
+                  <Button
+                    className={classes.button}
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSaveEdit}
+                  >
+                    Save
+                  </Button>
+                </Paper>
+              ) : (
+                <Button
+                  className={classes.button}
+                  variant="contained"
+                  color="primary"
+                  onClick={handleEditProfile}
+                >
+                  Edit Profile
+                </Button>
+              )}
             </Paper>
           ) : (
             <Paper elevation={0}>
