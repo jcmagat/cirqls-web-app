@@ -5,7 +5,6 @@ import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
@@ -18,8 +17,25 @@ import { PROFILE_TABS } from "../../pages/ProfilePage";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  button: {
-    marginRight: 8,
+  paper: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 16,
+    position: "relative",
+  },
+  delete: {
+    position: "absolute",
+    top: 0,
+    right: 0,
+  },
+  avatar: {
+    width: 80,
+    height: 80,
+  },
+  buttons: {
+    display: "flex",
+    gap: 8,
   },
 });
 
@@ -34,7 +50,7 @@ function ProfileHeader(props) {
 
   /* ========== Follow/Unfollow User ========== */
 
-  const [followed, setFollowed] = useState(false);
+  const [isFollowed, setIsFollowed] = useState(false);
 
   useEffect(() => {
     if (
@@ -43,9 +59,9 @@ function ProfileHeader(props) {
         (follower) => follower.username === authUser.username
       )
     ) {
-      setFollowed(true);
+      setIsFollowed(true);
     } else {
-      setFollowed(false);
+      setIsFollowed(false);
     }
   }, [authUser, profileUser]);
 
@@ -92,6 +108,10 @@ function ProfileHeader(props) {
     console.log("edit pfp");
   };
 
+  const handleDeleteAccount = () => {
+    console.log("delete account");
+  };
+
   /* ========== Etc. ========== */
 
   const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
@@ -104,139 +124,122 @@ function ProfileHeader(props) {
   );
 
   return (
-    <Paper elevation={0}>
-      <Grid container spacing={2} direction="column" alignItems="center">
-        {isEditMode && (
-          <Grid item>
-            <Button variant="contained" color="secondary">
-              Delete Account
-            </Button>
-          </Grid>
-        )}
+    <Paper className={classes.paper} elevation={0}>
+      {isAuthUsersProfile && isEditMode && (
+        <Button
+          className={classes.delete}
+          variant="contained"
+          color="secondary"
+          onClick={handleDeleteAccount}
+        >
+          Delete Account
+        </Button>
+      )}
 
-        <Grid item>
+      {isAuthUsersProfile && isEditMode ? (
+        <Badge
+          overlap="circular"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          badgeContent={
+            <IconButton onClick={handleChangePfp}>
+              <EditOutlinedIcon />
+            </IconButton>
+          }
+        >
+          <Avatar className={classes.avatar}>
+            {profileUser.username.charAt(0).toUpperCase()}
+          </Avatar>
+        </Badge>
+      ) : (
+        <Avatar className={classes.avatar}>
+          {profileUser.username.charAt(0).toUpperCase()}
+        </Avatar>
+      )}
+
+      {isAuthUsersProfile && isEditMode ? (
+        <TextField
+          inputProps={{ style: { textAlign: "center" } }}
+          variant="outlined"
+          size="small"
+          id="username"
+          label="Username"
+          value={newUsername}
+          onChange={(event) => setNewUsername(event.target.value)}
+        />
+      ) : (
+        <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
+      )}
+
+      <Typography variant="body2">
+        {`member since ${memberSinceDate}`}
+      </Typography>
+
+      <ButtonGroup variant="text">
+        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWING)}>
+          {profileUser.following.length} Following
+        </Button>
+        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
+          {profileUser.followers.length} Followers
+        </Button>
+        <Button>{100} Likes</Button>
+      </ButtonGroup>
+
+      {isAuthUsersProfile ? (
+        <Paper elevation={0}>
           {isEditMode ? (
-            <Badge
-              overlap="circular"
-              anchorOrigin={{
-                vertical: "bottom",
-                horizontal: "right",
-              }}
-              badgeContent={
-                <IconButton onClick={handleChangePfp}>
-                  <EditOutlinedIcon />
-                </IconButton>
-              }
-            >
-              <Avatar>{profileUser.username.charAt(0).toUpperCase()}</Avatar>
-            </Badge>
-          ) : (
-            <Avatar>{profileUser.username.charAt(0).toUpperCase()}</Avatar>
-          )}
-        </Grid>
-
-        <Grid item>
-          {isEditMode ? (
-            <TextField
-              variant="outlined"
-              size="small"
-              id="username"
-              label="Username"
-              value={newUsername}
-              onChange={(event) => setNewUsername(event.target.value)}
-            />
-          ) : (
-            <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
-          )}
-        </Grid>
-
-        <Grid item>
-          <Typography variant="body2">
-            {`member since ${memberSinceDate}`}
-          </Typography>
-        </Grid>
-
-        <Grid item>
-          <ButtonGroup variant="text">
-            <Button
-              onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWING)}
-            >
-              {profileUser.following.length} Following
-            </Button>
-            <Button
-              onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWERS)}
-            >
-              {profileUser.followers.length} Followers
-            </Button>
-            <Button>{100} Likes</Button>
-          </ButtonGroup>
-        </Grid>
-
-        <Grid item>
-          {isAuthUsersProfile ? (
-            <Paper elevation={0}>
-              {isEditMode ? (
-                <Paper elevation={0}>
-                  <Button
-                    className={classes.button}
-                    variant="outlined"
-                    color="secondary"
-                    onClick={handleCancelEdit}
-                  >
-                    Cancel
-                  </Button>
-                  <Button
-                    className={classes.button}
-                    variant="contained"
-                    color="primary"
-                    onClick={handleSaveEdit}
-                  >
-                    Save
-                  </Button>
-                </Paper>
-              ) : (
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  color="primary"
-                  onClick={handleEditProfile}
-                >
-                  Edit Profile
-                </Button>
-              )}
-            </Paper>
-          ) : (
-            <Paper elevation={0}>
-              {followed ? (
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  color="secondary"
-                  onClick={handleUnfollow}
-                >
-                  Unfollow
-                </Button>
-              ) : (
-                <Button
-                  className={classes.button}
-                  variant="contained"
-                  color="primary"
-                  onClick={handleFollow}
-                >
-                  Follow
-                </Button>
-              )}
+            <Paper className={classes.buttons} elevation={0}>
               <Button
                 variant="outlined"
-                component={Link}
-                to={`/messages?user=${profileUser.username}`}
+                color="secondary"
+                onClick={handleCancelEdit}
               >
-                Message
+                Cancel
+              </Button>
+              <Button
+                variant="contained"
+                color="primary"
+                onClick={handleSaveEdit}
+              >
+                Save
               </Button>
             </Paper>
+          ) : (
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleEditProfile}
+            >
+              Edit Profile
+            </Button>
           )}
-        </Grid>
-      </Grid>
+        </Paper>
+      ) : (
+        <Paper className={classes.buttons} elevation={0}>
+          {isFollowed ? (
+            <Button
+              variant="contained"
+              color="secondary"
+              onClick={handleUnfollow}
+            >
+              Unfollow
+            </Button>
+          ) : (
+            <Button variant="contained" color="primary" onClick={handleFollow}>
+              Follow
+            </Button>
+          )}
+          <Button
+            variant="outlined"
+            component={Link}
+            to={`/messages?user=${profileUser.username}`}
+          >
+            Message
+          </Button>
+        </Paper>
+      )}
     </Paper>
   );
 }
