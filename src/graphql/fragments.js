@@ -7,6 +7,7 @@ export const POST_FRAGMENT = gql`
     created_at
     created_since
     poster {
+      user_id
       username
     }
     community {
@@ -40,6 +41,7 @@ export const COMMENT_FRAGMENT = gql`
     message
     created_since
     commenter {
+      user_id
       username
     }
     reactions {
@@ -57,9 +59,11 @@ export const MESSAGE_FRAGMENT = gql`
     message
     sent_at
     sender {
+      user_id
       username
     }
     recipient {
+      user_id
       username
     }
   }

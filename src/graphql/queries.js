@@ -8,6 +8,7 @@ export const GET_USER = gql`
   ${COMMENT_FRAGMENT}
   query User($username: String!) {
     user(username: $username) {
+      user_id
       username
       created_at
       following {
@@ -34,6 +35,7 @@ export const GET_USER = gql`
 export const GET_AUTH_USER = gql`
   query AuthUser {
     authUser {
+      user_id
       username
       created_at
       following {
@@ -73,6 +75,7 @@ export const GET_COMMUNITY = gql`
       description
       created_at
       members {
+        user_id
         username
       }
       posts {
@@ -188,6 +191,7 @@ export const GET_CONVERSATIONS = gql`
   query Conversations {
     conversations {
       user {
+        user_id
         username
       }
       messages {

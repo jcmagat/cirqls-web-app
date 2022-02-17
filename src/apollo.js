@@ -71,7 +71,7 @@ const cache = new InMemoryCache({
   },
   typePolicies: {
     User: {
-      keyFields: ["username"],
+      keyFields: ["user_id"],
       fields: {
         followers: {
           merge: false,

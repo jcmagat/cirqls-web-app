@@ -36,6 +36,7 @@ export const LOGIN = gql`
 export const FOLLOW = gql`
   mutation Follow($username: String!) {
     follow(username: $username) {
+      user_id
       username
       followers {
         username
@@ -48,6 +49,7 @@ export const FOLLOW = gql`
 export const UNFOLLOW = gql`
   mutation Unfollow($username: String!) {
     unfollow(username: $username) {
+      user_id
       username
       followers {
         username
@@ -60,6 +62,7 @@ export const UNFOLLOW = gql`
 export const REMOVE_FOLLOWER = gql`
   mutation RemoveFollower($username: String!) {
     removeFollower(username: $username) {
+      user_id
       username
     }
   }
@@ -68,6 +71,7 @@ export const REMOVE_FOLLOWER = gql`
 export const CHANGE_USERNAME = gql`
   mutation ChangeUsername($username: String!) {
     changeUsername(username: $username) {
+      user_id
       username
     }
   }
@@ -80,6 +84,7 @@ export const JOIN = gql`
     join(community_id: $community_id) {
       community_id
       members {
+        user_id
         username
       }
     }
@@ -91,6 +96,7 @@ export const LEAVE = gql`
     leave(community_id: $community_id) {
       community_id
       members {
+        user_id
         username
       }
     }
