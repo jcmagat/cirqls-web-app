@@ -65,6 +65,14 @@ export const REMOVE_FOLLOWER = gql`
   }
 `;
 
+export const CHANGE_USERNAME = gql`
+  mutation ChangeUsername($username: String!) {
+    changeUsername(username: $username) {
+      username
+    }
+  }
+`;
+
 /* ========== Community Mutations ========== */
 
 export const JOIN = gql`

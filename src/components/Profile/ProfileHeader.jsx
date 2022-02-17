@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useHistory } from "react-router-dom";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
-import { FOLLOW, UNFOLLOW } from "../../graphql/mutations";
+import { FOLLOW, UNFOLLOW, CHANGE_USERNAME } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
@@ -13,6 +14,7 @@ import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
+import ProfilePicDialog from "./ProfilePicDialog";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 import { Link } from "react-router-dom";
 
@@ -87,8 +89,18 @@ function ProfileHeader(props) {
 
   /* ========== Edit Profile ========== */
 
-  const [newUsername, setNewUsername] = useState(profileUser.username);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [newUsername, setNewUsername] = useState(profileUser.username);
+  const [newProfilePic, setNewProfilePic] = useState(null);
+  const [isProfilePicDialogOpen, setIsProfilePicDialogOpen] = useState(false);
+
+  const history = useHistory();
+
+  const [changeUsername] = useMutation(CHANGE_USERNAME, {
+    onCompleted: (data) => {
+      history.push(`/u/${data.changeUsername.username}`);
+    },
+  });
 
   const handleEditProfile = () => {
     setIsEditMode(true);
@@ -96,16 +108,40 @@ function ProfileHeader(props) {
 
   const handleSaveEdit = () => {
     // Call mutation
+    if (newUsername !== profileUser.username) {
+      changeUsername({
+        variables: {
+          username: newUsername,
+        },
+      });
+    }
+
+    if (newProfilePic) {
+      console.log(newProfilePic);
+    }
+
     setIsEditMode(false);
+  };
+
+  // Called when the edit button on the profile pic is clicked
+  const handleEditProfilePic = () => {
+    setIsProfilePicDialogOpen(true);
+  };
+
+  // Called in ProfilePicDialog to set newProfilePic
+  const handleSetNewProfilePic = (pic) => {
+    setNewProfilePic(pic);
+  };
+
+  // Called in ProfilePicDialog to close the dialog
+  const handleCloseProfilePicDialog = () => {
+    setIsProfilePicDialogOpen(false);
   };
 
   const handleCancelEdit = () => {
     setNewUsername(profileUser.username);
+    setNewProfilePic(null);
     setIsEditMode(false);
-  };
-
-  const handleChangePfp = () => {
-    console.log("edit pfp");
   };
 
   const handleDeleteAccount = () => {
@@ -137,22 +173,30 @@ function ProfileHeader(props) {
       )}
 
       {isAuthUsersProfile && isEditMode ? (
-        <Badge
-          overlap="circular"
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          badgeContent={
-            <IconButton onClick={handleChangePfp}>
-              <EditOutlinedIcon />
-            </IconButton>
-          }
-        >
-          <Avatar className={classes.avatar}>
-            {profileUser.username.charAt(0).toUpperCase()}
-          </Avatar>
-        </Badge>
+        <Paper elevation={0}>
+          <Badge
+            overlap="circular"
+            anchorOrigin={{
+              vertical: "bottom",
+              horizontal: "right",
+            }}
+            badgeContent={
+              <IconButton onClick={handleEditProfilePic}>
+                <EditOutlinedIcon />
+              </IconButton>
+            }
+          >
+            <Avatar className={classes.avatar}>
+              {profileUser.username.charAt(0).toUpperCase()}
+            </Avatar>
+          </Badge>
+
+          <ProfilePicDialog
+            open={isProfilePicDialogOpen}
+            onClose={handleCloseProfilePicDialog}
+            onChange={handleSetNewProfilePic}
+          />
+        </Paper>
       ) : (
         <Avatar className={classes.avatar}>
           {profileUser.username.charAt(0).toUpperCase()}
