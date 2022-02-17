@@ -41,53 +41,10 @@ const useStyles = makeStyles({
   },
 });
 
-function ProfileHeader(props) {
+function ProfileHeaderForAuthUser(props) {
   const classes = useStyles();
 
-  const authUser = useAuthUser();
   const profileUser = useProfileUser();
-
-  const isAuthUsersProfile =
-    authUser && authUser.username === profileUser.username;
-
-  /* ========== Follow/Unfollow User ========== */
-
-  const [isFollowed, setIsFollowed] = useState(false);
-
-  useEffect(() => {
-    if (
-      authUser &&
-      profileUser.followers.some(
-        (follower) => follower.username === authUser.username
-      )
-    ) {
-      setIsFollowed(true);
-    } else {
-      setIsFollowed(false);
-    }
-  }, [authUser, profileUser]);
-
-  const [follow] = useMutation(FOLLOW);
-
-  const [unfollow] = useMutation(UNFOLLOW);
-
-  const handleFollow = () => {
-    follow({
-      variables: {
-        username: profileUser.username,
-      },
-    });
-  };
-
-  const handleUnfollow = () => {
-    unfollow({
-      variables: {
-        username: profileUser.username,
-      },
-    });
-  };
-
-  /* ========== Edit Profile ========== */
 
   const [isEditMode, setIsEditMode] = useState(false);
   const [newUsername, setNewUsername] = useState(profileUser.username);
@@ -148,8 +105,6 @@ function ProfileHeader(props) {
     console.log("delete account");
   };
 
-  /* ========== Etc. ========== */
-
   const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
     "en-us",
     {
@@ -161,7 +116,7 @@ function ProfileHeader(props) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      {isAuthUsersProfile && isEditMode && (
+      {isEditMode && (
         <Button
           className={classes.delete}
           variant="contained"
@@ -172,7 +127,7 @@ function ProfileHeader(props) {
         </Button>
       )}
 
-      {isAuthUsersProfile && isEditMode ? (
+      {isEditMode ? (
         <Paper elevation={0}>
           <Badge
             overlap="circular"
@@ -203,7 +158,7 @@ function ProfileHeader(props) {
         </Avatar>
       )}
 
-      {isAuthUsersProfile && isEditMode ? (
+      {isEditMode ? (
         <TextField
           inputProps={{ style: { textAlign: "center" } }}
           variant="outlined"
@@ -231,58 +186,138 @@ function ProfileHeader(props) {
         <Button>{100} Likes</Button>
       </ButtonGroup>
 
-      {isAuthUsersProfile ? (
-        <Paper elevation={0}>
-          {isEditMode ? (
-            <Paper className={classes.buttons} elevation={0}>
-              <Button
-                variant="outlined"
-                color="secondary"
-                onClick={handleCancelEdit}
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSaveEdit}
-              >
-                Save
-              </Button>
-            </Paper>
-          ) : (
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={handleEditProfile}
-            >
-              Edit Profile
-            </Button>
-          )}
-        </Paper>
-      ) : (
+      {isEditMode ? (
         <Paper className={classes.buttons} elevation={0}>
-          {isFollowed ? (
-            <Button
-              variant="contained"
-              color="secondary"
-              onClick={handleUnfollow}
-            >
-              Unfollow
-            </Button>
-          ) : (
-            <Button variant="contained" color="primary" onClick={handleFollow}>
-              Follow
-            </Button>
-          )}
           <Button
             variant="outlined"
-            component={Link}
-            to={`/messages?user=${profileUser.username}`}
+            color="secondary"
+            onClick={handleCancelEdit}
           >
-            Message
+            Cancel
+          </Button>
+          <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+            Save
           </Button>
         </Paper>
+      ) : (
+        <Button variant="contained" color="primary" onClick={handleEditProfile}>
+          Edit Profile
+        </Button>
+      )}
+    </Paper>
+  );
+}
+
+function ProfileHeaderForNonAuthUser(props) {
+  const classes = useStyles();
+
+  const authUser = useAuthUser();
+  const profileUser = useProfileUser();
+
+  const [isFollowed, setIsFollowed] = useState(false);
+
+  useEffect(() => {
+    if (
+      authUser &&
+      profileUser.followers.some(
+        (follower) => follower.username === authUser.username
+      )
+    ) {
+      setIsFollowed(true);
+    } else {
+      setIsFollowed(false);
+    }
+  }, [authUser, profileUser]);
+
+  const [follow] = useMutation(FOLLOW);
+  const [unfollow] = useMutation(UNFOLLOW);
+
+  const handleFollow = () => {
+    follow({
+      variables: {
+        username: profileUser.username,
+      },
+    });
+  };
+
+  const handleUnfollow = () => {
+    unfollow({
+      variables: {
+        username: profileUser.username,
+      },
+    });
+  };
+
+  const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
+    "en-us",
+    {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }
+  );
+
+  return (
+    <Paper className={classes.paper} elevation={0}>
+      <Avatar className={classes.avatar}>
+        {profileUser.username.charAt(0).toUpperCase()}
+      </Avatar>
+
+      <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
+
+      <Typography variant="body2">
+        {`member since ${memberSinceDate}`}
+      </Typography>
+
+      <ButtonGroup variant="text">
+        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWING)}>
+          {profileUser.following.length} Following
+        </Button>
+        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
+          {profileUser.followers.length} Followers
+        </Button>
+        <Button>{100} Likes</Button>
+      </ButtonGroup>
+
+      <Paper className={classes.buttons} elevation={0}>
+        {isFollowed ? (
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={handleUnfollow}
+          >
+            Unfollow
+          </Button>
+        ) : (
+          <Button variant="contained" color="primary" onClick={handleFollow}>
+            Follow
+          </Button>
+        )}
+        <Button
+          variant="outlined"
+          component={Link}
+          to={`/messages?user=${profileUser.username}`}
+        >
+          Message
+        </Button>
+      </Paper>
+    </Paper>
+  );
+}
+
+function ProfileHeader(props) {
+  const authUser = useAuthUser();
+  const profileUser = useProfileUser();
+
+  const isAuthUsersProfile =
+    authUser && authUser.username === profileUser.username;
+
+  return (
+    <Paper elevation={0}>
+      {isAuthUsersProfile ? (
+        <ProfileHeaderForAuthUser />
+      ) : (
+        <ProfileHeaderForNonAuthUser />
       )}
     </Paper>
   );
