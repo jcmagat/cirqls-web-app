@@ -77,6 +77,15 @@ export const CHANGE_USERNAME = gql`
   }
 `;
 
+export const CHANGE_PROFILE_PIC = gql`
+  mutation ChangeProfilePic($profile_pic: Upload!) {
+    changeProfilePic(profile_pic: $profile_pic) {
+      user_id
+      profile_pic_src
+    }
+  }
+`;
+
 /* ========== Community Mutations ========== */
 
 export const JOIN = gql`

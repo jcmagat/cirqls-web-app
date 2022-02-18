@@ -156,11 +156,10 @@ function CommentCard(props) {
         <CardHeader
           avatar={
             <Avatar
+              src={props.comment.commenter.profile_pic_src}
               component={Link}
               to={`/u/${props.comment.commenter.username}`}
-            >
-              {props.comment.commenter.username.charAt(0).toUpperCase()}
-            </Avatar>
+            />
           }
           disableTypography
           title={

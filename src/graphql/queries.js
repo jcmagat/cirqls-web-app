@@ -11,6 +11,7 @@ export const GET_USER = gql`
       user_id
       username
       created_at
+      profile_pic_src
       following {
         username
         followed_at
@@ -38,6 +39,7 @@ export const GET_AUTH_USER = gql`
       user_id
       username
       created_at
+      profile_pic_src
       following {
         username
       }

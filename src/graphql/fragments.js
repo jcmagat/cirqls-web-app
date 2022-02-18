@@ -43,6 +43,7 @@ export const COMMENT_FRAGMENT = gql`
     commenter {
       user_id
       username
+      profile_pic_src
     }
     reactions {
       likes

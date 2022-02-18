@@ -13,7 +13,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TollIcon from "@material-ui/icons/Toll";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import AddIcon from "@material-ui/icons/Add";
-import AccountCircleIcon from "@material-ui/icons/AccountCircle";
+import Avatar from "@material-ui/core/Avatar";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import SignUpDialog from "./SignUpDialog";
@@ -91,7 +91,7 @@ function NavBar(props) {
               </IconButton>
 
               <IconButton onClick={handleAccountMenuOpen}>
-                <AccountCircleIcon fontSize="large" />
+                <Avatar src={authUser.profile_pic_src} />
               </IconButton>
               <Popover
                 open={Boolean(accountMenuAnchor)}

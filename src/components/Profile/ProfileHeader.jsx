@@ -4,7 +4,12 @@ import { useHistory } from "react-router-dom";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
-import { FOLLOW, UNFOLLOW, CHANGE_USERNAME } from "../../graphql/mutations";
+import {
+  FOLLOW,
+  UNFOLLOW,
+  CHANGE_USERNAME,
+  CHANGE_PROFILE_PIC,
+} from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
@@ -59,12 +64,13 @@ function ProfileHeaderForAuthUser(props) {
     },
   });
 
+  const [changeProfilePic] = useMutation(CHANGE_PROFILE_PIC);
+
   const handleEditProfile = () => {
     setIsEditMode(true);
   };
 
   const handleSaveEdit = () => {
-    // Call mutation
     if (newUsername !== profileUser.username) {
       changeUsername({
         variables: {
@@ -74,9 +80,15 @@ function ProfileHeaderForAuthUser(props) {
     }
 
     if (newProfilePic) {
-      console.log(newProfilePic);
+      changeProfilePic({
+        variables: {
+          profile_pic: newProfilePic,
+        },
+      });
     }
 
+    setNewUsername(profileUser.username);
+    setNewProfilePic(null);
     setIsEditMode(false);
   };
 
@@ -101,10 +113,6 @@ function ProfileHeaderForAuthUser(props) {
     setIsEditMode(false);
   };
 
-  const handleDeleteAccount = () => {
-    console.log("delete account");
-  };
-
   const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
     "en-us",
     {
@@ -116,47 +124,37 @@ function ProfileHeaderForAuthUser(props) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      {isEditMode && (
-        <Button
-          className={classes.delete}
-          variant="contained"
-          color="secondary"
-          onClick={handleDeleteAccount}
-        >
-          Delete Account
-        </Button>
-      )}
-
       {isEditMode ? (
-        <Paper elevation={0}>
-          <Badge
-            overlap="circular"
-            anchorOrigin={{
-              vertical: "bottom",
-              horizontal: "right",
-            }}
-            badgeContent={
-              <IconButton onClick={handleEditProfilePic}>
-                <EditOutlinedIcon />
-              </IconButton>
+        <Badge
+          overlap="circular"
+          anchorOrigin={{
+            vertical: "bottom",
+            horizontal: "right",
+          }}
+          badgeContent={
+            <IconButton onClick={handleEditProfilePic}>
+              <EditOutlinedIcon />
+            </IconButton>
+          }
+        >
+          <Avatar
+            className={classes.avatar}
+            src={
+              newProfilePic
+                ? URL.createObjectURL(newProfilePic)
+                : profileUser.profile_pic_src
             }
-          >
-            <Avatar className={classes.avatar}>
-              {profileUser.username.charAt(0).toUpperCase()}
-            </Avatar>
-          </Badge>
-
-          <ProfilePicDialog
-            open={isProfilePicDialogOpen}
-            onClose={handleCloseProfilePicDialog}
-            onChange={handleSetNewProfilePic}
           />
-        </Paper>
+        </Badge>
       ) : (
-        <Avatar className={classes.avatar}>
-          {profileUser.username.charAt(0).toUpperCase()}
-        </Avatar>
+        <Avatar className={classes.avatar} src={profileUser.profile_pic_src} />
       )}
+
+      <ProfilePicDialog
+        open={isProfilePicDialogOpen}
+        onClose={handleCloseProfilePicDialog}
+        onChange={handleSetNewProfilePic}
+      />
 
       {isEditMode ? (
         <TextField
@@ -259,9 +257,7 @@ function ProfileHeaderForNonAuthUser(props) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Avatar className={classes.avatar}>
-        {profileUser.username.charAt(0).toUpperCase()}
-      </Avatar>
+      <Avatar className={classes.avatar} src={profileUser.profile_pic_src} />
 
       <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
 
