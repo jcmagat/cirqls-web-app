@@ -46,7 +46,7 @@ const useStyles = makeStyles({
   },
 });
 
-function ProfileHeaderForAuthUser(props) {
+function ProfileHeaderForAuthUser({ handleChangeTab }) {
   const classes = useStyles();
 
   const profileUser = useProfileUser();
@@ -175,10 +175,10 @@ function ProfileHeaderForAuthUser(props) {
       </Typography>
 
       <ButtonGroup variant="text">
-        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWING)}>
+        <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWING)}>
           {profileUser.following.length} Following
         </Button>
-        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
+        <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
           {profileUser.followers.length} Followers
         </Button>
         <Button>{100} Likes</Button>
@@ -206,7 +206,7 @@ function ProfileHeaderForAuthUser(props) {
   );
 }
 
-function ProfileHeaderForNonAuthUser(props) {
+function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
   const classes = useStyles();
 
   const authUser = useAuthUser();
@@ -266,10 +266,10 @@ function ProfileHeaderForNonAuthUser(props) {
       </Typography>
 
       <ButtonGroup variant="text">
-        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWING)}>
+        <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWING)}>
           {profileUser.following.length} Following
         </Button>
-        <Button onClick={() => props.handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
+        <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
           {profileUser.followers.length} Followers
         </Button>
         <Button>{100} Likes</Button>
@@ -301,7 +301,7 @@ function ProfileHeaderForNonAuthUser(props) {
   );
 }
 
-function ProfileHeader(props) {
+function ProfileHeader({ handleChangeTab }) {
   const authUser = useAuthUser();
   const profileUser = useProfileUser();
 
@@ -311,9 +311,9 @@ function ProfileHeader(props) {
   return (
     <Paper elevation={0}>
       {isAuthUsersProfile ? (
-        <ProfileHeaderForAuthUser />
+        <ProfileHeaderForAuthUser handleChangeTab={handleChangeTab} />
       ) : (
-        <ProfileHeaderForNonAuthUser />
+        <ProfileHeaderForNonAuthUser handleChangeTab={handleChangeTab} />
       )}
     </Paper>
   );
