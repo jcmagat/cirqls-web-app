@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { useHistory } from "react-router-dom";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
-import {
-  FOLLOW,
-  UNFOLLOW,
-  CHANGE_USERNAME,
-  CHANGE_PROFILE_PIC,
-} from "../../graphql/mutations";
+import { FOLLOW, UNFOLLOW, CHANGE_PROFILE_PIC } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import Badge from "@material-ui/core/Badge";
 import IconButton from "@material-ui/core/IconButton";
 import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import TextField from "@material-ui/core/TextField";
 import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
@@ -52,17 +45,8 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
   const profileUser = useProfileUser();
 
   const [isEditMode, setIsEditMode] = useState(false);
-  const [newUsername, setNewUsername] = useState(profileUser.username);
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [isProfilePicDialogOpen, setIsProfilePicDialogOpen] = useState(false);
-
-  const history = useHistory();
-
-  const [changeUsername] = useMutation(CHANGE_USERNAME, {
-    onCompleted: (data) => {
-      history.push(`/u/${data.changeUsername.username}`);
-    },
-  });
 
   const [changeProfilePic] = useMutation(CHANGE_PROFILE_PIC);
 
@@ -71,14 +55,6 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
   };
 
   const handleSaveEdit = () => {
-    if (newUsername !== profileUser.username) {
-      changeUsername({
-        variables: {
-          username: newUsername,
-        },
-      });
-    }
-
     if (newProfilePic) {
       changeProfilePic({
         variables: {
@@ -87,7 +63,6 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
       });
     }
 
-    setNewUsername(profileUser.username);
     setNewProfilePic(null);
     setIsEditMode(false);
   };
@@ -108,7 +83,6 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
   };
 
   const handleCancelEdit = () => {
-    setNewUsername(profileUser.username);
     setNewProfilePic(null);
     setIsEditMode(false);
   };
@@ -156,19 +130,7 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
         onChange={handleSetNewProfilePic}
       />
 
-      {isEditMode ? (
-        <TextField
-          inputProps={{ style: { textAlign: "center" } }}
-          variant="outlined"
-          size="small"
-          id="username"
-          label="Username"
-          value={newUsername}
-          onChange={(event) => setNewUsername(event.target.value)}
-        />
-      ) : (
-        <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
-      )}
+      <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
 
       <Typography variant="body2">
         {`member since ${memberSinceDate}`}

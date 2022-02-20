@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { GET_USER } from "../graphql/queries";
 
@@ -10,8 +10,7 @@ export const useProfileUser = () => {
 };
 
 export function ProfileUserProvider(props) {
-  const location = useLocation();
-  const username = location.pathname.split("/")[2];
+  const username = useParams().username;
 
   const [user, setUser] = useState();
 
