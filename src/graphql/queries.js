@@ -37,6 +37,7 @@ export const GET_AUTH_USER = gql`
   query AuthUser {
     authUser {
       user_id
+      email
       username
       created_at
       profile_pic_src

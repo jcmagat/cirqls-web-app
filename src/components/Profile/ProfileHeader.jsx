@@ -48,23 +48,28 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
   const [newProfilePic, setNewProfilePic] = useState(null);
   const [isProfilePicDialogOpen, setIsProfilePicDialogOpen] = useState(false);
 
-  const [changeProfilePic] = useMutation(CHANGE_PROFILE_PIC);
+  const [changeProfilePic, { loading: changeProfilePicLoading }] = useMutation(
+    CHANGE_PROFILE_PIC,
+    {
+      onCompleted: finishChangeProfilePic,
+    }
+  );
 
   const handleEditProfile = () => {
     setIsEditMode(true);
   };
 
   const handleSaveEdit = () => {
-    if (newProfilePic) {
-      changeProfilePic({
-        variables: {
-          profile_pic: newProfilePic,
-        },
-      });
+    if (!newProfilePic) {
+      setIsEditMode(false);
+      return;
     }
 
-    setNewProfilePic(null);
-    setIsEditMode(false);
+    changeProfilePic({
+      variables: {
+        profile_pic: newProfilePic,
+      },
+    });
   };
 
   // Called when the edit button on the profile pic is clicked
@@ -87,6 +92,11 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
     setIsEditMode(false);
   };
 
+  function finishChangeProfilePic() {
+    setNewProfilePic(null);
+    setIsEditMode(false);
+  }
+
   const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
     "en-us",
     {
@@ -106,7 +116,10 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
             horizontal: "right",
           }}
           badgeContent={
-            <IconButton onClick={handleEditProfilePic}>
+            <IconButton
+              onClick={handleEditProfilePic}
+              disabled={changeProfilePicLoading}
+            >
               <EditOutlinedIcon />
             </IconButton>
           }
@@ -152,10 +165,16 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
             variant="outlined"
             color="secondary"
             onClick={handleCancelEdit}
+            disabled={changeProfilePicLoading}
           >
             Cancel
           </Button>
-          <Button variant="contained" color="primary" onClick={handleSaveEdit}>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={handleSaveEdit}
+            disabled={changeProfilePicLoading}
+          >
             Save
           </Button>
         </Paper>

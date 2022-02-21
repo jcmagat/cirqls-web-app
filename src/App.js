@@ -12,6 +12,7 @@ import CommunityPage from "./pages/CommunityPage";
 import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
 import MessagePage from "./pages/MessagePage";
+import SettingsPage from "./pages/SettingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 function App() {
@@ -58,6 +59,10 @@ function App() {
           <MessagesProvider>
             <MessagePage />
           </MessagesProvider>
+        </Route>
+
+        <Route path="/settings">
+          <SettingsPage />
         </Route>
 
         <Route>

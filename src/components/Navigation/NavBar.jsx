@@ -14,7 +14,9 @@ import TollIcon from "@material-ui/icons/Toll";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import AddIcon from "@material-ui/icons/Add";
 import Avatar from "@material-ui/core/Avatar";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
+import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import SignUpDialog from "./SignUpDialog";
 import { Link } from "react-router-dom";
@@ -92,6 +94,7 @@ function NavBar(props) {
 
               <IconButton onClick={handleAccountMenuOpen}>
                 <Avatar src={authUser.profile_pic_src} />
+                <ExpandMoreIcon />
               </IconButton>
               <Popover
                 open={Boolean(accountMenuAnchor)}
@@ -106,6 +109,11 @@ function NavBar(props) {
                   <IconButton component={Link} to={`/u/${authUser.username}`}>
                     <AccountCircleOutlinedIcon />
                     <Typography>Profile</Typography>
+                  </IconButton>
+
+                  <IconButton component={Link} to={"/settings"}>
+                    <SettingsOutlinedIcon />
+                    <Typography>Settings</Typography>
                   </IconButton>
 
                   <IconButton onClick={handleLogout}>
