@@ -86,6 +86,17 @@ export const CHANGE_PROFILE_PIC = gql`
   }
 `;
 
+export const CHANGE_PASSWORD = gql`
+  mutation ChangePassword($current_password: String!, $new_password: String!) {
+    changePassword(
+      current_password: $current_password
+      new_password: $new_password
+    ) {
+      user_id
+    }
+  }
+`;
+
 /* ========== Community Mutations ========== */
 
 export const JOIN = gql`

@@ -10,6 +10,7 @@ import Divider from "@material-ui/core/Divider";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import NavBar from "../components/Navigation/NavBar";
+import ChangePasswordForm from "../components/Settings/ChangePasswordForm";
 
 const useStyles = makeStyles({
   paper: {
@@ -160,18 +161,7 @@ function SettingsPage(props) {
               </Paper>
             </Paper>
 
-            <Paper className={classes.setting} elevation={0}>
-              <Paper elevation={0}>
-                <Typography variant="body1">Password</Typography>
-                <Typography variant="body2">****************</Typography>
-              </Paper>
-
-              <Paper className={classes.buttonPaper} elevation={0}>
-                <Button variant="outlined" color="primary">
-                  Change
-                </Button>
-              </Paper>
-            </Paper>
+            <ChangePasswordForm />
           </Paper>
         )}
       </Paper>
