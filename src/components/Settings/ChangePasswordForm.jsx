@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useMutation } from "@apollo/client";
 import { CHANGE_PASSWORD } from "../../graphql/mutations";
+import isStrongPassword from "validator/lib/isStrongPassword";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import TextField from "@material-ui/core/TextField";
@@ -22,6 +23,11 @@ const useStyles = makeStyles({
     flexDirection: "row",
     gap: 8,
   },
+  form: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 32,
+  },
   textfields: {
     display: "flex",
     flexDirection: "column",
@@ -39,15 +45,25 @@ function ChangePasswordForm(props) {
   const [currentPasswordError, setCurrentPasswordError] = useState("");
 
   const [newPassword, setNewPassord] = useState("");
+  const [newPasswordError, setNewPasswordError] = useState("");
 
   const [confirmNewPassword, setConfirmNewPassord] = useState("");
   const [confirmNewPasswordError, setConfirmNewPasswordError] = useState("");
 
+  // Resets the current password error when the current password changes
   useEffect(() => {
     setCurrentPasswordError("");
   }, [currentPassword]);
 
   useEffect(() => {
+    // Checks whether the new password is strong enough
+    if (newPassword && !isStrongPassword(newPassword, { minSymbols: 0 })) {
+      setNewPasswordError("Password not strong enough");
+    } else {
+      setNewPasswordError("");
+    }
+
+    // Checks whether confirm new password matches the new password
     if (confirmNewPassword && newPassword !== confirmNewPassword) {
       setConfirmNewPasswordError("Passwords do not match");
     } else {
@@ -81,6 +97,7 @@ function ChangePasswordForm(props) {
     setCurrentPasswordError("");
 
     setNewPassord("");
+    setNewPasswordError("");
 
     setConfirmNewPassord("");
     setConfirmNewPasswordError("");
@@ -88,7 +105,7 @@ function ChangePasswordForm(props) {
     setIsChangeMode(false);
   };
 
-  // Called after the change password mutation completes
+  // Called after the mutation is completed
   function finishChangePassword() {
     setCurrentPassword("");
     setNewPassord("");
@@ -96,7 +113,7 @@ function ChangePasswordForm(props) {
     setIsChangeMode(false);
   }
 
-  // Called when the change password mutation returns an error
+  // Called when the mutation returns an error
   function handleError(error) {
     setCurrentPasswordError(error.message);
   }
@@ -106,42 +123,56 @@ function ChangePasswordForm(props) {
       <Paper elevation={0}>
         <Typography variant="body1">Password</Typography>
         {isChangeMode ? (
-          <Paper className={classes.textfields} elevation={0}>
-            <TextField
-              variant="outlined"
-              size="small"
-              type="password"
-              id="current-password"
-              label="Current Password"
-              required
-              autoFocus
-              onChange={(event) => setCurrentPassword(event.target.value)}
-              disabled={loading}
-              error={Boolean(currentPasswordError)}
-              helperText={currentPasswordError}
-            />
-            <TextField
-              variant="outlined"
-              size="small"
-              type="password"
-              id="new-password"
-              label="New Password"
-              required
-              onChange={(event) => setNewPassord(event.target.value)}
-              disabled={loading}
-            />
-            <TextField
-              variant="outlined"
-              size="small"
-              type="password"
-              id="confirm-new-password"
-              label="Confirm New Password"
-              required
-              onChange={(event) => setConfirmNewPassord(event.target.value)}
-              disabled={loading}
-              error={Boolean(confirmNewPasswordError)}
-              helperText={confirmNewPasswordError}
-            />
+          <Paper className={classes.form} elevation={0}>
+            <Paper className={classes.textfields} elevation={0}>
+              <TextField
+                variant="outlined"
+                size="small"
+                type="password"
+                id="current-password"
+                label="Current Password"
+                required
+                autoFocus
+                onChange={(event) => setCurrentPassword(event.target.value)}
+                disabled={loading}
+                error={Boolean(currentPasswordError)}
+                helperText={currentPasswordError}
+              />
+              <TextField
+                variant="outlined"
+                size="small"
+                type="password"
+                id="new-password"
+                label="New Password"
+                required
+                onChange={(event) => setNewPassord(event.target.value)}
+                disabled={loading}
+                error={Boolean(newPasswordError)}
+                helperText={newPasswordError}
+              />
+              <TextField
+                variant="outlined"
+                size="small"
+                type="password"
+                id="confirm-new-password"
+                label="Confirm New Password"
+                required
+                onChange={(event) => setConfirmNewPassord(event.target.value)}
+                disabled={loading}
+                error={Boolean(confirmNewPasswordError)}
+                helperText={confirmNewPasswordError}
+              />
+            </Paper>
+
+            <Paper elevation={0}>
+              <Typography variant="body2">
+                Password must contain:
+                <li>Minimum 8 characters</li>
+                <li>At least 1 uppercase</li>
+                <li>At least 1 lowercase</li>
+                <li>At least 1 number</li>
+              </Typography>
+            </Paper>
           </Paper>
         ) : (
           <Typography variant="body2">********</Typography>
@@ -165,10 +196,11 @@ function ChangePasswordForm(props) {
               onClick={handleChangePassword}
               disabled={
                 !currentPassword ||
-                currentPasswordError ||
+                Boolean(currentPasswordError) ||
                 !newPassword ||
+                Boolean(newPasswordError) ||
                 !confirmNewPassword ||
-                confirmNewPasswordError ||
+                Boolean(confirmNewPasswordError) ||
                 loading
               }
             >

@@ -127,7 +127,7 @@ function ChangeUsernameForm(props) {
               variant="outlined"
               color="primary"
               onClick={handleChangeUsername}
-              disabled={!newUsername || newUsernameError || loading}
+              disabled={!newUsername || Boolean(newUsernameError) || loading}
             >
               Save
             </Button>
