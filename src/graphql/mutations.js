@@ -259,6 +259,14 @@ export const DELETE_COMMENT_REACTION = gql`
   }
 `;
 
+export const CONFIRM_DELETE_ACCOUNT = gql`
+  mutation ConfirmDeleteAccount($password: String!) {
+    confirmDeleteAccount(password: $password) {
+      success
+    }
+  }
+`;
+
 /* ========== Message Mutations ========== */
 
 export const SEND_MESSAGE = gql`

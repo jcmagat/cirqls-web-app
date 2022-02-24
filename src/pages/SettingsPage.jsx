@@ -9,6 +9,7 @@ import Button from "@material-ui/core/Button";
 import NavBar from "../components/Navigation/NavBar";
 import ChangePasswordForm from "../components/Settings/ChangePasswordForm";
 import ChangeUsernameForm from "../components/Settings/ChangeUsernameForm";
+import DeleteAccountForm from "../components/Settings/DeleteAccountForm";
 
 const useStyles = makeStyles({
   paper: {
@@ -62,6 +63,8 @@ function SettingsPage(props) {
             <ChangeUsernameForm />
 
             <ChangePasswordForm />
+
+            <DeleteAccountForm />
           </Paper>
         )}
       </Paper>
