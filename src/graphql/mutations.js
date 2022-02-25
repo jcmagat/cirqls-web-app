@@ -267,6 +267,14 @@ export const CONFIRM_DELETE_ACCOUNT = gql`
   }
 `;
 
+export const DELETE_ACCOUNT = gql`
+  mutation DeleteAccount($token: String!) {
+    deleteAccount(token: $token) {
+      success
+    }
+  }
+`;
+
 /* ========== Message Mutations ========== */
 
 export const SEND_MESSAGE = gql`

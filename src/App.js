@@ -14,6 +14,7 @@ import PostPage from "./pages/PostPage";
 import MessagePage from "./pages/MessagePage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import DeleteAccountPage from "./pages/DeleteAccountPage";
 
 function App() {
   return (
@@ -63,6 +64,10 @@ function App() {
 
         <Route path="/settings">
           <SettingsPage />
+        </Route>
+
+        <Route path="/delete-account/:token">
+          <DeleteAccountPage />
         </Route>
 
         <Route>

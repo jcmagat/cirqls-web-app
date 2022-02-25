@@ -17,6 +17,10 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles({
+  root: {
+    display: "flex",
+    justifyContent: "center",
+  },
   title: {
     display: "flex",
     flexDirection: "row",
@@ -89,7 +93,7 @@ function DeleteAccountForm(props) {
   }
 
   return (
-    <Paper elevation={0}>
+    <Paper className={classes.root} elevation={0}>
       <Button
         variant="outlined"
         color="secondary"
