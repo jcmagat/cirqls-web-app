@@ -1,7 +1,8 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useMutation } from "@apollo/client";
 import { SIGNUP } from "../../graphql/mutations";
+import isEmail from "validator/lib/isEmail";
 import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
@@ -31,10 +32,9 @@ function SignUpDialog({ open, onClose }) {
   const [emailError, setEmailError] = useState("");
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const handleEmailChange = (email) => {
-    setEmail(email);
+  useEffect(() => {
     setEmailError("");
-  };
+  }, [email]);
 
   const [signUp, { loading }] = useMutation(SIGNUP, {
     onCompleted: finishSignUp,
@@ -43,6 +43,11 @@ function SignUpDialog({ open, onClose }) {
 
   const handleSignUp = (event) => {
     event.preventDefault();
+
+    if (!email || !isEmail(email)) {
+      setEmailError("Email address not valid");
+      return;
+    }
 
     signUp({
       variables: {
@@ -102,7 +107,7 @@ function SignUpDialog({ open, onClose }) {
               required
               fullWidth
               autoFocus
-              onChange={(event) => handleEmailChange(event.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
               disabled={loading || isCompleted}
               error={Boolean(emailError)}
               helperText={emailError}
