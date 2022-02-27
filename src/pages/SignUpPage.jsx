@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { REGISTER } from "../graphql/mutations";
+import isStrongPassword from "validator/lib/isStrongPassword";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
@@ -41,13 +42,28 @@ function SignUpPage(props) {
   const { token } = useParams();
 
   const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-
   const [usernameError, setUsernameError] = useState("");
+
+  const [password, setPassword] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [confirmPasswordError, setConfirmPasswordError] = useState("");
 
+  // Resets the username error message when the username changes
   useEffect(() => {
+    setUsernameError("");
+  }, [username]);
+
+  useEffect(() => {
+    // Checks whether the new password is strong enough
+    if (password && !isStrongPassword(password, { minSymbols: 0 })) {
+      setPasswordError("Password not strong enough");
+    } else {
+      setPasswordError("");
+    }
+
+    // Checks whether confirm password matches the password
     if (confirmPassword && password !== confirmPassword) {
       setConfirmPasswordError("Passwords do not match");
     } else {
@@ -82,11 +98,6 @@ function SignUpPage(props) {
     }
   }
 
-  const handleUsernameChange = (username) => {
-    setUsername(username);
-    setUsernameError("");
-  };
-
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={0}>
@@ -105,7 +116,7 @@ function SignUpPage(props) {
             required
             fullWidth
             autoFocus
-            onChange={(event) => handleUsernameChange(event.target.value)}
+            onChange={(event) => setUsername(event.target.value)}
             disabled={loading}
             error={Boolean(usernameError)}
             helperText={usernameError}
@@ -120,6 +131,8 @@ function SignUpPage(props) {
             fullWidth
             onChange={(event) => setPassword(event.target.value)}
             disabled={loading}
+            error={Boolean(passwordError)}
+            helperText={passwordError}
           />
           <TextField
             variant="outlined"
@@ -146,6 +159,7 @@ function SignUpPage(props) {
               !confirmPassword ||
               Boolean(usernameError) ||
               Boolean(confirmPasswordError) ||
+              Boolean(passwordError) ||
               loading
             }
           >
