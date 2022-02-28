@@ -12,6 +12,7 @@ import Typography from "@material-ui/core/Typography";
 import Avatar from "@material-ui/core/Avatar";
 import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
 import Button from "@material-ui/core/Button";
+import Popper from "@material-ui/core/Popper";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { Link } from "react-router-dom";
 
@@ -32,6 +33,10 @@ const useStyles = makeStyles((theme) => ({
   },
   submit: {
     margin: theme.spacing(3, 0, 2),
+  },
+  popper: {
+    padding: 16,
+    marginLeft: 16,
   },
 }));
 
@@ -98,6 +103,23 @@ function SignUpPage(props) {
     }
   }
 
+  /* ========== Password Popper ========== */
+
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleFocusPassword = (event) => {
+    setOpen(true);
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleUnfocusPassword = () => {
+    if (!password || passwordError) return;
+
+    setOpen(false);
+    setAnchorEl(null);
+  };
+
   return (
     <Container component="main" maxWidth="xs">
       <Paper className={classes.paper} elevation={0}>
@@ -121,6 +143,7 @@ function SignUpPage(props) {
             error={Boolean(usernameError)}
             helperText={usernameError}
           />
+
           <TextField
             variant="outlined"
             margin="normal"
@@ -130,10 +153,24 @@ function SignUpPage(props) {
             required
             fullWidth
             onChange={(event) => setPassword(event.target.value)}
+            onFocus={(event) => handleFocusPassword(event)}
+            onBlur={handleUnfocusPassword}
             disabled={loading}
             error={Boolean(passwordError)}
             helperText={passwordError}
           />
+          <Popper open={open} anchorEl={anchorEl} placement="right">
+            <Paper className={classes.popper}>
+              <Typography variant="body2">
+                Password must contain:
+                <li>Minimum 8 characters</li>
+                <li>At least 1 uppercase</li>
+                <li>At least 1 lowercase</li>
+                <li>At least 1 number</li>
+              </Typography>
+            </Paper>
+          </Popper>
+
           <TextField
             variant="outlined"
             margin="normal"
