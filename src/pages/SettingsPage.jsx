@@ -5,8 +5,8 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
 import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
 import NavBar from "../components/Navigation/NavBar";
+import ChangeEmailForm from "../components/Settings/ChangeEmailForm";
 import ChangePasswordForm from "../components/Settings/ChangePasswordForm";
 import ChangeUsernameForm from "../components/Settings/ChangeUsernameForm";
 import DeleteAccountForm from "../components/Settings/DeleteAccountForm";
@@ -47,18 +47,7 @@ function SettingsPage(props) {
 
             <Divider />
 
-            <Paper className={classes.setting} elevation={0}>
-              <Paper elevation={0}>
-                <Typography variant="body1">Email Address</Typography>
-                <Typography variant="body2">{authUser.email}</Typography>
-              </Paper>
-
-              <Paper className={classes.buttonPaper} elevation={0}>
-                <Button variant="outlined" color="primary">
-                  Change
-                </Button>
-              </Paper>
-            </Paper>
+            <ChangeEmailForm />
 
             <ChangeUsernameForm />
 

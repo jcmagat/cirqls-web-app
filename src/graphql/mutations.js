@@ -68,6 +68,15 @@ export const REMOVE_FOLLOWER = gql`
   }
 `;
 
+export const CHANGE_EMAIL = gql`
+  mutation ChangeEmail($password: String!, $new_email: String!) {
+    changeEmail(password: $password, new_email: $new_email) {
+      user_id
+      email
+    }
+  }
+`;
+
 export const CHANGE_USERNAME = gql`
   mutation ChangeUsername($username: String!) {
     changeUsername(username: $username) {
@@ -93,6 +102,22 @@ export const CHANGE_PASSWORD = gql`
       new_password: $new_password
     ) {
       user_id
+    }
+  }
+`;
+
+export const CONFIRM_DELETE_ACCOUNT = gql`
+  mutation ConfirmDeleteAccount($password: String!) {
+    confirmDeleteAccount(password: $password) {
+      success
+    }
+  }
+`;
+
+export const DELETE_ACCOUNT = gql`
+  mutation DeleteAccount($token: String!) {
+    deleteAccount(token: $token) {
+      success
     }
   }
 `;
@@ -255,22 +280,6 @@ export const DELETE_COMMENT_REACTION = gql`
         total
         auth_user_reaction
       }
-    }
-  }
-`;
-
-export const CONFIRM_DELETE_ACCOUNT = gql`
-  mutation ConfirmDeleteAccount($password: String!) {
-    confirmDeleteAccount(password: $password) {
-      success
-    }
-  }
-`;
-
-export const DELETE_ACCOUNT = gql`
-  mutation DeleteAccount($token: String!) {
-    deleteAccount(token: $token) {
-      success
     }
   }
 `;
