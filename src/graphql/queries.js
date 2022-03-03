@@ -77,6 +77,11 @@ export const GET_COMMUNITY = gql`
       title
       description
       created_at
+      moderators {
+        user_id
+        username
+        profile_pic_src
+      }
       members {
         user_id
         username
