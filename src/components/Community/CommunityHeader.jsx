@@ -6,24 +6,27 @@ import { useMutation } from "@apollo/client";
 import { JOIN, LEAVE } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
+import IconButton from "@material-ui/core/IconButton";
+import MoreVertIcon from "@material-ui/icons/MoreVert";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
-  parentPaper: {
+  root: {
     display: "flex",
-    justifyContent: "space-between",
-  },
-  logoPaper: {
-    display: "flex",
+    flexDirection: "column",
     alignItems: "center",
     gap: 16,
-    marginLeft: 16,
+    position: "relative",
   },
-  buttonPaper: {
-    display: "flex",
-    alignItems: "center",
-    marginRight: 16,
+  more: {
+    position: "absolute",
+    top: 0,
+    right: 8,
+  },
+  avatar: {
+    width: 80,
+    height: 80,
   },
 });
 
@@ -32,6 +35,12 @@ function CommunityHeader(props) {
 
   const authUser = useAuthUser();
   const community = useCommunity();
+
+  const isModerator =
+    authUser &&
+    community.moderators.some(
+      (moderator) => moderator.username === authUser.username
+    );
 
   const [joined, setJoined] = useState(false);
 
@@ -65,40 +74,29 @@ function CommunityHeader(props) {
     });
   };
 
-  const startedDate = new Date(community.created_at).toLocaleDateString(
-    "en-us",
-    {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    }
-  );
-
   return (
-    <Paper elevation={0}>
-      <Paper className={classes.parentPaper} elevation={0}>
-        <Paper className={classes.logoPaper} elevation={0}>
-          <Avatar>{community.name.charAt(0).toUpperCase()}</Avatar>
+    <Paper className={classes.root} elevation={0}>
+      <Avatar className={classes.avatar}>
+        {community.name.charAt(0).toUpperCase()}
+      </Avatar>
 
-          <Paper elevation={0}>
-            <Typography variant="h5">{`${community.name}: ${community.title}`}</Typography>
-            <Typography variant="body2">{`Started ${startedDate}`}</Typography>
-            <Typography variant="body2">{`${community.members.length} members`}</Typography>
-          </Paper>
-        </Paper>
+      <IconButton className={classes.more}>
+        <MoreVertIcon />
+      </IconButton>
 
-        <Paper className={classes.buttonPaper} elevation={0}>
-          {joined ? (
-            <Button variant="outlined" color="primary" onClick={handleLeave}>
-              Joined
-            </Button>
-          ) : (
-            <Button variant="contained" color="primary" onClick={handleJoin}>
-              Join
-            </Button>
-          )}
-        </Paper>
-      </Paper>
+      <Typography variant="h5">{`c/${community.name}`}</Typography>
+      <Typography variant="h5">{community.title}</Typography>
+      <Typography variant="body2">{`${community.members.length} members`}</Typography>
+
+      {joined ? (
+        <Button variant="outlined" color="primary" onClick={handleLeave}>
+          Joined
+        </Button>
+      ) : (
+        <Button variant="contained" color="primary" onClick={handleJoin}>
+          Join
+        </Button>
+      )}
     </Paper>
   );
 }

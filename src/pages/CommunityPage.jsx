@@ -11,6 +11,9 @@ const useStyles = makeStyles({
   paper: {
     marginTop: 80,
   },
+  tabs: {
+    marginTop: 16,
+  },
 });
 
 export const COMMUNITY_TABS = {
@@ -37,7 +40,9 @@ function CommunityPage(props) {
         <Paper className={classes.paper} elevation={0}>
           <CommunityHeader />
 
-          <CommunityTabBar tab={tab} handleChangeTab={handleChangeTab} />
+          <Paper className={classes.tabs} elevation={0}>
+            <CommunityTabBar tab={tab} handleChangeTab={handleChangeTab} />
+          </Paper>
         </Paper>
       )}
     </Container>

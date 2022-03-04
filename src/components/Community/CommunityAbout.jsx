@@ -21,11 +21,25 @@ function CommunityAbout(props) {
 
   const community = useCommunity();
 
+  const startedDate = new Date(community.created_at).toLocaleDateString(
+    "en-us",
+    {
+      month: "long",
+      day: "numeric",
+      year: "numeric",
+    }
+  );
+
   return (
     <Paper elevation={0}>
       <Typography variant="body1" paragraph>
         {community.description}
       </Typography>
+
+      <Typography
+        variant="body2"
+        paragraph
+      >{`Started ${startedDate}`}</Typography>
 
       <Typography variant="body1" gutterBottom>
         Moderators:
