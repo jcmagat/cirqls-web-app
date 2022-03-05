@@ -42,6 +42,12 @@ function App() {
           </ProfileUserProvider>
         </Route>
 
+        <Route path="/c/:name/edit">
+          <CommunityProvider>
+            <NotFoundPage />
+          </CommunityProvider>
+        </Route>
+
         <Route path="/c/:name">
           <CommunityProvider>
             <CommunityPage />

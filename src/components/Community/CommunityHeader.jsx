@@ -8,8 +8,13 @@ import Paper from "@material-ui/core/Paper";
 import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
+import Popover from "@material-ui/core/Popover";
+import ButtonGroup from "@material-ui/core/ButtonGroup";
+import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   root: {
@@ -43,6 +48,7 @@ function CommunityHeader(props) {
     );
 
   const [joined, setJoined] = useState(false);
+  const [moreMenuAnchor, setMoreMenuAnchor] = useState(null);
 
   useEffect(() => {
     if (
@@ -80,9 +86,39 @@ function CommunityHeader(props) {
         {community.name.charAt(0).toUpperCase()}
       </Avatar>
 
-      <IconButton className={classes.more}>
+      <IconButton
+        className={classes.more}
+        onClick={(event) => setMoreMenuAnchor(event.currentTarget)}
+      >
         <MoreVertIcon />
       </IconButton>
+      <Popover
+        open={Boolean(moreMenuAnchor)}
+        anchorEl={moreMenuAnchor}
+        onClose={(event) => setMoreMenuAnchor(null)}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <ButtonGroup orientation="vertical">
+          {isModerator && (
+            <IconButton component={Link} to={`/c/${community.name}/edit`}>
+              <EditOutlinedIcon />
+              <Typography>Edit</Typography>
+            </IconButton>
+          )}
+
+          <IconButton>
+            <FlagOutlinedIcon />
+            <Typography>Report</Typography>
+          </IconButton>
+        </ButtonGroup>
+      </Popover>
 
       <Typography variant="h5">{`c/${community.name}`}</Typography>
       <Typography variant="h5">{community.title}</Typography>
