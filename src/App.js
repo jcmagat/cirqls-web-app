@@ -8,6 +8,7 @@ import ExplorePage from "./pages/ExplorePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
+import EditCommunityPage from "./pages/EditCommunityPage";
 import CommunityPage from "./pages/CommunityPage";
 import SubmitPage from "./pages/SubmitPage";
 import PostPage from "./pages/PostPage";
@@ -44,7 +45,7 @@ function App() {
 
         <Route path="/c/:name/edit">
           <CommunityProvider>
-            <NotFoundPage />
+            <EditCommunityPage />
           </CommunityProvider>
         </Route>
 
