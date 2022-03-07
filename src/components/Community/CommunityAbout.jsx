@@ -49,6 +49,7 @@ function CommunityAbout(props) {
         <Paper
           className={classes.moderator}
           elevation={0}
+          key={moderator.user_id}
           component={Link}
           to={`/u/${moderator.username}`}
         >

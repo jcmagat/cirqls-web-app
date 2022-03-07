@@ -191,9 +191,11 @@ function PostCard(props) {
     <Card style={disableIfLoading(deletePostLoading)}>
       <CardHeader
         avatar={
-          <Avatar component={Link} to={`/c/${props.post.community.name}`}>
-            {props.post.community.name.charAt(0).toUpperCase()}
-          </Avatar>
+          <Avatar
+            component={Link}
+            to={`/c/${props.post.community.name}`}
+            src={props.post.community.logo_src}
+          />
         }
         disableTypography
         title={

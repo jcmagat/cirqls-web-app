@@ -82,9 +82,7 @@ function CommunityHeader(props) {
 
   return (
     <Paper className={classes.root} elevation={0}>
-      <Avatar className={classes.avatar}>
-        {community.name.charAt(0).toUpperCase()}
-      </Avatar>
+      <Avatar className={classes.avatar} src={community.logo_src} />
 
       <IconButton
         className={classes.more}

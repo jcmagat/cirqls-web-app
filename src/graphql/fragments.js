@@ -13,6 +13,7 @@ export const POST_FRAGMENT = gql`
     community {
       community_id
       name
+      logo_src
     }
     reactions {
       likes
