@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
+import { useHistory } from "react-router-dom";
 import { useCommunity } from "../context/CommunityContext";
+import { useMutation } from "@apollo/client";
+import { EDIT_COMMUNITY } from "../graphql/mutations";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Badge from "@material-ui/core/Badge";
@@ -21,9 +24,11 @@ const useStyles = makeStyles({
     flexDirection: "column",
     gap: 16,
   },
-  paperCentered: {
+  logoAndName: {
     display: "flex",
-    justifyContent: "center",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 16,
   },
   avatar: {
     width: 80,
@@ -51,32 +56,59 @@ const useStyles = makeStyles({
 
 function EditCommunityPage(props) {
   const classes = useStyles();
+  const history = useHistory();
 
   const community = useCommunity();
 
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [newLogo, setNewLogo] = useState("");
+  const [newTitle, setNewTitle] = useState("");
+  const [newDescription, setNewDescription] = useState("");
+  const [newLogo, setNewLogo] = useState(null);
 
   useEffect(() => {
     if (!community) return;
 
-    setTitle(community.title);
-    setDescription(community.description);
+    setNewTitle(community.title);
+    setNewDescription(community.description);
   }, [community]);
 
+  const [editCommunity, { loading }] = useMutation(EDIT_COMMUNITY, {
+    onCompleted: finishEditCommunity,
+  });
+
+  // Called when the save button is clicked
+  const handleEditCommunity = () => {
+    editCommunity({
+      variables: {
+        community_id: community.community_id,
+        title: newTitle !== community.title ? newTitle : null,
+        description:
+          newDescription !== community.description ? newDescription : null,
+        logo: newLogo,
+      },
+    });
+  };
+
+  // Called when the edit button on the logo is clicked
   const handleEditLogo = () => {
     setUploadDialogOpen(true);
   };
 
+  // Called in UploadDialog to close the dialog
   const handleCloseUploadDialog = () => {
     setUploadDialogOpen(false);
   };
 
-  const handleChangeLogo = (logo) => {
+  // Called in ProfilePicDialog to set newProfilePic
+  const handleSetNewLogo = (logo) => {
     setNewLogo(logo);
   };
+
+  // Called after the mutation is completed
+  function finishEditCommunity() {
+    setNewLogo(null);
+    history.push(`/c/${community.name}`);
+  }
 
   return (
     <Container>
@@ -84,7 +116,7 @@ function EditCommunityPage(props) {
 
       {community && (
         <Paper className={classes.paper} elevation={0}>
-          <Paper className={classes.paperCentered} elevation={0}>
+          <Paper className={classes.logoAndName} elevation={0}>
             <Badge
               overlap="circular"
               anchorOrigin={{
@@ -92,10 +124,7 @@ function EditCommunityPage(props) {
                 horizontal: "right",
               }}
               badgeContent={
-                <IconButton
-                  onClick={handleEditLogo}
-                  // disabled={changeProfilePicLoading}
-                >
+                <IconButton onClick={handleEditLogo} disabled={loading}>
                   <EditOutlinedIcon />
                 </IconButton>
               }
@@ -107,17 +136,15 @@ function EditCommunityPage(props) {
                 }
               />
             </Badge>
+
+            <Typography variant="h5">{`c/${community.name}`}</Typography>
           </Paper>
 
           <UploadDialog
             open={uploadDialogOpen}
             onClose={handleCloseUploadDialog}
-            onChange={handleChangeLogo}
+            onChange={handleSetNewLogo}
           />
-
-          <Paper className={classes.paperCentered} elevation={0}>
-            <Typography variant="h5">{`c/${community.name}`}</Typography>
-          </Paper>
 
           <TextField
             className={classes.form}
@@ -125,11 +152,9 @@ function EditCommunityPage(props) {
             size="small"
             id="title"
             label="Title"
-            value={title}
-            onChange={(event) => setTitle(event.target.value)}
-            // disabled={loading}
-            // error={Boolean(newUsernameError)}
-            // helperText={newUsernameError}
+            value={newTitle}
+            onChange={(event) => setNewTitle(event.target.value)}
+            disabled={loading}
           />
 
           <TextField
@@ -140,11 +165,9 @@ function EditCommunityPage(props) {
             label="Description"
             multiline
             rows={8}
-            value={description}
-            onChange={(event) => setDescription(event.target.value)}
-            // disabled={loading}
-            // error={Boolean(newUsernameError)}
-            // helperText={newUsernameError}
+            value={newDescription}
+            onChange={(event) => setNewDescription(event.target.value)}
+            disabled={loading}
           />
 
           <Typography>Moderators:</Typography>
@@ -166,6 +189,7 @@ function EditCommunityPage(props) {
             variant="contained"
             color="primary"
             style={{ width: "max-content" }}
+            disabled={loading}
           >
             + Invite
           </Button>
@@ -176,11 +200,17 @@ function EditCommunityPage(props) {
               color="secondary"
               component={Link}
               to={`/c/${community.name}`}
+              disabled={loading}
             >
               Cancel
             </Button>
 
-            <Button variant="contained" color="primary">
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleEditCommunity}
+              disabled={loading}
+            >
               Save
             </Button>
           </Paper>
@@ -190,6 +220,7 @@ function EditCommunityPage(props) {
               variant="outlined"
               color="secondary"
               style={{ width: "max-content" }}
+              disabled={loading}
             >
               Delete Circle
             </Button>

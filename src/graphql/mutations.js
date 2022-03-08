@@ -148,6 +148,27 @@ export const LEAVE = gql`
   }
 `;
 
+export const EDIT_COMMUNITY = gql`
+  mutation EditCommunity(
+    $community_id: Int!
+    $title: String
+    $description: String
+    $logo: Upload
+  ) {
+    editCommunity(
+      community_id: $community_id
+      title: $title
+      description: $description
+      logo: $logo
+    ) {
+      community_id
+      title
+      description
+      logo_src
+    }
+  }
+`;
+
 /* ========== Post Mutations ========== */
 
 export const ADD_TEXT_POST = gql`
