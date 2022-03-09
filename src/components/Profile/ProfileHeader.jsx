@@ -12,7 +12,7 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Typography from "@material-ui/core/Typography";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Button from "@material-ui/core/Button";
-import ProfilePicDialog from "./ProfilePicDialog";
+import UploadDialog from "../Common/UploadDialog";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 import { Link } from "react-router-dom";
 
@@ -137,7 +137,7 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
         <Avatar className={classes.avatar} src={profileUser.profile_pic_src} />
       )}
 
-      <ProfilePicDialog
+      <UploadDialog
         open={isProfilePicDialogOpen}
         onClose={handleCloseProfilePicDialog}
         onChange={handleSetNewProfilePic}
