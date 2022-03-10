@@ -18,15 +18,22 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
 import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
+import SearchBar from "./SearchBar";
 import SignUpDialog from "./SignUpDialog";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  title: {
+  titleAndSearch: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 16,
     flexGrow: 1,
   },
-  leftButton: {
-    marginRight: 8,
+  buttons: {
+    display: "flex",
+    flexDirection: "row",
+    gap: 8,
   },
 });
 
@@ -78,9 +85,11 @@ function NavBar(props) {
           <IconButton edge="start" color="inherit" component={Link} to={"/"}>
             <TollIcon fontSize="large" />
           </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Cirqls
-          </Typography>
+          <Paper className={classes.titleAndSearch} elevation={0}>
+            <Typography variant="h6">Cirqls</Typography>
+
+            <SearchBar />
+          </Paper>
 
           {isLoggedIn ? (
             <Paper elevation={0}>
@@ -124,9 +133,8 @@ function NavBar(props) {
               </Popover>
             </Paper>
           ) : (
-            <Paper elevation={0}>
+            <Paper className={classes.buttons} elevation={0}>
               <Button
-                className={classes.leftButton}
                 variant="outlined"
                 color="primary"
                 component={Link}

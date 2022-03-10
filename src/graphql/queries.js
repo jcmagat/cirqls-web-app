@@ -96,6 +96,7 @@ export const GET_COMMUNITY = gql`
 `;
 
 /* ========== Post Queries ========== */
+
 export const GET_HOME_PAGE_POSTS = gql`
   ${POST_FRAGMENT}
   query HomePagePosts($sort: String!) {
@@ -216,6 +217,39 @@ export const GET_CONVERSATION = gql`
   query Conversation($username: String!) {
     conversation(username: $username) {
       ...MessageFragment
+    }
+  }
+`;
+
+/* ========== Search Queries ========== */
+
+export const SEARCH = gql`
+  query Search($term: String!) {
+    search(term: $term) {
+      ... on TextPost {
+        __typename
+        post_id
+        title
+        description
+      }
+      ... on MediaPost {
+        __typename
+        post_id
+        title
+        media_src
+      }
+      ... on User {
+        __typename
+        user_id
+        username
+      }
+      ... on Community {
+        __typename
+        community_id
+        name
+        title
+        description
+      }
     }
   }
 `;
