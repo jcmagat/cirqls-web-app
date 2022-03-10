@@ -231,12 +231,54 @@ export const SEARCH = gql`
         post_id
         title
         description
+        created_at
+        created_since
+        poster {
+          user_id
+          username
+        }
+        community {
+          community_id
+          name
+          logo_src
+        }
+        reactions {
+          likes
+          dislikes
+          total
+          auth_user_reaction
+        }
+        comments_info {
+          total
+          comment_ids
+        }
       }
       ... on MediaPost {
         __typename
         post_id
         title
         media_src
+        created_at
+        created_since
+        poster {
+          user_id
+          username
+        }
+        community {
+          community_id
+          name
+          logo_src
+        }
+        reactions {
+          likes
+          dislikes
+          total
+          auth_user_reaction
+        }
+        comments_info {
+          total
+          comment_ids
+        }
       }
       ... on User {
         __typename
