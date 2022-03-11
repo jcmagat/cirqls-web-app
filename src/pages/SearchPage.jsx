@@ -50,6 +50,8 @@ function SearchPage(props) {
       <NavBar />
 
       <Paper className={classes.content} elevation={0}>
+        <h5>{`${users.length} users`}</h5>
+        <h5>{`${communities.length} communities`}</h5>
         <PostList posts={posts} />
       </Paper>
     </Container>
