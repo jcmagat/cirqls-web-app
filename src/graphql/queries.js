@@ -284,6 +284,7 @@ export const SEARCH = gql`
         __typename
         user_id
         username
+        profile_pic_src
       }
       ... on Community {
         __typename
@@ -291,6 +292,10 @@ export const SEARCH = gql`
         name
         title
         description
+        logo_src
+        members {
+          user_id
+        }
       }
     }
   }

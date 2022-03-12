@@ -6,13 +6,67 @@ import { SEARCH } from "../../graphql/queries";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Popper from "@material-ui/core/Popper";
-import Typography from "@material-ui/core/Typography";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
+import CardHeader from "@material-ui/core/CardHeader";
+import Avatar from "@material-ui/core/Avatar";
+import Divider from "@material-ui/core/Divider";
+import Button from "@material-ui/core/Button";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  popper: {
-    padding: 8,
+  results: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  card: {
+    boxShadow: "none",
   },
 });
+
+function ResultCard({ result }) {
+  const classes = useStyles();
+
+  const [linkTo, setLinkTo] = useState("");
+  const [avatarSrc, setAvatarSrc] = useState("");
+  const [title, setTitle] = useState("");
+  const [subheader, setSubheader] = useState("");
+
+  useEffect(() => {
+    if (result.__typename === "User") {
+      setLinkTo(`/u/${result.username}`);
+      setAvatarSrc(result.profile_pic_src);
+      setTitle(`u/${result.username}`);
+      setSubheader("User");
+    } else {
+      // Community
+      setLinkTo(`/c/${result.name}`);
+      setAvatarSrc(result.logo_src);
+      setTitle(`c/${result.name}`);
+      setSubheader(
+        `Circle ⋅ ${result.members.length} `.concat(
+          result.members.length > 1 ? "members" : "member"
+        )
+      );
+    }
+  }, [result]);
+
+  return (
+    <Paper elevation={0}>
+      <Card className={classes.card}>
+        <CardActionArea component={Link} to={linkTo}>
+          <CardHeader
+            avatar={<Avatar src={avatarSrc} />}
+            title={title}
+            subheader={subheader}
+          />
+        </CardActionArea>
+      </Card>
+
+      <Divider />
+    </Paper>
+  );
+}
 
 function SearchBar(props) {
   const classes = useStyles();
@@ -24,9 +78,7 @@ function SearchBar(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const [search] = useLazyQuery(SEARCH, {
-    onCompleted: (data) => setResults(data.search),
-  });
+  const [search] = useLazyQuery(SEARCH, { onCompleted: finishSearch });
 
   useEffect(() => {
     const timeOutId = setTimeout(
@@ -62,8 +114,20 @@ function SearchBar(props) {
   };
 
   const handleUnfocus = () => {
-    setOpen(false);
+    // Delay closing the popper to allow clicking results
+    const timeOutId = setTimeout(() => setOpen(false), 100);
+    return () => clearTimeout(timeOutId);
   };
+
+  function finishSearch(data) {
+    // Only add User or Community to results
+    setResults(
+      data.search.filter(
+        (result) =>
+          result.__typename === "User" || result.__typename === "Community"
+      )
+    );
+  }
 
   return (
     <Paper elevation={0}>
@@ -85,8 +149,12 @@ function SearchBar(props) {
         placement="bottom-start"
         disablePortal
       >
-        <Paper className={classes.popper}>
-          <Typography variant="body1">{results.length}</Typography>
+        <Paper className={classes.results}>
+          {results.map((result, index) => (
+            <ResultCard key={index} result={result} />
+          ))}
+
+          <Button onClick={handleSubmit}>More Results</Button>
         </Paper>
       </Popper>
     </Paper>
