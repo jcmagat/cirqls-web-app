@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import { SEARCH } from "../../graphql/queries";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import Popper from "@material-ui/core/Popper";
+import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles({
   popper: {
-    position: "absolute",
-    zIndex: 2,
+    padding: 8,
   },
 });
 
@@ -24,21 +24,25 @@ function SearchBar(props) {
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const [search] = useLazyQuery(SEARCH, { onCompleted: finishSearch });
+  const [search] = useLazyQuery(SEARCH, {
+    onCompleted: (data) => setResults(data.search),
+  });
 
   useEffect(() => {
-    if (!term) {
-      setResults([]);
-      setOpen(false);
-      return;
-    }
-
     const timeOutId = setTimeout(
       () => search({ variables: { term: term } }),
       800
     );
     return () => clearTimeout(timeOutId);
   }, [term, search]);
+
+  useEffect(() => {
+    if (results.length > 0) {
+      setOpen(true);
+    } else {
+      setOpen(false);
+    }
+  }, [results]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -49,16 +53,17 @@ function SearchBar(props) {
     });
   };
 
-  function finishSearch(data) {
-    setResults(data.search);
-    console.log(data.search);
+  const handleFocus = (event) => {
+    setAnchorEl(event.currentTarget);
 
-    if (data.search.length > 0) {
+    if (results.length > 0) {
       setOpen(true);
-    } else {
-      setOpen(false);
     }
-  }
+  };
+
+  const handleUnfocus = () => {
+    setOpen(false);
+  };
 
   return (
     <Paper elevation={0}>
@@ -68,12 +73,18 @@ function SearchBar(props) {
           size="small"
           id="search"
           label="Search"
-          onFocus={(event) => setAnchorEl(event.currentTarget)}
+          onFocus={handleFocus}
+          onBlur={handleUnfocus}
           onChange={(event) => setTerm(event.target.value)}
         />
       </form>
 
-      <Popper open={open} anchorEl={anchorEl} placement="bottom-start">
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        placement="bottom-start"
+        disablePortal
+      >
         <Paper className={classes.popper}>
           <Typography variant="body1">{results.length}</Typography>
         </Paper>
