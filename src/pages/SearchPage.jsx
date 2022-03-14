@@ -11,10 +11,10 @@ import Tab from "@material-ui/core/Tab";
 import TabContext from "@material-ui/lab/TabContext";
 import TabList from "@material-ui/lab/TabList";
 import TabPanel from "@material-ui/lab/TabPanel";
-import Grid from "@material-ui/core/Grid";
 import NavBar from "../components/Navigation/NavBar";
 import PostList from "../components/Post/PostList";
 import CommunityCard from "../components/Community/CommunityCard";
+import UserCard from "../components/User/UserCard";
 
 const useStyles = makeStyles({
   content: {
@@ -102,7 +102,11 @@ function SearchPage(props) {
           </TabPanel>
 
           <TabPanel value={TABS.USERS}>
-            <h5>{`${users.length} users`}</h5>
+            <Paper className={classes.cards} elevation={0}>
+              {users.map((user) => (
+                <UserCard key={user.user_id} user={user} />
+              ))}
+            </Paper>
           </TabPanel>
         </TabContext>
       </Paper>
