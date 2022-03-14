@@ -6,14 +6,32 @@ import { useQuery } from "@apollo/client";
 import { SEARCH } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
+import Typography from "@material-ui/core/Typography";
+import Tab from "@material-ui/core/Tab";
+import TabContext from "@material-ui/lab/TabContext";
+import TabList from "@material-ui/lab/TabList";
+import TabPanel from "@material-ui/lab/TabPanel";
+import Grid from "@material-ui/core/Grid";
 import NavBar from "../components/Navigation/NavBar";
 import PostList from "../components/Post/PostList";
+import CommunityCard from "../components/Community/CommunityCard";
 
 const useStyles = makeStyles({
   content: {
     marginTop: 80,
   },
+  cards: {
+    display: "flex",
+    flexDirection: "column",
+    gap: 16,
+  },
 });
+
+const TABS = {
+  POSTS: "posts",
+  COMMUNITIES: "communities",
+  USERS: "users",
+};
 
 function SearchPage(props) {
   const classes = useStyles();
@@ -21,9 +39,11 @@ function SearchPage(props) {
   const { search } = useLocation();
   const { term } = queryString.parse(search);
 
-  const [users, setUsers] = useState([]);
-  const [communities, setCommunities] = useState([]);
+  const [tab, setTab] = useState(TABS.POSTS);
+
   const [posts, setPosts] = useState([]);
+  const [communities, setCommunities] = useState([]);
+  const [users, setUsers] = useState([]);
 
   const { data } = useQuery(SEARCH, {
     variables: {
@@ -34,15 +54,18 @@ function SearchPage(props) {
   useEffect(() => {
     if (!data) return;
 
-    data.search.forEach((result) => {
-      if (result.__typename === "User") {
-        setUsers((prev) => [...prev, result]);
-      } else if (result.__typename === "Community") {
-        setCommunities((prev) => [...prev, result]);
-      } else {
-        setPosts((prev) => [...prev, result]);
-      }
-    });
+    setPosts(
+      data.search.filter(
+        (result) =>
+          result.__typename === "TextPost" || result.__typename === "MediaPost"
+      )
+    );
+
+    setCommunities(
+      data.search.filter((result) => result.__typename === "Community")
+    );
+
+    setUsers(data.search.filter((result) => result.__typename === "User"));
   }, [data]);
 
   return (
@@ -50,9 +73,38 @@ function SearchPage(props) {
       <NavBar />
 
       <Paper className={classes.content} elevation={0}>
-        <h5>{`${users.length} users`}</h5>
-        <h5>{`${communities.length} communities`}</h5>
-        <PostList posts={posts} />
+        <Typography variant="h6">{`Search results for "${term}"`}</Typography>
+
+        <TabContext value={tab}>
+          <TabList
+            centered={true}
+            indicatorColor="primary"
+            onChange={(event, value) => setTab(value)}
+          >
+            <Tab label="Posts" value={TABS.POSTS} />
+            <Tab label="Communities" value={TABS.COMMUNITIES} />
+            <Tab label="Users" value={TABS.USERS} />
+          </TabList>
+
+          <TabPanel value={TABS.POSTS}>
+            <PostList posts={posts} />
+          </TabPanel>
+
+          <TabPanel value={TABS.COMMUNITIES}>
+            <Paper className={classes.cards} elevation={0}>
+              {communities.map((community) => (
+                <CommunityCard
+                  key={community.community_id}
+                  community={community}
+                />
+              ))}
+            </Paper>
+          </TabPanel>
+
+          <TabPanel value={TABS.USERS}>
+            <h5>{`${users.length} users`}</h5>
+          </TabPanel>
+        </TabContext>
       </Paper>
     </Container>
   );
