@@ -5,18 +5,12 @@ import { useMutation } from "@apollo/client";
 import { DELETE_ACCOUNT } from "../graphql/mutations";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
-import IconButton from "@material-ui/core/IconButton";
-import TollIcon from "@material-ui/icons/Toll";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Logo from "../components/Navigation/Logo";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  logo: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
   paper: {
     display: "flex",
     justifyContent: "center",
@@ -60,14 +54,7 @@ function DeleteAccountPage(props) {
 
   return (
     <Container>
-      <Paper className={classes.logo} elevation={0}>
-        <IconButton edge="start" color="inherit" component={Link} to={"/"}>
-          <TollIcon fontSize="large" />
-        </IconButton>
-        <Typography variant="h6" className={classes.title}>
-          Cirqls
-        </Typography>
-      </Paper>
+      <Logo />
 
       <Paper className={classes.paper} elevation={0}>
         <Paper className={classes.contentPaper}>
@@ -76,12 +63,14 @@ function DeleteAccountPage(props) {
               <Typography variant="h5" paragraph>
                 An error occured while deleting your Cirqls account
               </Typography>
+
               <Typography variant="body1">
                 Please make sure to go to the confirmation email
               </Typography>
               <Typography variant="body1" paragraph>
                 and click the 'Delete Account' button or copy the complete link
               </Typography>
+
               <Typography variant="body1">
                 If that doesn't work, you could make another request to delete
                 your account
@@ -96,9 +85,11 @@ function DeleteAccountPage(props) {
               <Typography variant="h5" paragraph>
                 Your Cirqls account has been permanently deleted
               </Typography>
+
               <Typography variant="body1" paragraph>
                 You can now close this window or go to homepage
               </Typography>
+
               <Button
                 variant="contained"
                 color="primary"
