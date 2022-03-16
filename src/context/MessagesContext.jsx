@@ -123,14 +123,30 @@ export function MessagesProvider(props) {
     const myMessage = data.sendMessage;
 
     updateQuery((prev) => {
-      const updatedConversations = prev.conversations.map((conversation) => {
-        return conversation.user.user_id === myMessage.recipient.user_id
-          ? {
-              ...conversation,
-              messages: [myMessage, ...conversation.messages],
-            }
-          : conversation;
-      });
+      let updatedConversations = [];
+
+      const conversation = prev.conversations.find(
+        (conversation) =>
+          conversation.user.user_id === myMessage.recipient.user_id
+      );
+
+      if (!conversation) {
+        const newConversation = {
+          user: myMessage.recipient,
+          messages: [myMessage],
+        };
+
+        updatedConversations = [newConversation, ...prev.conversations];
+      } else {
+        updatedConversations = prev.conversations.map((conversation) => {
+          return conversation.user.user_id === myMessage.recipient.user_id
+            ? {
+                ...conversation,
+                messages: [myMessage, ...conversation.messages],
+              }
+            : conversation;
+        });
+      }
 
       return Object.assign({}, prev, { conversations: updatedConversations });
     });
