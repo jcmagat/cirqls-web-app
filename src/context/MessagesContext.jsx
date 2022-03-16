@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { useQuery, useSubscription, useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { GET_CONVERSATIONS } from "../graphql/queries";
 import { NEW_MESSAGE } from "../graphql/subscriptions";
 import { SEND_MESSAGE } from "../graphql/mutations";
@@ -32,7 +32,11 @@ export function MessagesProvider(props) {
 
   const [conversations, setConversations] = useState([]);
 
-  const { data: getConversationsData } = useQuery(GET_CONVERSATIONS);
+  const {
+    data: getConversationsData,
+    subscribeToMore,
+    updateQuery,
+  } = useQuery(GET_CONVERSATIONS);
 
   useEffect(() => {
     if (getConversationsData) {
@@ -54,22 +58,54 @@ export function MessagesProvider(props) {
 
   /* ========== Receive New Message ========== */
 
-  const { data: newMessageData } = useSubscription(NEW_MESSAGE);
-
   useEffect(() => {
-    if (newMessageData) {
-      setMessages((prevMessages) => [
-        newMessageData.newMessage,
-        ...prevMessages,
-      ]);
-    }
-  }, [newMessageData]);
+    const subscribeToNewMessage = () => {
+      subscribeToMore({
+        document: NEW_MESSAGE,
+        updateQuery: (prev, { subscriptionData: { data } }) => {
+          if (!data) return prev;
+
+          const newMessage = data.newMessage;
+          const senderId = newMessage.sender.user_id;
+
+          let updatedConversations = [];
+
+          const conversation = prev.conversations.find(
+            (conversation) => conversation.user.user_id === senderId
+          );
+
+          if (!conversation) {
+            const newConversation = {
+              user: newMessage.sender,
+              messages: [newMessage],
+            };
+
+            updatedConversations = [newConversation, ...prev.conversations];
+          } else {
+            updatedConversations = prev.conversations.map((conversation) => {
+              return conversation.user.user_id === senderId
+                ? {
+                    ...conversation,
+                    messages: [newMessage, ...conversation.messages],
+                  }
+                : conversation;
+            });
+          }
+
+          return Object.assign({}, prev, {
+            conversations: updatedConversations,
+          });
+        },
+      });
+    };
+
+    subscribeToNewMessage();
+  }, [subscribeToMore]);
 
   /* ========== Send Message ========== */
 
   const [sendMessage] = useMutation(SEND_MESSAGE, {
-    onCompleted: (data) =>
-      setMessages((prevMessages) => [data.sendMessage, ...prevMessages]),
+    onCompleted: finishSendMessage,
   });
 
   const handleSendMessage = (message) => {
@@ -82,6 +118,23 @@ export function MessagesProvider(props) {
       },
     });
   };
+
+  function finishSendMessage(data) {
+    const myMessage = data.sendMessage;
+
+    updateQuery((prev) => {
+      const updatedConversations = prev.conversations.map((conversation) => {
+        return conversation.user.user_id === myMessage.recipient.user_id
+          ? {
+              ...conversation,
+              messages: [myMessage, ...conversation.messages],
+            }
+          : conversation;
+      });
+
+      return Object.assign({}, prev, { conversations: updatedConversations });
+    });
+  }
 
   return (
     <ConversationsContext.Provider value={conversations}>
