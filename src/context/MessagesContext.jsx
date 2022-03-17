@@ -47,12 +47,12 @@ export function MessagesProvider(props) {
   /* ========== Set Messages ========== */
 
   useEffect(() => {
-    if (!user) return;
-
     const conversation = conversations.find((el) => el.user.username === user);
 
     if (conversation) {
       setMessages(conversation.messages);
+    } else {
+      setMessages([]);
     }
   }, [user, conversations]);
 
@@ -66,30 +66,31 @@ export function MessagesProvider(props) {
           if (!data) return prev;
 
           const newMessage = data.newMessage;
-          const senderId = newMessage.sender.user_id;
 
           let updatedConversations = [];
 
-          const conversation = prev.conversations.find(
-            (conversation) => conversation.user.user_id === senderId
+          const index = prev.conversations.findIndex(
+            (conversation) =>
+              conversation.user.user_id === newMessage.sender.user_id
           );
 
-          if (!conversation) {
+          if (index > -1) {
+            updatedConversations = [...prev.conversations];
+
+            let conversation = updatedConversations.splice(index, 1)[0];
+
+            conversation = Object.assign({}, conversation, {
+              messages: [newMessage, ...conversation.messages],
+            });
+
+            updatedConversations.unshift(conversation);
+          } else {
             const newConversation = {
               user: newMessage.sender,
               messages: [newMessage],
             };
 
             updatedConversations = [newConversation, ...prev.conversations];
-          } else {
-            updatedConversations = prev.conversations.map((conversation) => {
-              return conversation.user.user_id === senderId
-                ? {
-                    ...conversation,
-                    messages: [newMessage, ...conversation.messages],
-                  }
-                : conversation;
-            });
           }
 
           return Object.assign({}, prev, {
@@ -125,27 +126,28 @@ export function MessagesProvider(props) {
     updateQuery((prev) => {
       let updatedConversations = [];
 
-      const conversation = prev.conversations.find(
+      const index = prev.conversations.findIndex(
         (conversation) =>
           conversation.user.user_id === myMessage.recipient.user_id
       );
 
-      if (!conversation) {
+      if (index > -1) {
+        updatedConversations = [...prev.conversations];
+
+        let conversation = updatedConversations.splice(index, 1)[0];
+
+        conversation = Object.assign({}, conversation, {
+          messages: [myMessage, ...conversation.messages],
+        });
+
+        updatedConversations.unshift(conversation);
+      } else {
         const newConversation = {
           user: myMessage.recipient,
           messages: [myMessage],
         };
 
         updatedConversations = [newConversation, ...prev.conversations];
-      } else {
-        updatedConversations = prev.conversations.map((conversation) => {
-          return conversation.user.user_id === myMessage.recipient.user_id
-            ? {
-                ...conversation,
-                messages: [myMessage, ...conversation.messages],
-              }
-            : conversation;
-        });
       }
 
       return Object.assign({}, prev, { conversations: updatedConversations });
