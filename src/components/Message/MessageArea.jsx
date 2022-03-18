@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMessages } from "../../context/MessagesContext";
@@ -35,6 +35,18 @@ function MessageArea(props) {
   const authUser = useAuthUser();
   const messages = useMessages();
 
+  const [newMessageId, setNewMessageId] = useState();
+
+  useEffect(() => {
+    if (!Array.isArray(messages) || messages.length < 1) return;
+
+    setNewMessageId(messages[0].message_id);
+  }, [messages]);
+
+  const newMessageRef = useCallback((node) => {
+    if (node) node.scrollIntoView();
+  }, []);
+
   return (
     <Paper className={classes.paper} elevation={0}>
       {authUser && messages && (
@@ -50,6 +62,9 @@ function MessageArea(props) {
                     authUser.username === message.sender.username
                       ? classes.rightMessage
                       : classes.leftMessage
+                  }
+                  ref={
+                    message.message_id === newMessageId ? newMessageRef : null
                   }
                 >
                   <MessageCard message={message} />

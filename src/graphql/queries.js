@@ -204,6 +204,7 @@ export const GET_CONVERSATIONS = gql`
       user {
         user_id
         username
+        profile_pic_src
       }
       messages {
         ...MessageFragment

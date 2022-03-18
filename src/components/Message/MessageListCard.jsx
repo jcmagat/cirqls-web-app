@@ -16,11 +16,7 @@ function MessageListCard({ conversation }) {
     <Card>
       <CardActionArea onClick={handleClick}>
         <CardHeader
-          avatar={
-            <Avatar>
-              {conversation.user.username.charAt(0).toUpperCase()}
-            </Avatar>
-          }
+          avatar={<Avatar src={conversation.user.profile_pic_src} />}
           title={conversation.user.username}
           subheader={conversation.messages[0].message}
         />
