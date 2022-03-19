@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
+import { useNotifications } from "../../context/NotificationsContext";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import IconButton from "@material-ui/core/IconButton";
+import Badge from "@material-ui/core/Badge";
 import Popover from "@material-ui/core/Popover";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TollIcon from "@material-ui/icons/Toll";
@@ -42,6 +44,7 @@ function NavBar(props) {
   const history = useHistory();
 
   const authUser = useAuthUser();
+  const notifications = useNotifications();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -53,6 +56,18 @@ function NavBar(props) {
     localStorage.removeItem("token");
     history.push("/");
   };
+
+  /* ========== Notifications ========== */
+
+  const [unreadMessages, setUnreadMessages] = useState([]);
+
+  useEffect(() => {
+    setUnreadMessages(
+      notifications.filter(
+        (notification) => notification.__typename === "Message"
+      )
+    );
+  }, [notifications]);
 
   /* ========== Account Menu ========== */
 
@@ -98,7 +113,9 @@ function NavBar(props) {
               </IconButton>
 
               <IconButton component={Link} to={"/messages"}>
-                <ChatOutlinedIcon />
+                <Badge color="secondary" badgeContent={unreadMessages.length}>
+                  <ChatOutlinedIcon />
+                </Badge>
               </IconButton>
 
               <IconButton onClick={handleAccountMenuOpen}>

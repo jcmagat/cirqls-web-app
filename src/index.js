@@ -6,11 +6,14 @@ import reportWebVitals from "./reportWebVitals";
 import { ApolloProvider } from "@apollo/client";
 import { client } from "./apollo";
 import { AuthUserProvider } from "./context/AuthUserContext";
+import { NotificationsProvider } from "./context/NotificationsContext";
 
 ReactDOM.render(
   <ApolloProvider client={client}>
     <AuthUserProvider>
-      <App />
+      <NotificationsProvider>
+        <App />
+      </NotificationsProvider>
     </AuthUserProvider>
   </ApolloProvider>,
   document.getElementById("root")

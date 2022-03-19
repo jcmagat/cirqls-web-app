@@ -4,7 +4,7 @@ import { useConversations } from "../../context/MessagesContext";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
-import MessageListCard from "./MessageListCard";
+import ConversationCard from "./ConversationCard";
 
 const useStyles = makeStyles({
   card: {
@@ -12,7 +12,7 @@ const useStyles = makeStyles({
   },
 });
 
-function MessageList(props) {
+function ConversationList(props) {
   const classes = useStyles();
 
   const conversations = useConversations();
@@ -28,7 +28,7 @@ function MessageList(props) {
             disableGutters
           >
             <Paper className={classes.card} elevation={0}>
-              <MessageListCard conversation={conversation} />
+              <ConversationCard conversation={conversation} />
             </Paper>
           </ListItem>
         ))}
@@ -37,4 +37,4 @@ function MessageList(props) {
   );
 }
 
-export default MessageList;
+export default ConversationList;

@@ -5,7 +5,7 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 
-function MessageListCard({ conversation }) {
+function ConversationCard({ conversation }) {
   const history = useHistory();
 
   const handleClick = () => {
@@ -25,4 +25,4 @@ function MessageListCard({ conversation }) {
   );
 }
 
-export default MessageListCard;
+export default ConversationCard;

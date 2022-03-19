@@ -222,6 +222,20 @@ export const GET_CONVERSATION = gql`
   }
 `;
 
+/* ========== Notification Queries ========== */
+
+export const GET_NOTIFICATIONS = gql`
+  ${MESSAGE_FRAGMENT}
+  query Notifications {
+    notifications {
+      ... on Message {
+        __typename
+        ...MessageFragment
+      }
+    }
+  }
+`;
+
 /* ========== Search Queries ========== */
 
 export const SEARCH = gql`
