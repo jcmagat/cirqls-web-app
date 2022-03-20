@@ -2,6 +2,8 @@ import React, { useState, useEffect, useCallback } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMessages } from "../../context/MessagesContext";
+import { useMutation } from "@apollo/client";
+import { READ_MESSAGES } from "../../graphql/mutations";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -34,6 +36,37 @@ function MessageArea(props) {
 
   const authUser = useAuthUser();
   const messages = useMessages();
+
+  /* ========== Mark Unread Messages Read ========== */
+
+  const [unreadMessageIds, setUnreadMessageIds] = useState([]);
+
+  const [readMessages] = useMutation(READ_MESSAGES);
+
+  useEffect(() => {
+    if (!authUser) return;
+
+    setUnreadMessageIds(
+      messages
+        .filter(
+          (message) =>
+            message.sender.user_id !== authUser.user_id && !message.is_read
+        )
+        .map((message) => message.message_id)
+    );
+  }, [messages, authUser]);
+
+  useEffect(() => {
+    if (!Array.isArray(unreadMessageIds) || unreadMessageIds.length < 1) return;
+
+    readMessages({
+      variables: {
+        message_ids: unreadMessageIds,
+      },
+    });
+  }, [unreadMessageIds, readMessages]);
+
+  /* ========== Scroll to New Message ========== */
 
   const [newMessageId, setNewMessageId] = useState();
 

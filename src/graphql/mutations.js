@@ -315,3 +315,12 @@ export const SEND_MESSAGE = gql`
     }
   }
 `;
+
+export const READ_MESSAGES = gql`
+  mutation ReadMessages($message_ids: [Int]!) {
+    readMessages(message_ids: $message_ids) {
+      message_id
+      is_read
+    }
+  }
+`;

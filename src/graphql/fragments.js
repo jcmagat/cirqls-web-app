@@ -60,6 +60,7 @@ export const MESSAGE_FRAGMENT = gql`
     message_id
     message
     sent_at
+    is_read
     sender {
       user_id
       username
