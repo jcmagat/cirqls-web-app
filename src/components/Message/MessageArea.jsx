@@ -4,6 +4,7 @@ import { useAuthUser } from "../../context/AuthUserContext";
 import { useMessages } from "../../context/MessagesContext";
 import { useMutation } from "@apollo/client";
 import { READ_MESSAGES } from "../../graphql/mutations";
+import { GET_NOTIFICATIONS } from "../../graphql/queries";
 import Paper from "@material-ui/core/Paper";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
@@ -41,7 +42,9 @@ function MessageArea(props) {
 
   const [unreadMessageIds, setUnreadMessageIds] = useState([]);
 
-  const [readMessages] = useMutation(READ_MESSAGES);
+  const [readMessages] = useMutation(READ_MESSAGES, {
+    refetchQueries: [{ query: GET_NOTIFICATIONS }],
+  });
 
   useEffect(() => {
     if (!authUser) return;
