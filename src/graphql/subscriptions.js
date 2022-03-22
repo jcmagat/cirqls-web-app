@@ -9,3 +9,15 @@ export const NEW_MESSAGE = gql`
     }
   }
 `;
+
+export const NEW_NOTIFICATION = gql`
+  ${MESSAGE_FRAGMENT}
+  subscription NewNotification {
+    newNotification {
+      ... on Message {
+        __typename
+        ...MessageFragment
+      }
+    }
+  }
+`;
