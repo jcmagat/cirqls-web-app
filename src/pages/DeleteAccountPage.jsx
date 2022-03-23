@@ -38,7 +38,7 @@ function DeleteAccountPage(props) {
     variables: {
       token: token,
     },
-    onCompleted: () => setIsCompleted(true),
+    onCompleted: finishDeleteAccount,
     onError: handleError,
   });
 
@@ -47,6 +47,11 @@ function DeleteAccountPage(props) {
 
     deleteAccount();
   }, [isCompleted, deleteAccount]);
+
+  function finishDeleteAccount(data) {
+    localStorage.removeItem("token");
+    setIsCompleted(true);
+  }
 
   function handleError(error) {
     setIsCompleted(true);
