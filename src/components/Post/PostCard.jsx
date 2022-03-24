@@ -26,8 +26,8 @@ import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
 import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
 import BookmarkIcon from "@material-ui/icons/Bookmark";
 import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import DeleteIcon from "@material-ui/icons/Delete";
-import FlagIcon from "@material-ui/icons/Flag";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
+import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
 import Popover from "@material-ui/core/Popover";
 import ButtonGroup from "@material-ui/core/ButtonGroup";
 import Dialog from "@material-ui/core/Dialog";
@@ -141,6 +141,7 @@ function PostCard(props) {
 
   /* ========== Delete Post ========== */
 
+  // TODO: change refetch queries depending on what page the post is displayed
   const [deletePost, { loading: deletePostLoading }] = useMutation(
     DELETE_POST,
     {
@@ -280,13 +281,13 @@ function PostCard(props) {
           <ButtonGroup orientation="vertical">
             {isAuthUsersPost && (
               <IconButton onClick={handleDeleteButtonClick}>
-                <DeleteIcon />
+                <DeleteOutlineIcon />
                 <Typography>Delete</Typography>
               </IconButton>
             )}
 
             <IconButton>
-              <FlagIcon />
+              <FlagOutlinedIcon />
               <Typography>Report</Typography>
             </IconButton>
           </ButtonGroup>
