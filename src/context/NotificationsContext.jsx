@@ -4,20 +4,36 @@ import { GET_NOTIFICATIONS } from "../graphql/queries";
 import { NEW_NOTIFICATION } from "../graphql/subscriptions";
 
 const NotificationsContext = createContext();
+const UnreadMessagesContext = createContext();
 
 export const useNotifications = () => {
   return useContext(NotificationsContext);
 };
 
+export const useUnreadMessages = () => {
+  return useContext(UnreadMessagesContext);
+};
+
 export function NotificationsProvider({ children }) {
   const [notifications, setNotifications] = useState([]);
+  const [unreadMessages, setUnreadMessages] = useState([]);
 
   const { data, subscribeToMore } = useQuery(GET_NOTIFICATIONS);
 
   useEffect(() => {
     if (!data) return;
 
-    setNotifications(data.notifications);
+    setNotifications(
+      data.notifications.filter(
+        (notification) => notification.__typename !== "Message"
+      )
+    );
+
+    setUnreadMessages(
+      data.notifications.filter(
+        (notification) => notification.__typename === "Message"
+      )
+    );
   }, [data]);
 
   useEffect(() => {
@@ -44,7 +60,9 @@ export function NotificationsProvider({ children }) {
 
   return (
     <NotificationsContext.Provider value={notifications}>
-      {children}
+      <UnreadMessagesContext.Provider value={unreadMessages}>
+        {children}
+      </UnreadMessagesContext.Provider>
     </NotificationsContext.Provider>
   );
 }

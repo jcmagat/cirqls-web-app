@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
-import { useNotifications } from "../../context/NotificationsContext";
+import { useUnreadMessages } from "../../context/NotificationsContext";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
@@ -21,19 +21,17 @@ function ConversationCard({ conversation }) {
   const classes = useStyles();
   const history = useHistory();
 
-  const notifications = useNotifications();
+  const unreadMessages = useUnreadMessages();
 
-  const [unreadMessages, setUnreadMessages] = useState([]);
+  const [myUnreadMessages, setMyUnreadMessages] = useState([]);
 
   useEffect(() => {
-    setUnreadMessages(
-      notifications.filter(
-        (notification) =>
-          notification.__typename === "Message" &&
-          notification.sender.user_id === conversation.user.user_id
+    setMyUnreadMessages(
+      unreadMessages.filter(
+        (message) => message.sender.user_id === conversation.user.user_id
       )
     );
-  }, [notifications, conversation]);
+  }, [unreadMessages, conversation]);
 
   const handleClick = () => {
     history.push({ search: `user=${conversation.user.username}` });
@@ -47,7 +45,7 @@ function ConversationCard({ conversation }) {
           title={conversation.user.username}
           subheader={conversation.messages[0].message}
           action={
-            <Badge color="secondary" badgeContent={unreadMessages.length} />
+            <Badge color="secondary" badgeContent={myUnreadMessages.length} />
           }
           classes={{ action: classes.action }}
         />

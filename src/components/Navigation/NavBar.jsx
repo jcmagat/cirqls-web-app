@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useNotifications } from "../../context/NotificationsContext";
+import {
+  useNotifications,
+  useUnreadMessages,
+} from "../../context/NotificationsContext";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -15,6 +18,7 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TollIcon from "@material-ui/icons/Toll";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import AddIcon from "@material-ui/icons/Add";
+import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
@@ -44,6 +48,7 @@ function NavBar(props) {
   const history = useHistory();
 
   const authUser = useAuthUser();
+  const unreadMessages = useUnreadMessages();
   const notifications = useNotifications();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -56,18 +61,6 @@ function NavBar(props) {
     localStorage.removeItem("token");
     history.push("/");
   };
-
-  /* ========== Notifications ========== */
-
-  const [unreadMessages, setUnreadMessages] = useState([]);
-
-  useEffect(() => {
-    setUnreadMessages(
-      notifications.filter(
-        (notification) => notification.__typename === "Message"
-      )
-    );
-  }, [notifications]);
 
   /* ========== Account Menu ========== */
 
@@ -115,6 +108,12 @@ function NavBar(props) {
               <IconButton component={Link} to={"/messages"}>
                 <Badge color="secondary" badgeContent={unreadMessages.length}>
                   <ChatOutlinedIcon />
+                </Badge>
+              </IconButton>
+
+              <IconButton>
+                <Badge color="secondary" badgeContent={notifications.length}>
+                  <NotificationsOutlinedIcon />
                 </Badge>
               </IconButton>
 
