@@ -226,11 +226,16 @@ export const GET_CONVERSATION = gql`
 
 export const GET_NOTIFICATIONS = gql`
   ${MESSAGE_FRAGMENT}
+  ${COMMENT_FRAGMENT}
   query Notifications {
     notifications {
       ... on Message {
         __typename
         ...MessageFragment
+      }
+      ... on Comment {
+        __typename
+        ...CommentFragment
       }
     }
   }
