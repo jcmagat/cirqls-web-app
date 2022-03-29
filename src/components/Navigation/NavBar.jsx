@@ -2,10 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
-import {
-  useNotifications,
-  useUnreadMessages,
-} from "../../context/NotificationsContext";
+import { useUnreadMessages } from "../../context/NotificationsContext";
 import Paper from "@material-ui/core/Paper";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -18,7 +15,6 @@ import ButtonGroup from "@material-ui/core/ButtonGroup";
 import TollIcon from "@material-ui/icons/Toll";
 import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
 import AddIcon from "@material-ui/icons/Add";
-import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
@@ -26,6 +22,7 @@ import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
 import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
 import SearchBar from "./SearchBar";
 import SignUpDialog from "./SignUpDialog";
+import NotificationsButton from "./NotificationsButton";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -49,7 +46,6 @@ function NavBar(props) {
 
   const authUser = useAuthUser();
   const unreadMessages = useUnreadMessages();
-  const notifications = useNotifications();
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -111,11 +107,7 @@ function NavBar(props) {
                 </Badge>
               </IconButton>
 
-              <IconButton>
-                <Badge color="secondary" badgeContent={notifications.length}>
-                  <NotificationsOutlinedIcon />
-                </Badge>
-              </IconButton>
+              <NotificationsButton />
 
               <IconButton onClick={handleAccountMenuOpen}>
                 <Avatar src={authUser.profile_pic_src} />
