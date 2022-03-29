@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useNotifications } from "../../context/NotificationsContext";
 import IconButton from "@material-ui/core/IconButton";
@@ -11,7 +11,6 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   card: {
@@ -22,14 +21,30 @@ const useStyles = makeStyles({
 function NotificationCard({ notification, isLast }) {
   const classes = useStyles();
 
+  const [avatarSrc, setAvatarSrc] = useState("");
+  const [title, setTitle] = useState("");
+  const [subheader, setSubheader] = useState("");
+
+  useEffect(() => {
+    if (notification.__typename === "Comment") {
+      setAvatarSrc(notification.commenter.profile_pic_src);
+      setTitle(
+        `u/${notification.commenter.username} replied to your `.concat(
+          notification.parent_comment_id ? "comment" : "post"
+        )
+      );
+      setSubheader(notification.message);
+    }
+  }, [notification]);
+
   return (
     <>
       <Card className={classes.card}>
-        <CardActionArea component={Link} to={"/"}>
+        <CardActionArea>
           <CardHeader
-            avatar={<Avatar>GG</Avatar>}
-            title={"title"}
-            subheader={"subheader"}
+            avatar={<Avatar src={avatarSrc} />}
+            title={title}
+            subheader={subheader}
           />
         </CardActionArea>
       </Card>
