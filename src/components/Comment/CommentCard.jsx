@@ -152,7 +152,7 @@ function CommentCard(props) {
 
   return (
     <Paper elevation={0}>
-      <Card className={classes.comment}>
+      <Card className={classes.comment} elevation={props.elevation}>
         <CardHeader
           avatar={
             <Avatar
@@ -179,7 +179,7 @@ function CommentCard(props) {
         />
 
         <CardContent>
-          <Typography variant="h6">{props.comment.message}</Typography>
+          <Typography variant="body1">{props.comment.message}</Typography>
         </CardContent>
 
         <CardActions disableSpacing>

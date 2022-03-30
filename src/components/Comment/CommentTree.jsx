@@ -23,7 +23,10 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
         nodeId={comment.comment_id.toString()}
         ref={comment.comment_id === ref_comment_id ? commentRef : null}
       >
-        <CommentCard comment={comment} />
+        <CommentCard
+          comment={comment}
+          elevation={comment.comment_id === ref_comment_id ? 16 : 1}
+        />
 
         {Array.isArray(comment.child_comments)
           ? comment.child_comments.map((comments) =>
