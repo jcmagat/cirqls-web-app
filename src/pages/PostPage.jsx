@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 import { ADD_COMMENT } from "../graphql/mutations";
@@ -19,8 +21,11 @@ const useStyles = makeStyles({
 });
 
 function PostPage(props) {
-  const location = useLocation();
-  const post_id = parseInt(location.pathname.split("/")[2]);
+  const { id } = useParams();
+  const post_id = parseInt(id);
+
+  const { search } = useLocation();
+  const { comment } = queryString.parse(search);
 
   const classes = useStyles();
 
@@ -91,6 +96,7 @@ function PostPage(props) {
               <CommentTree
                 comments={comments}
                 comment_ids={post.comments_info.comment_ids}
+                ref_comment_id={parseInt(comment)}
               />
             </Grid>
           </Grid>
