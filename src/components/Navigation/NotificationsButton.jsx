@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useNotifications } from "../../context/NotificationsContext";
+import { useMutation } from "@apollo/client";
+import { READ_COMMENTS } from "../../graphql/mutations";
 import IconButton from "@material-ui/core/IconButton";
 import Badge from "@material-ui/core/Badge";
 import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
@@ -39,14 +41,26 @@ function NotificationCard({ notification, isLast }) {
     }
   }, [notification]);
 
+  const [readComments] = useMutation(READ_COMMENTS, {
+    onCompleted: finishReadComments,
+  });
+
   const handleCardClick = () => {
     if (notification.__typename === "Comment") {
-      history.push({
-        pathname: `/post/${notification.post_id}`,
-        search: `comment=${notification.comment_id}`,
+      readComments({
+        variables: {
+          comment_ids: [notification.comment_id],
+        },
       });
     }
   };
+
+  function finishReadComments(data) {
+    history.push({
+      pathname: `/post/${notification.post_id}`,
+      search: `comment=${notification.comment_id}`,
+    });
+  }
 
   return (
     <>

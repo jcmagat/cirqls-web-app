@@ -305,6 +305,15 @@ export const DELETE_COMMENT_REACTION = gql`
   }
 `;
 
+export const READ_COMMENTS = gql`
+  ${COMMENT_FRAGMENT}
+  mutation ReadComments($comment_ids: [Int]!) {
+    readComments(comment_ids: $comment_ids) {
+      ...CommentFragment
+    }
+  }
+`;
+
 /* ========== Message Mutations ========== */
 
 export const SEND_MESSAGE = gql`
