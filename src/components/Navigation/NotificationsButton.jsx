@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 import { useNotifications } from "../../context/NotificationsContext";
 import { useMutation } from "@apollo/client";
@@ -14,8 +14,20 @@ import CardActionArea from "@material-ui/core/CardActionArea";
 import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
+import { GET_NOTIFICATIONS } from "../../graphql/queries";
 
 const useStyles = makeStyles({
+  popper: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingLeft: 8,
+  },
   card: {
     boxShadow: "none",
   },
@@ -80,19 +92,40 @@ function NotificationCard({ notification, isLast }) {
 }
 
 function NotificationsButton(props) {
+  const classes = useStyles();
+
   const notifications = useNotifications();
 
   const [open, setOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const buttonClick = (event) => {
+  const handleButtonClick = (event) => {
+    if (!Array.isArray(notifications) || notifications.length < 1) return;
+
     setAnchorEl(event.currentTarget);
     setOpen((prev) => !prev);
   };
 
+  const [readComments] = useMutation(READ_COMMENTS, {
+    refetchQueries: [GET_NOTIFICATIONS],
+    onCompleted: () => setOpen(false)
+  });
+
+  const handleReadAll = () => {
+    const commentIds = notifications
+      .filter((notification) => notification.__typename === "Comment")
+      .map((notification) => notification.comment_id);
+
+    readComments({
+      variables: {
+        comment_ids: commentIds,
+      },
+    });
+  };
+
   return (
     <>
-      <IconButton onClick={buttonClick}>
+      <IconButton onClick={handleButtonClick}>
         <Badge color="secondary" badgeContent={notifications.length}>
           <NotificationsOutlinedIcon />
         </Badge>
@@ -104,7 +137,15 @@ function NotificationsButton(props) {
         placement="bottom-end"
         disablePortal
       >
-        <Paper>
+        <Paper className={classes.popper}>
+          <Paper className={classes.header} elevation={0}>
+            <Typography variant="subtitle1">Notifications</Typography>
+
+            <Button color="primary" onClick={handleReadAll}>
+              Mark All As Read
+            </Button>
+          </Paper>
+
           {notifications.map((notification, index) => (
             <NotificationCard
               key={index}
