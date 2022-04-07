@@ -7,6 +7,11 @@ import TabPanel from "@material-ui/lab/TabPanel";
 import SubmitTextPostForm from "./SubmitTextPostForm";
 import SubmitMediaPostForm from "./SubmitMediaPostForm";
 
+const TABS = {
+  TEXT: "text",
+  MEDIA: "media",
+};
+
 function SubmitTabBar({ communityId }) {
   const [tab, setTab] = useState("Text");
 
@@ -17,15 +22,15 @@ function SubmitTabBar({ communityId }) {
           indicatorColor="primary"
           onChange={(event, value) => setTab(value)}
         >
-          <Tab label="Text" value={"Text"} />
-          <Tab label="Files" value={"Files"} />
+          <Tab label="Text" value={TABS.TEXT} />
+          <Tab label="Media" value={TABS.MEDIA} />
         </TabList>
 
-        <TabPanel value={"Text"}>
+        <TabPanel value={TABS.TEXT}>
           <SubmitTextPostForm communityId={communityId} />
         </TabPanel>
 
-        <TabPanel value={"Files"}>
+        <TabPanel value={TABS.MEDIA}>
           <SubmitMediaPostForm communityId={communityId} />
         </TabPanel>
       </TabContext>

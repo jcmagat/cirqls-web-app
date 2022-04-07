@@ -69,7 +69,7 @@ function SubmitMediaPostForm({ communityId }) {
 
         <DropzoneArea
           filesLimit={1}
-          acceptedFiles={["image/jpeg"]}
+          acceptedFiles={["image/*"]}
           onChange={handleSetMedia}
         />
       </form>
