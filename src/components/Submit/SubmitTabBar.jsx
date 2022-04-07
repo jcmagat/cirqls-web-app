@@ -13,7 +13,7 @@ const TABS = {
 };
 
 function SubmitTabBar({ communityId }) {
-  const [tab, setTab] = useState("Text");
+  const [tab, setTab] = useState(TABS.TEXT);
 
   return (
     <Paper elevation={0}>
