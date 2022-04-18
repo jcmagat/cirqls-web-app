@@ -99,7 +99,7 @@ function EditCommunityPage(props) {
     setUploadDialogOpen(false);
   };
 
-  // Called in ProfilePicDialog to set newProfilePic
+  // Called in UploadDialog to set logo
   const handleSetNewLogo = (logo) => {
     setNewLogo(logo);
   };

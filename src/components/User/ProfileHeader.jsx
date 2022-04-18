@@ -77,7 +77,7 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
     setIsProfilePicDialogOpen(true);
   };
 
-  // Called in ProfilePicDialog to set newProfilePic
+  // Called in UploadDialog to set newProfilePic
   const handleSetNewProfilePic = (pic) => {
     setNewProfilePic(pic);
   };

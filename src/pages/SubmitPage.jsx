@@ -6,12 +6,24 @@ import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import TextField from "@material-ui/core/TextField";
 import MenuItem from "@material-ui/core/MenuItem";
+import Button from "@material-ui/core/Button";
 import NavBar from "../components/Navigation/NavBar";
 import SubmitTabBar from "../components/Submit/SubmitTabBar";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   paper: {
     marginTop: 80,
+  },
+  community: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginRight: 24,
+  },
+  select: {
+    minWidth: 160,
   },
 });
 
@@ -20,7 +32,7 @@ function SubmitPage(props) {
 
   const [communities, setCommunities] = useState([]);
 
-  const { data } = useQuery(GET_COMMUNITIES);
+  const { data, loading } = useQuery(GET_COMMUNITIES);
 
   useEffect(() => {
     if (data) {
@@ -35,27 +47,39 @@ function SubmitPage(props) {
       <NavBar />
 
       <Paper className={classes.paper} elevation={0}>
-        <TextField
-          id="community"
-          label="Community"
-          variant="outlined"
-          select
-          defaultValue={"0"}
-          onChange={(event) => setCommunityId(parseInt(event.target.value))}
-          // disabled={loading}
-        >
-          <MenuItem value="0" disabled>
-            Community
-          </MenuItem>
-          {communities.map((community) => (
-            <MenuItem
-              key={community.community_id}
-              value={community.community_id}
-            >
-              {community.name}
+        <Paper className={classes.community} elevation={0}>
+          <TextField
+            className={classes.select}
+            id="community"
+            label="Community"
+            variant="outlined"
+            select
+            defaultValue={"0"}
+            onChange={(event) => setCommunityId(parseInt(event.target.value))}
+            disabled={loading}
+          >
+            <MenuItem value="0" disabled>
+              Choose a community
             </MenuItem>
-          ))}
-        </TextField>
+            {communities.map((community) => (
+              <MenuItem
+                key={community.community_id}
+                value={community.community_id}
+              >
+                {community.name}
+              </MenuItem>
+            ))}
+          </TextField>
+
+          <Button
+            variant="outlined"
+            color="primary"
+            component={Link}
+            to={"/create-community"}
+          >
+            Create A Community
+          </Button>
+        </Paper>
 
         <SubmitTabBar communityId={communityId} />
       </Paper>

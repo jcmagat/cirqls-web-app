@@ -148,6 +148,28 @@ export const LEAVE = gql`
   }
 `;
 
+export const CREATE_COMMUNITY = gql`
+  mutation CreateCommunity(
+    $name: String!
+    $title: String!
+    $description: String!
+    $logo: Upload
+  ) {
+    createCommunity(
+      name: $name
+      title: $title
+      description: $description
+      logo: $logo
+    ) {
+      community_id
+      name
+      title
+      description
+      logo_src
+    }
+  }
+`;
+
 export const EDIT_COMMUNITY = gql`
   mutation EditCommunity(
     $community_id: Int!

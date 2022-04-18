@@ -8,6 +8,7 @@ import ExplorePage from "./pages/ExplorePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ProfilePage from "./pages/ProfilePage";
+import CreateCommunityPage from "./pages/CreateCommunityPage";
 import EditCommunityPage from "./pages/EditCommunityPage";
 import CommunityPage from "./pages/CommunityPage";
 import SubmitPage from "./pages/SubmitPage";
@@ -42,6 +43,10 @@ function App() {
           <ProfileUserProvider>
             <ProfilePage />
           </ProfileUserProvider>
+        </Route>
+
+        <Route path="/create-community">
+          <CreateCommunityPage />
         </Route>
 
         <Route path="/c/:name/edit">
