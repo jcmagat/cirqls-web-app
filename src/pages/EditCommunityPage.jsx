@@ -222,7 +222,7 @@ function EditCommunityPage(props) {
               style={{ width: "max-content" }}
               disabled={loading}
             >
-              Delete Circle
+              Delete Community
             </Button>
           </Paper>
         </Paper>

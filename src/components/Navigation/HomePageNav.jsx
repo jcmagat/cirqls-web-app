@@ -20,11 +20,11 @@ function HomePageNav(props) {
   return (
     <Paper className={classes.paper} elevation={0}>
       <Typography>
-        This is where you'll see posts in circles that you're a member of
+        This is where you'll see posts in communities you're a member of
       </Typography>
 
       <Typography>
-        Here are some circles that you may be interested in:
+        Here are some communities you may be interested in:
       </Typography>
 
       <Button

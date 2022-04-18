@@ -44,7 +44,7 @@ function ResultCard({ result }) {
       setAvatarSrc(result.logo_src);
       setTitle(`c/${result.name}`);
       setSubheader(
-        `Circle ⋅ ${result.members.length} `.concat(
+        `Community ⋅ ${result.members.length} `.concat(
           result.members.length > 1 ? "members" : "member"
         )
       );

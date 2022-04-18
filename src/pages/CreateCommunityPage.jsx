@@ -69,7 +69,14 @@ function CreateCommunityPage(props) {
   });
 
   const handleCreateCommunity = () => {
-    //
+    createCommunity({
+      variables: {
+        name: name,
+        title: title,
+        description: description,
+        logo: logo,
+      },
+    });
   };
 
   // Called when the edit button on the logo is clicked
@@ -89,7 +96,6 @@ function CreateCommunityPage(props) {
 
   // Called after the mutation is completed
   function finishCreateCommunity(data) {
-    setLogo(null);
     history.push(`/c/${data.createCommunity.name}`);
   }
 
@@ -173,7 +179,7 @@ function CreateCommunityPage(props) {
             onClick={handleCreateCommunity}
             disabled={loading}
           >
-            Save
+            Create Community
           </Button>
         </Paper>
       </Paper>
