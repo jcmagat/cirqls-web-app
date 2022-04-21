@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
-import { useCommunity } from "../context/CommunityContext";
 import { useMutation } from "@apollo/client";
 import { CREATE_COMMUNITY } from "../graphql/mutations";
 import Container from "@material-ui/core/Container";
@@ -12,7 +11,6 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
 import NavBar from "../components/Navigation/NavBar";
 import UploadDialog from "../components/Common/UploadDialog";
 import { Link } from "react-router-dom";
@@ -59,16 +57,29 @@ function CreateCommunityPage(props) {
   const history = useHistory();
 
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
+
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [logo, setLogo] = useState(null);
 
+  const [nameError, setNameError] = useState("");
+
+  useEffect(() => {
+    setNameError("");
+  }, [name]);
+
   const [createCommunity, { loading }] = useMutation(CREATE_COMMUNITY, {
     onCompleted: finishCreateCommunity,
+    onError: handleError,
   });
 
   const handleCreateCommunity = () => {
+    if (!name) {
+      setNameError("Community name is required");
+      return;
+    }
+
     createCommunity({
       variables: {
         name: name,
@@ -97,6 +108,13 @@ function CreateCommunityPage(props) {
   // Called after the mutation is completed
   function finishCreateCommunity(data) {
     history.push(`/c/${data.createCommunity.name}`);
+  }
+
+  // Called when the mutation returns an error
+  function handleError(error) {
+    if (error.message.includes("name")) {
+      setNameError(error.message);
+    }
   }
 
   return (
@@ -137,6 +155,8 @@ function CreateCommunityPage(props) {
           id="name"
           label="Name"
           onChange={(event) => setName(event.target.value)}
+          error={Boolean(nameError)}
+          helperText={nameError}
           disabled={loading}
         />
 
