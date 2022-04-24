@@ -12,9 +12,11 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../components/Navigation/NavBar";
 import UploadDialog from "../components/Common/UploadDialog";
+import { COMMUNITY_TYPES } from "../utils/constants";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -61,15 +63,17 @@ function EditCommunityPage(props) {
   const community = useCommunity();
 
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
-  const [newTitle, setNewTitle] = useState("");
-  const [newDescription, setNewDescription] = useState("");
-  const [newLogo, setNewLogo] = useState(null);
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [type, setType] = useState("");
+  const [logo, setLogo] = useState(null);
 
   useEffect(() => {
     if (!community) return;
 
-    setNewTitle(community.title);
-    setNewDescription(community.description);
+    setTitle(community.title);
+    setDescription(community.description);
+    setType(community.type);
   }, [community]);
 
   const [editCommunity, { loading }] = useMutation(EDIT_COMMUNITY, {
@@ -81,10 +85,10 @@ function EditCommunityPage(props) {
     editCommunity({
       variables: {
         community_id: community.community_id,
-        title: newTitle !== community.title ? newTitle : null,
-        description:
-          newDescription !== community.description ? newDescription : null,
-        logo: newLogo,
+        title: title !== community.title ? title : null,
+        description: description !== community.description ? description : null,
+        type: type !== community.type ? type : null,
+        logo: logo,
       },
     });
   };
@@ -101,12 +105,12 @@ function EditCommunityPage(props) {
 
   // Called in UploadDialog to set logo
   const handleSetNewLogo = (logo) => {
-    setNewLogo(logo);
+    setLogo(logo);
   };
 
   // Called after the mutation is completed
   function finishEditCommunity() {
-    setNewLogo(null);
+    setLogo(null);
     history.push(`/c/${community.name}`);
   }
 
@@ -131,9 +135,7 @@ function EditCommunityPage(props) {
             >
               <Avatar
                 className={classes.avatar}
-                src={
-                  newLogo ? URL.createObjectURL(newLogo) : community.logo_src
-                }
+                src={logo ? URL.createObjectURL(logo) : community.logo_src}
               />
             </Badge>
 
@@ -147,13 +149,27 @@ function EditCommunityPage(props) {
           />
 
           <TextField
+            variant="outlined"
+            id="type"
+            label="Type"
+            size="small"
+            select
+            value={type}
+            onChange={(event) => setType(event.target.value)}
+            disabled={loading}
+          >
+            <MenuItem value={COMMUNITY_TYPES.PUBLIC}>Public</MenuItem>
+            <MenuItem value={COMMUNITY_TYPES.RESTRICTED}>Restricted</MenuItem>
+          </TextField>
+
+          <TextField
             className={classes.form}
             variant="outlined"
             size="small"
             id="title"
             label="Title"
-            value={newTitle}
-            onChange={(event) => setNewTitle(event.target.value)}
+            value={title}
+            onChange={(event) => setTitle(event.target.value)}
             disabled={loading}
           />
 
@@ -165,8 +181,8 @@ function EditCommunityPage(props) {
             label="Description"
             multiline
             rows={8}
-            value={newDescription}
-            onChange={(event) => setNewDescription(event.target.value)}
+            value={description}
+            onChange={(event) => setDescription(event.target.value)}
             disabled={loading}
           />
 

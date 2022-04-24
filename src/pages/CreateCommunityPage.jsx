@@ -11,8 +11,10 @@ import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
 import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
+import MenuItem from "@material-ui/core/MenuItem";
 import NavBar from "../components/Navigation/NavBar";
 import UploadDialog from "../components/Common/UploadDialog";
+import { COMMUNITY_TYPES } from "../utils/constants";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -61,6 +63,7 @@ function CreateCommunityPage(props) {
   const [name, setName] = useState("");
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [type, setType] = useState(COMMUNITY_TYPES.PUBLIC);
   const [logo, setLogo] = useState(null);
 
   const [nameError, setNameError] = useState("");
@@ -85,6 +88,7 @@ function CreateCommunityPage(props) {
         name: name,
         title: title,
         description: description,
+        type: type,
         logo: logo,
       },
     });
@@ -147,6 +151,20 @@ function CreateCommunityPage(props) {
           onClose={handleCloseUploadDialog}
           onChange={handleSetNewLogo}
         />
+
+        <TextField
+          variant="outlined"
+          id="type"
+          label="Type"
+          size="small"
+          select
+          value={type}
+          onChange={(event) => setType(event.target.value)}
+          disabled={loading}
+        >
+          <MenuItem value={COMMUNITY_TYPES.PUBLIC}>Public</MenuItem>
+          <MenuItem value={COMMUNITY_TYPES.RESTRICTED}>Restricted</MenuItem>
+        </TextField>
 
         <TextField
           className={classes.form}

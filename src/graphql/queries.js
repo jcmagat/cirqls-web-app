@@ -78,6 +78,7 @@ export const GET_COMMUNITY = gql`
       title
       description
       created_at
+      type
       logo_src
       moderators {
         user_id

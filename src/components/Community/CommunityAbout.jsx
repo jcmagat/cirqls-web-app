@@ -36,6 +36,10 @@ function CommunityAbout(props) {
         {community.description}
       </Typography>
 
+      <Typography variant="body2" paragraph>
+        {community.type.charAt(0).toUpperCase() + community.type.slice(1)}
+      </Typography>
+
       <Typography
         variant="body2"
         paragraph

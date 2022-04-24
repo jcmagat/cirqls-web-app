@@ -153,18 +153,21 @@ export const CREATE_COMMUNITY = gql`
     $name: String!
     $title: String!
     $description: String!
+    $type: String!
     $logo: Upload
   ) {
     createCommunity(
       name: $name
       title: $title
       description: $description
+      type: $type
       logo: $logo
     ) {
       community_id
       name
       title
       description
+      type
       logo_src
     }
   }
@@ -175,17 +178,20 @@ export const EDIT_COMMUNITY = gql`
     $community_id: Int!
     $title: String
     $description: String
+    $type: String
     $logo: Upload
   ) {
     editCommunity(
       community_id: $community_id
       title: $title
       description: $description
+      type: $type
       logo: $logo
     ) {
       community_id
       title
       description
+      type
       logo_src
     }
   }
