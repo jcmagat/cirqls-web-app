@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import { useAuthUser } from "../context/AuthUserContext";
 import { useQuery } from "@apollo/client";
 import { GET_COMMUNITIES } from "../graphql/queries";
 import Container from "@material-ui/core/Container";
@@ -9,6 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import Button from "@material-ui/core/Button";
 import NavBar from "../components/Navigation/NavBar";
 import SubmitTabBar from "../components/Submit/SubmitTabBar";
+import { COMMUNITY_TYPES } from "../utils/constants";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -30,15 +32,29 @@ const useStyles = makeStyles({
 function SubmitPage(props) {
   const classes = useStyles();
 
+  const authUser = useAuthUser();
+
   const [communities, setCommunities] = useState([]);
 
   const { data, loading } = useQuery(GET_COMMUNITIES);
 
   useEffect(() => {
-    if (data) {
-      setCommunities(data.communities);
-    }
-  }, [data]);
+    if (!data || !authUser) return;
+
+    // Only show:
+    // public communities
+    // restricted communities that authUser is a moderator of
+    setCommunities(
+      data.communities.filter(
+        (community) =>
+          community.type === COMMUNITY_TYPES.PUBLIC ||
+          (community.type === COMMUNITY_TYPES.RESTRICTED &&
+            community.moderators.some(
+              (moderator) => moderator.user_id === authUser.user_id
+            ))
+      )
+    );
+  }, [data, authUser]);
 
   const [communityId, setCommunityId] = useState();
 
