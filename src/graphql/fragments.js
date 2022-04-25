@@ -2,6 +2,7 @@ import { gql } from "@apollo/client";
 
 export const POST_FRAGMENT = gql`
   fragment PostFragment on Post {
+    __typename
     post_id
     title
     created_at

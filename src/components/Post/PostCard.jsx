@@ -13,6 +13,7 @@ import { GET_HOME_PAGE_POSTS } from "../../graphql/queries";
 import Card from "@material-ui/core/Card";
 import CardHeader from "@material-ui/core/CardHeader";
 import CardContent from "@material-ui/core/CardContent";
+import CardMedia from "@material-ui/core/CardMedia";
 import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
@@ -39,23 +40,63 @@ import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
+  card: {
+    maxWidth: 800,
+  },
   subheader: {
     display: "flex",
     gap: 6,
   },
+  mediaRoot: {
+    backgroundSize: "contain",
+    backgroundPosition: "top",
+  },
+  media: {
+    height: "50vh", // make height of image
+  },
 });
 
-function PostCard(props) {
+function PostCardContent({ post }) {
+  const classes = useStyles();
+
+  if (post.__typename === "TextPost") {
+    return (
+      <CardContent>
+        <Typography variant="h6">{post.title}</Typography>
+        <Typography variant="body1">{post.description}</Typography>
+      </CardContent>
+    );
+  } else {
+    return (
+      <>
+        <CardContent>
+          <Typography variant="h6">{post.title}</Typography>
+        </CardContent>
+
+        <CardMedia
+          className={classes.media}
+          image={post.media_src}
+          alt=""
+          classes={{
+            root: classes.mediaRoot,
+          }}
+        />
+      </>
+    );
+  }
+}
+
+function PostCard({ post }) {
   const classes = useStyles();
 
   const authUser = useAuthUser();
 
   const isAuthUsersPost =
-    authUser && authUser.username === props.post.poster.username;
+    authUser && authUser.username === post.poster.username;
 
   /* ========== Like/Dislike Post ========== */
 
-  const authUserReaction = props.post.reactions.auth_user_reaction;
+  const authUserReaction = post.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
@@ -78,7 +119,7 @@ function PostCard(props) {
   const handleLikePost = () => {
     addPostReaction({
       variables: {
-        post_id: props.post.post_id,
+        post_id: post.post_id,
         reaction: "like",
       },
     });
@@ -87,7 +128,7 @@ function PostCard(props) {
   const handleDislikePost = () => {
     addPostReaction({
       variables: {
-        post_id: props.post.post_id,
+        post_id: post.post_id,
         reaction: "dislike",
       },
     });
@@ -96,7 +137,7 @@ function PostCard(props) {
   const handleDeletePostReaction = () => {
     deletePostReaction({
       variables: {
-        post_id: props.post.post_id,
+        post_id: post.post_id,
       },
     });
   };
@@ -108,13 +149,15 @@ function PostCard(props) {
   useEffect(() => {
     if (
       authUser &&
-      authUser.saved_posts.some((post) => post.post_id === props.post.post_id)
+      authUser.saved_posts.some(
+        (saved_post) => saved_post.post_id === post.post_id
+      )
     ) {
       setSaved(true);
     } else {
       setSaved(false);
     }
-  }, [authUser, props.post]);
+  }, [authUser, post]);
 
   const [savePost] = useMutation(SAVE_POST, {
     onCompleted: useAuthUserUpdate(),
@@ -126,7 +169,7 @@ function PostCard(props) {
   const handleSavePost = () => {
     savePost({
       variables: {
-        post_id: props.post.post_id,
+        post_id: post.post_id,
       },
     });
   };
@@ -134,7 +177,7 @@ function PostCard(props) {
   const handleUnsavePost = () => {
     unsavePost({
       variables: {
-        post_id: props.post.post_id,
+        post_id: post.post_id,
       },
     });
   };
@@ -154,7 +197,7 @@ function PostCard(props) {
 
     deletePost({
       variables: {
-        post_id: props.post.post_id,
+        post_id: post.post_id,
       },
     });
   };
@@ -189,13 +232,13 @@ function PostCard(props) {
   };
 
   return (
-    <Card style={disableIfLoading(deletePostLoading)}>
+    <Card className={classes.card} style={disableIfLoading(deletePostLoading)}>
       <CardHeader
         avatar={
           <Avatar
             component={Link}
-            to={`/c/${props.post.community.name}`}
-            src={props.post.community.logo_src}
+            to={`/c/${post.community.name}`}
+            src={post.community.logo_src}
           />
         }
         disableTypography
@@ -203,26 +246,22 @@ function PostCard(props) {
           <Typography
             variant="subtitle2"
             component={Link}
-            to={`/c/${props.post.community.name}`}
-          >{`c/${props.post.community.name}`}</Typography>
+            to={`/c/${post.community.name}`}
+          >{`c/${post.community.name}`}</Typography>
         }
         subheader={
           <Paper className={classes.subheader} elevation={0}>
             <Typography
               variant="subtitle2"
               component={Link}
-              to={`/u/${props.post.poster.username}`}
-            >{`u/${props.post.poster.username}`}</Typography>
-            <Typography variant="subtitle2">{`⋅ ${props.post.created_since}`}</Typography>
+              to={`/u/${post.poster.username}`}
+            >{`u/${post.poster.username}`}</Typography>
+            <Typography variant="subtitle2">{`⋅ ${post.created_since}`}</Typography>
           </Paper>
         }
       />
 
-      <CardContent>
-        <Typography variant="h6">{props.post.title}</Typography>
-        <Typography variant="body1">{props.post.description}</Typography>
-        <img src={props.post.media_src} alt="" />
-      </CardContent>
+      <PostCardContent post={post} />
 
       <CardActions disableSpacing>
         {liked ? (
@@ -235,9 +274,7 @@ function PostCard(props) {
           </IconButton>
         )}
 
-        <Typography variant="subtitle1">
-          {props.post.reactions.total}
-        </Typography>
+        <Typography variant="subtitle1">{post.reactions.total}</Typography>
 
         {disliked ? (
           <IconButton onClick={handleDeletePostReaction}>
@@ -249,9 +286,9 @@ function PostCard(props) {
           </IconButton>
         )}
 
-        <IconButton component={Link} to={`/post/${props.post.post_id}`}>
+        <IconButton component={Link} to={`/post/${post.post_id}`}>
           <ChatBubbleOutlineIcon />
-          <Typography>{`${props.post.comments_info.total} Comments`}</Typography>
+          <Typography>{`${post.comments_info.total} Comments`}</Typography>
         </IconButton>
 
         {saved ? (
