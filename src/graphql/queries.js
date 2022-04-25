@@ -64,7 +64,11 @@ export const GET_COMMUNITIES = gql`
     communities {
       community_id
       name
+      type
       logo_src
+      moderators {
+        user_id
+      }
     }
   }
 `;
