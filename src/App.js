@@ -1,4 +1,5 @@
 import React from "react";
+import { createTheme, ThemeProvider } from "@material-ui/core/styles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";
@@ -19,79 +20,91 @@ import SearchPage from "./pages/SearchPage";
 import DeleteAccountPage from "./pages/DeleteAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
+const theme = createTheme({
+  overrides: {
+    MuiIconButton: {
+      root: {
+        borderRadius: 8,
+      },
+    },
+  },
+});
+
 function App() {
   return (
-    <BrowserRouter forceRefresh={true}>
-      <Switch>
-        <Route exact path="/">
-          <HomePage />
-        </Route>
+    <ThemeProvider theme={theme}>
+      <BrowserRouter forceRefresh={true}>
+        <Switch>
+          <Route exact path="/">
+            <HomePage />
+          </Route>
 
-        <Route path="/explore">
-          <ExplorePage />
-        </Route>
+          <Route path="/explore">
+            <ExplorePage />
+          </Route>
 
-        <Route path="/login">
-          <LoginPage />
-        </Route>
+          <Route path="/login">
+            <LoginPage />
+          </Route>
 
-        <Route path="/signup/:token">
-          <SignUpPage />
-        </Route>
+          <Route path="/signup/:token">
+            <SignUpPage />
+          </Route>
 
-        <Route path="/u/:username">
-          <ProfileUserProvider>
-            <ProfilePage />
-          </ProfileUserProvider>
-        </Route>
+          <Route path="/u/:username">
+            <ProfileUserProvider>
+              <ProfilePage />
+            </ProfileUserProvider>
+          </Route>
 
-        <Route path="/create-community">
-          <CreateCommunityPage />
-        </Route>
+          <Route path="/create-community">
+            <CreateCommunityPage />
+          </Route>
 
-        <Route path="/c/:name/edit">
-          <CommunityProvider>
-            <EditCommunityPage />
-          </CommunityProvider>
-        </Route>
+          <Route path="/c/:name/edit">
+            <CommunityProvider>
+              <EditCommunityPage />
+            </CommunityProvider>
+          </Route>
 
-        <Route path="/c/:name">
-          <CommunityProvider>
-            <CommunityPage />
-          </CommunityProvider>
-        </Route>
+          <Route path="/c/:name">
+            <CommunityProvider>
+              <CommunityPage />
+            </CommunityProvider>
+          </Route>
 
-        <Route path="/submit">
-          <SubmitPage />
-        </Route>
+          <Route path="/submit">
+            <SubmitPage />
+          </Route>
 
-        <Route path="/post/:id">
-          <PostPage />
-        </Route>
+          <Route path="/post/:id">
+            <PostPage />
+          </Route>
 
-        <Route path="/messages">
-          <MessagesProvider>
-            <MessagePage />
-          </MessagesProvider>
-        </Route>
+          <Route path="/messages">
+            <MessagesProvider>
+              <MessagePage />
+            </MessagesProvider>
+          </Route>
 
-        <Route path="/settings">
-          <SettingsPage />
-        </Route>
+          <Route path="/settings">
+            <SettingsPage />
+          </Route>
 
-        <Route path="/search">
-          <SearchPage />
-        </Route>
+          <Route path="/search">
+            <SearchPage />
+          </Route>
 
-        <Route path="/delete-account/:token">
-          <DeleteAccountPage />
-        </Route>
+          <Route path="/delete-account/:token">
+            <DeleteAccountPage />
+          </Route>
 
-        <Route>
-          <NotFoundPage />
-        </Route>
-      </Switch>
-    </BrowserRouter>
+          <Route>
+            <NotFoundPage />
+          </Route>
+        </Switch>
+      </BrowserRouter>
+    </ThemeProvider>
   );
 }
 

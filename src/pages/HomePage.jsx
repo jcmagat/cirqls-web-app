@@ -11,8 +11,10 @@ import SortSelect from "../components/Post/SortSelect";
 import { SORT_TYPES } from "../components/Post/SortSelect";
 
 const useStyles = makeStyles({
-  postCards: {
+  content: {
     marginTop: 80,
+    maxWidth: 800,
+    marginInline: "auto",
   },
 });
 
@@ -49,15 +51,15 @@ function HomePage(props) {
     <Container component="main">
       <NavBar />
 
-      <Paper className={classes.postCards} elevation={0}>
+      <Paper className={classes.content} elevation={0}>
         {displayNav ? (
           <HomePageNav />
         ) : (
-          <Paper elevation={0}>
+          <>
             <SortSelect sort={sort} handleChangeSort={handleChangeSort} />
 
             <PostList posts={posts} />
-          </Paper>
+          </>
         )}
       </Paper>
     </Container>

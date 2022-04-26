@@ -18,6 +18,7 @@ import CardActions from "@material-ui/core/CardActions";
 import Avatar from "@material-ui/core/Avatar";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import IconButton from "@material-ui/core/IconButton";
 import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
@@ -37,22 +38,18 @@ import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
-  card: {
-    maxWidth: 800,
-  },
   subheader: {
     display: "flex",
     gap: 6,
   },
+  media: {
+    height: "70vh", // TODO: fix
+  },
   mediaRoot: {
     backgroundSize: "contain",
     backgroundPosition: "top",
-  },
-  media: {
-    height: "50vh", // make height of image
   },
 });
 
@@ -232,30 +229,25 @@ function PostCard({ post }) {
   };
 
   return (
-    <Card className={classes.card} style={disableIfLoading(deletePostLoading)}>
+    <Card style={disableIfLoading(deletePostLoading)}>
       <CardHeader
         avatar={
-          <Avatar
-            component={Link}
-            to={`/c/${post.community.name}`}
-            src={post.community.logo_src}
-          />
+          <Link href={`/c/${post.community.name}`}>
+            <Avatar src={post.community.logo_src} />
+          </Link>
         }
         disableTypography
         title={
-          <Typography
-            variant="subtitle2"
-            component={Link}
-            to={`/c/${post.community.name}`}
-          >{`c/${post.community.name}`}</Typography>
+          <Link href={`/c/${post.community.name}`} color="inherit">
+            <Typography variant="subtitle2">{`c/${post.community.name}`}</Typography>
+          </Link>
         }
         subheader={
           <Paper className={classes.subheader} elevation={0}>
-            <Typography
-              variant="subtitle2"
-              component={Link}
-              to={`/u/${post.poster.username}`}
-            >{`u/${post.poster.username}`}</Typography>
+            <Link href={`/u/${post.poster.username}`} color="inherit">
+              <Typography variant="subtitle2">{`u/${post.poster.username}`}</Typography>
+            </Link>
+
             <Typography variant="subtitle2">{`⋅ ${post.created_since}`}</Typography>
           </Paper>
         }
@@ -286,10 +278,10 @@ function PostCard({ post }) {
           </IconButton>
         )}
 
-        <IconButton component={Link} to={`/post/${post.post_id}`}>
+        <Link href={`/post/${post.post_id}`} component={IconButton}>
           <ChatBubbleOutlineIcon />
           <Typography>{`${post.comments_info.total} Comments`}</Typography>
-        </IconButton>
+        </Link>
 
         {saved ? (
           <IconButton onClick={handleUnsavePost}>
