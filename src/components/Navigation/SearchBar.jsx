@@ -52,7 +52,7 @@ function ResultCard({ result }) {
   }, [result]);
 
   return (
-    <Paper elevation={0}>
+    <>
       <Card className={classes.card}>
         <CardActionArea component={Link} to={linkTo}>
           <CardHeader
@@ -64,7 +64,7 @@ function ResultCard({ result }) {
       </Card>
 
       <Divider />
-    </Paper>
+    </>
   );
 }
 
@@ -130,7 +130,7 @@ function SearchBar(props) {
   }
 
   return (
-    <Paper elevation={0}>
+    <>
       <form onSubmit={handleSubmit}>
         <TextField
           variant="outlined"
@@ -149,7 +149,7 @@ function SearchBar(props) {
         placement="bottom-start"
         disablePortal
       >
-        <Paper className={classes.results}>
+        <Paper className={classes.results} elevation={2}>
           {results.map((result, index) => (
             <ResultCard key={index} result={result} />
           ))}
@@ -157,7 +157,7 @@ function SearchBar(props) {
           <Button onClick={handleSubmit}>More Results</Button>
         </Paper>
       </Popper>
-    </Paper>
+    </>
   );
 }
 

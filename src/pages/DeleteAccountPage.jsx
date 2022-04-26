@@ -6,9 +6,9 @@ import { DELETE_ACCOUNT } from "../graphql/mutations";
 import Container from "@material-ui/core/Container";
 import Paper from "@material-ui/core/Paper";
 import Typography from "@material-ui/core/Typography";
+import Link from "@material-ui/core/Link";
 import Button from "@material-ui/core/Button";
 import Logo from "../components/Navigation/Logo";
-import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   paper: {
@@ -17,13 +17,10 @@ const useStyles = makeStyles({
     alignItems: "center",
     minHeight: "75vh",
   },
-  contentPaper: {
-    padding: 32,
-  },
   content: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
+    padding: 32,
+    maxWidth: 600,
+    textAlign: "center",
   },
 });
 
@@ -61,32 +58,33 @@ function DeleteAccountPage(props) {
     <Container>
       <Logo />
 
-      <Paper className={classes.paper} elevation={0}>
-        <Paper className={classes.contentPaper}>
+      <Paper className={classes.paper}>
+        <Paper className={classes.content} elevation={1}>
           {error ? (
-            <Paper className={classes.content} elevation={0}>
+            <>
               <Typography variant="h5" paragraph>
                 An error occured while deleting your Cirqls account
               </Typography>
 
-              <Typography variant="body1">
-                Please make sure to go to the confirmation email
-              </Typography>
               <Typography variant="body1" paragraph>
-                and click the 'Delete Account' button or copy the complete link
+                Please make sure to go to the confirmation email and click the
+                'Delete Account' button or copy the entire link
               </Typography>
 
-              <Typography variant="body1">
+              <Typography variant="body1" paragraph>
                 If that doesn't work, you could make another request to delete
-                your account
+                your account. To do that, you need to log in, go to settings,
+                and click the 'Delete Account' button
               </Typography>
-              <Typography variant="body1">
-                To do that, you need to log in, go to settings, and click the
-                'Delete Account' button
-              </Typography>
-            </Paper>
+
+              <Link href={"/"}>
+                <Button variant="contained" color="primary">
+                  Go to Homepage
+                </Button>
+              </Link>
+            </>
           ) : (
-            <Paper className={classes.content} elevation={0}>
+            <>
               <Typography variant="h5" paragraph>
                 Your Cirqls account has been permanently deleted
               </Typography>
@@ -95,15 +93,12 @@ function DeleteAccountPage(props) {
                 You can now close this window or go to homepage
               </Typography>
 
-              <Button
-                variant="contained"
-                color="primary"
-                component={Link}
-                to={"/"}
-              >
-                Go to Homepage
-              </Button>
-            </Paper>
+              <Link href={"/"}>
+                <Button variant="contained" color="primary">
+                  Go to Homepage
+                </Button>
+              </Link>
+            </>
           )}
         </Paper>
       </Paper>

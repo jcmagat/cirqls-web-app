@@ -21,6 +21,11 @@ import DeleteAccountPage from "./pages/DeleteAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const theme = createTheme({
+  props: {
+    MuiPaper: {
+      elevation: 0,
+    },
+  },
   overrides: {
     MuiIconButton: {
       root: {

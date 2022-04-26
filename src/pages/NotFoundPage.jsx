@@ -14,10 +14,9 @@ const useStyles = makeStyles({
     alignItems: "center",
     minHeight: "75vh",
   },
-  contentPaper: {
-    padding: 32,
-  },
   content: {
+    padding: 32,
+    textAlign: "center",
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
@@ -37,37 +36,35 @@ function NotFoundPage(props) {
     <Container>
       <Logo />
 
-      <Paper className={classes.paper} elevation={0}>
-        <Paper className={classes.contentPaper}>
-          <Paper className={classes.content} elevation={0}>
-            <Typography variant="h5" paragraph>
-              Page Not Found
-            </Typography>
+      <Paper className={classes.paper}>
+        <Paper className={classes.content} elevation={1}>
+          <Typography variant="h5" paragraph>
+            Page Not Found
+          </Typography>
 
-            <Typography variant="body1" paragraph>
-              You may have encountered a broken link
-            </Typography>
+          <Typography variant="body1" paragraph>
+            You may have encountered a broken link
+          </Typography>
 
-            <Typography variant="body1" paragraph>
-              You could go back to the previous page or go to homepage
-            </Typography>
+          <Typography variant="body1" paragraph>
+            You could go back to the previous page or go to homepage
+          </Typography>
 
-            <Paper className={classes.buttons} elevation={0}>
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => history.goBack()}
-              >
-                Go Back
-              </Button>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={() => history.push("/")}
-              >
-                Go to Homepage
-              </Button>
-            </Paper>
+          <Paper className={classes.buttons}>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={() => history.goBack()}
+            >
+              Go Back
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => history.push("/")}
+            >
+              Go to Homepage
+            </Button>
           </Paper>
         </Paper>
       </Paper>
