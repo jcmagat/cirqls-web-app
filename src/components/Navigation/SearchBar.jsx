@@ -22,8 +22,6 @@ const useStyles = makeStyles({
 });
 
 function ResultCard({ result }) {
-  const classes = useStyles();
-
   const [linkTo, setLinkTo] = useState("");
   const [avatarSrc, setAvatarSrc] = useState("");
   const [title, setTitle] = useState("");

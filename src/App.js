@@ -1,5 +1,5 @@
 import React from "react";
-import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";

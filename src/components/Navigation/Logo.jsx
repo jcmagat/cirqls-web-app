@@ -1,29 +1,26 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import Link from "@mui/material/Link";
 import TollIcon from "@mui/icons-material/Toll";
 import Typography from "@mui/material/Typography";
-import { Link } from "react-router-dom";
-
-const useStyles = makeStyles({
-  logo: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-  },
-});
 
 function Logo(props) {
-  const classes = useStyles();
-
   return (
-    <Paper className={classes.logo} elevation={0}>
-      <IconButton edge="start" color="inherit" component={Link} to={"/"} size="large">
-        <TollIcon fontSize="large" />
-      </IconButton>
-      <Typography variant="h6">Cirqls</Typography>
-    </Paper>
+    <Box
+      component={Link}
+      href="/"
+      color="inherit"
+      underline="none"
+      sx={{
+        display: "flex",
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 1,
+      }}
+    >
+      <TollIcon fontSize="large" />
+      <Typography variant="h5">Cirqls</Typography>
+    </Box>
   );
 }
 
