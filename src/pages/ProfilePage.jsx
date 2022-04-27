@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { useProfileUser } from "../context/ProfileUserContext";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import NavBar from "../components/Navigation/NavBar";
 import ProfileHeader from "../components/User/ProfileHeader";
 import ProfileTabBar from "../components/User/ProfileTabBar";

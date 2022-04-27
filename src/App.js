@@ -1,5 +1,5 @@
 import React from "react";
-import { createTheme, ThemeProvider } from "@material-ui/core/styles";
+import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";
@@ -21,15 +21,22 @@ import DeleteAccountPage from "./pages/DeleteAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const theme = createTheme({
-  props: {
+  components: {
     MuiPaper: {
-      elevation: 0,
+      defaultProps: {
+        elevation: 0,
+      },
     },
-  },
-  overrides: {
+    MuiCard: {
+      defaultProps: {
+        elevation: 1,
+      },
+    },
     MuiIconButton: {
-      root: {
-        borderRadius: 8,
+      styleOverrides: {
+        root: {
+          borderRadius: 4,
+        },
       },
     },
   },

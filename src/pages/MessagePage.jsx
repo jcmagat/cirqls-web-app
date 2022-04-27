@@ -1,8 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Divider from "@material-ui/core/Divider";
+import makeStyles from '@mui/styles/makeStyles';
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Divider from "@mui/material/Divider";
 import NavBar from "../components/Navigation/NavBar";
 import ConversationList from "../components/Message/ConversationList";
 import MessageArea from "../components/Message/MessageArea";

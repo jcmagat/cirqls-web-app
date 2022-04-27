@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { CREATE_COMMUNITY } from "../graphql/mutations";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 import NavBar from "../components/Navigation/NavBar";
 import UploadDialog from "../components/Common/UploadDialog";
 import { COMMUNITY_TYPES } from "../utils/constants";
@@ -134,7 +134,11 @@ function CreateCommunityPage(props) {
               horizontal: "right",
             }}
             badgeContent={
-              <IconButton onClick={handleEditLogo} disabled={loading}>
+              <IconButton
+                onClick={handleEditLogo}
+                disabled={loading}
+                size="large"
+              >
                 <EditOutlinedIcon />
               </IconButton>
             }
@@ -153,7 +157,6 @@ function CreateCommunityPage(props) {
         />
 
         <TextField
-          variant="outlined"
           id="type"
           label="Type"
           size="small"
@@ -168,7 +171,6 @@ function CreateCommunityPage(props) {
 
         <TextField
           className={classes.form}
-          variant="outlined"
           size="small"
           id="name"
           label="Name"
@@ -180,7 +182,6 @@ function CreateCommunityPage(props) {
 
         <TextField
           className={classes.form}
-          variant="outlined"
           size="small"
           id="title"
           label="Title"
@@ -190,7 +191,6 @@ function CreateCommunityPage(props) {
 
         <TextField
           className={classes.form}
-          variant="outlined"
           size="small"
           id="description"
           label="Description"

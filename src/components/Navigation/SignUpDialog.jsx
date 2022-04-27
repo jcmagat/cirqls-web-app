@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import { useMutation } from "@apollo/client";
 import { SIGNUP } from "../../graphql/mutations";
 import isEmail from "validator/lib/isEmail";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Alert from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const useStyles = makeStyles({
   title: {
@@ -82,7 +82,7 @@ function SignUpDialog({ open, onClose }) {
         <DialogTitle>
           <Paper className={classes.title} elevation={0}>
             <Typography variant="h6">Sign Up</Typography>
-            <IconButton onClick={handleClose}>
+            <IconButton onClick={handleClose} size="large">
               <CloseIcon />
             </IconButton>
           </Paper>
@@ -99,7 +99,6 @@ function SignUpDialog({ open, onClose }) {
           )}
           <form noValidate onSubmit={handleSignUp}>
             <TextField
-              variant="outlined"
               margin="normal"
               type="email"
               id="email"

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import {
@@ -10,20 +10,20 @@ import {
 } from "../../graphql/mutations";
 import { GET_POST, GET_COMMENTS } from "../../graphql/queries";
 import { COMMENT_FRAGMENT } from "../../graphql/fragments";
-import Paper from "@material-ui/core/Paper";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardActions from "@material-ui/core/CardActions";
-import CardContent from "@material-ui/core/CardContent";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
-import DeleteOutlinedIcon from "@material-ui/icons/DeleteOutlined";
-import Typography from "@material-ui/core/Typography";
+import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import Typography from "@mui/material/Typography";
 import CommentForm from "./CommentForm";
 import { Link } from "react-router-dom";
 
@@ -191,7 +191,7 @@ function CommentCard(props) {
                   comment_id
                 )
               }
-            >
+              size="large">
               <ThumbUpIcon />
             </IconButton>
           ) : (
@@ -199,7 +199,7 @@ function CommentCard(props) {
               onClick={(comment_id) =>
                 handleLikeComment(props.comment.comment_id, comment_id)
               }
-            >
+              size="large">
               <ThumbUpOutlinedIcon />
             </IconButton>
           )}
@@ -216,7 +216,7 @@ function CommentCard(props) {
                   comment_id
                 )
               }
-            >
+              size="large">
               <ThumbDownIcon />
             </IconButton>
           ) : (
@@ -224,12 +224,12 @@ function CommentCard(props) {
               onClick={(comment_id) =>
                 handleDislikeComment(props.comment.comment_id, comment_id)
               }
-            >
+              size="large">
               <ThumbDownOutlinedIcon />
             </IconButton>
           )}
 
-          <IconButton onClick={handleReplyButtonClick}>
+          <IconButton onClick={handleReplyButtonClick} size="large">
             <ChatBubbleOutlineIcon />
             <Typography>Reply</Typography>
           </IconButton>
@@ -239,7 +239,7 @@ function CommentCard(props) {
               onClick={(comment_id) =>
                 handleDeleteComment(props.comment.comment_id, comment_id)
               }
-            >
+              size="large">
               <DeleteOutlinedIcon />
               <Typography>Delete</Typography>
             </IconButton>

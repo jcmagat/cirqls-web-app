@@ -1,9 +1,9 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
+import makeStyles from "@mui/styles/makeStyles";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
 
 const useStyles = makeStyles({
   sort: {
@@ -30,6 +30,7 @@ function SortSelect({ sort, handleChangeSort }) {
       <Typography>Sort :</Typography>
       <TextField
         select
+        size="small"
         value={sort}
         onChange={(event) => handleChangeSort(event.target.value)}
       >

@@ -1,13 +1,13 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMessages } from "../../context/MessagesContext";
 import { useMutation } from "@apollo/client";
 import { READ_MESSAGES } from "../../graphql/mutations";
 import { GET_NOTIFICATIONS } from "../../graphql/queries";
-import Paper from "@material-ui/core/Paper";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import MessageCard from "./MessageCard";
 import MessageForm from "./MessageForm";
 

@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { useQuery, useMutation } from "@apollo/client";
 import { GET_POST, GET_COMMENTS } from "../graphql/queries";
 import { ADD_COMMENT } from "../graphql/mutations";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/material/Grid";
 import NavBar from "../components/Navigation/NavBar";
 import PostCard from "../components/Post/PostCard";
 import CommentForm from "../components/Comment/CommentForm";

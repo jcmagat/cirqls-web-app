@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
 import { useParams } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { DELETE_ACCOUNT } from "../graphql/mutations";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import Button from "@material-ui/core/Button";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import Button from "@mui/material/Button";
 import Logo from "../components/Navigation/Logo";
 
 const useStyles = makeStyles({

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { useQuery } from "@apollo/client";
 import { GET_HOME_PAGE_POSTS } from "../graphql/queries";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import NavBar from "../components/Navigation/NavBar";
 import HomePageNav from "../components/Navigation/HomePageNav";
 import PostList from "../components/Post/PostList";

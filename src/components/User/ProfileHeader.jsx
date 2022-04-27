@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, CHANGE_PROFILE_PIC } from "../../graphql/mutations";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
-import Badge from "@material-ui/core/Badge";
-import IconButton from "@material-ui/core/IconButton";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import Typography from "@material-ui/core/Typography";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import Avatar from "@mui/material/Avatar";
+import Badge from "@mui/material/Badge";
+import IconButton from "@mui/material/IconButton";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import Typography from "@mui/material/Typography";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Button from "@mui/material/Button";
 import UploadDialog from "../Common/UploadDialog";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 import { Link } from "react-router-dom";
@@ -119,7 +119,7 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
             <IconButton
               onClick={handleEditProfilePic}
               disabled={changeProfilePicLoading}
-            >
+              size="large">
               <EditOutlinedIcon />
             </IconButton>
           }

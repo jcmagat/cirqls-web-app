@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useCommunity } from "../context/CommunityContext";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import NavBar from "../components/Navigation/NavBar";
 import CommunityHeader from "../components/Community/CommunityHeader";
 import CommunityTabBar from "../components/Community/CommunityTabBar";

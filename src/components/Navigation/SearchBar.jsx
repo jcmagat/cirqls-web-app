@@ -1,26 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import { useHistory } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import { SEARCH } from "../../graphql/queries";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import Popper from "@material-ui/core/Popper";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
-import Avatar from "@material-ui/core/Avatar";
-import Divider from "@material-ui/core/Divider";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Popper from "@mui/material/Popper";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
+import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
   results: {
     display: "flex",
     flexDirection: "column",
-  },
-  card: {
-    boxShadow: "none",
   },
 });
 
@@ -53,7 +50,7 @@ function ResultCard({ result }) {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card elevation={0}>
         <CardActionArea component={Link} to={linkTo}>
           <CardHeader
             avatar={<Avatar src={avatarSrc} />}
@@ -133,7 +130,6 @@ function SearchBar(props) {
     <>
       <form onSubmit={handleSubmit}>
         <TextField
-          variant="outlined"
           size="small"
           id="search"
           label="Search"

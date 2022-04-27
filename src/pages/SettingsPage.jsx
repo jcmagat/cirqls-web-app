@@ -1,10 +1,10 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from '@mui/styles/makeStyles';
 import { useAuthUser } from "../context/AuthUserContext";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Divider from "@material-ui/core/Divider";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 import NavBar from "../components/Navigation/NavBar";
 import ChangeEmailForm from "../components/Settings/ChangeEmailForm";
 import ChangePasswordForm from "../components/Settings/ChangePasswordForm";

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from '@mui/styles/makeStyles';
 import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import {
@@ -10,34 +10,34 @@ import {
   UNSAVE_POST,
 } from "../../graphql/mutations";
 import { GET_HOME_PAGE_POSTS } from "../../graphql/queries";
-import Card from "@material-ui/core/Card";
-import CardHeader from "@material-ui/core/CardHeader";
-import CardContent from "@material-ui/core/CardContent";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardActions from "@material-ui/core/CardActions";
-import Avatar from "@material-ui/core/Avatar";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import Link from "@material-ui/core/Link";
-import IconButton from "@material-ui/core/IconButton";
-import ThumbUpOutlinedIcon from "@material-ui/icons/ThumbUpOutlined";
-import ThumbDownOutlinedIcon from "@material-ui/icons/ThumbDownOutlined";
-import ThumbUpIcon from "@material-ui/icons/ThumbUp";
-import ThumbDownIcon from "@material-ui/icons/ThumbDown";
-import ChatBubbleOutlineIcon from "@material-ui/icons/ChatBubbleOutline";
-import BookmarkBorderIcon from "@material-ui/icons/BookmarkBorder";
-import BookmarkIcon from "@material-ui/icons/Bookmark";
-import MoreHorizIcon from "@material-ui/icons/MoreHoriz";
-import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
-import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
-import Popover from "@material-ui/core/Popover";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import Dialog from "@material-ui/core/Dialog";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import Card from "@mui/material/Card";
+import CardHeader from "@mui/material/CardHeader";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import CardActions from "@mui/material/CardActions";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
+import IconButton from "@mui/material/IconButton";
+import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
+import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
+import ThumbUpIcon from "@mui/icons-material/ThumbUp";
+import ThumbDownIcon from "@mui/icons-material/ThumbDown";
+import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import BookmarkIcon from "@mui/icons-material/Bookmark";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import Popover from "@mui/material/Popover";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import Dialog from "@mui/material/Dialog";
+import DialogTitle from "@mui/material/DialogTitle";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogActions from "@mui/material/DialogActions";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   subheader: {
@@ -257,11 +257,11 @@ function PostCard({ post }) {
 
       <CardActions disableSpacing>
         {liked ? (
-          <IconButton onClick={handleDeletePostReaction}>
+          <IconButton onClick={handleDeletePostReaction} size="large">
             <ThumbUpIcon />
           </IconButton>
         ) : (
-          <IconButton onClick={handleLikePost}>
+          <IconButton onClick={handleLikePost} size="large">
             <ThumbUpOutlinedIcon />
           </IconButton>
         )}
@@ -269,11 +269,11 @@ function PostCard({ post }) {
         <Typography variant="subtitle1">{post.reactions.total}</Typography>
 
         {disliked ? (
-          <IconButton onClick={handleDeletePostReaction}>
+          <IconButton onClick={handleDeletePostReaction} size="large">
             <ThumbDownIcon />
           </IconButton>
         ) : (
-          <IconButton onClick={handleDislikePost}>
+          <IconButton onClick={handleDislikePost} size="large">
             <ThumbDownOutlinedIcon />
           </IconButton>
         )}
@@ -284,18 +284,18 @@ function PostCard({ post }) {
         </Link>
 
         {saved ? (
-          <IconButton onClick={handleUnsavePost}>
+          <IconButton onClick={handleUnsavePost} size="large">
             <BookmarkIcon />
             <Typography>Unsave</Typography>
           </IconButton>
         ) : (
-          <IconButton onClick={handleSavePost}>
+          <IconButton onClick={handleSavePost} size="large">
             <BookmarkBorderIcon />
             <Typography>Save</Typography>
           </IconButton>
         )}
 
-        <IconButton onClick={handleMoreMenuOpen}>
+        <IconButton onClick={handleMoreMenuOpen} size="large">
           <MoreHorizIcon />
         </IconButton>
         <Popover
@@ -309,13 +309,13 @@ function PostCard({ post }) {
         >
           <ButtonGroup orientation="vertical">
             {isAuthUsersPost && (
-              <IconButton onClick={handleDeleteButtonClick}>
+              <IconButton onClick={handleDeleteButtonClick} size="large">
                 <DeleteOutlineIcon />
                 <Typography>Delete</Typography>
               </IconButton>
             )}
 
-            <IconButton>
+            <IconButton size="large">
               <FlagOutlinedIcon />
               <Typography>Report</Typography>
             </IconButton>

@@ -1,14 +1,14 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import makeStyles from '@mui/styles/makeStyles';
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogTitle from "@mui/material/DialogTitle";
 import { DropzoneArea } from "material-ui-dropzone";
 
 const useStyles = makeStyles({
@@ -37,7 +37,7 @@ function UploadDialog({ open, onClose, onChange }) {
         <DialogTitle>
           <Paper className={classes.title} elevation={0}>
             <Typography variant="h6">Upload</Typography>
-            <IconButton onClick={handleClose}>
+            <IconButton onClick={handleClose} size="large">
               <CloseIcon />
             </IconButton>
           </Paper>

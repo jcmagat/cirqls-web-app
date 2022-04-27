@@ -1,10 +1,10 @@
 import React from "react";
 import { useCommunity } from "../../context/CommunityContext";
-import Paper from "@material-ui/core/Paper";
-import Tab from "@material-ui/core/Tab";
-import TabContext from "@material-ui/lab/TabContext";
-import TabList from "@material-ui/lab/TabList";
-import TabPanel from "@material-ui/lab/TabPanel";
+import Paper from "@mui/material/Paper";
+import Tab from "@mui/material/Tab";
+import TabContext from "@mui/lab/TabContext";
+import TabList from "@mui/lab/TabList";
+import TabPanel from "@mui/lab/TabPanel";
 import PostList from "../Post/PostList";
 import CommunityAbout from "./CommunityAbout";
 import { COMMUNITY_TABS } from "../../pages/CommunityPage";

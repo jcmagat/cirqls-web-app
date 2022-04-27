@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useHistory } from "react-router-dom";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import { JOIN, LEAVE } from "../../graphql/mutations";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
-import Avatar from "@material-ui/core/Avatar";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   action: {

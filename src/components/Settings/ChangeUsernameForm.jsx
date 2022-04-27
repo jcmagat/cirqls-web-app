@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import { CHANGE_USERNAME } from "../../graphql/mutations";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   root: {
@@ -96,7 +96,6 @@ function ChangeUsernameForm(props) {
         {isChangeMode ? (
           <TextField
             className={classes.form}
-            variant="outlined"
             size="small"
             id="username"
             label="Username"

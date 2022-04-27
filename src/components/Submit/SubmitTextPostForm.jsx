@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_TEXT_POST } from "../../graphql/mutations";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   form: {
@@ -56,7 +56,6 @@ function SubmitTextPostForm({ communityId }) {
         <TextField
           id="title"
           label="Title"
-          variant="outlined"
           fullWidth
           onChange={(event) => setTitle(event.target.value)}
           disabled={loading}
@@ -65,7 +64,6 @@ function SubmitTextPostForm({ communityId }) {
         <TextField
           id="description"
           label="Description"
-          variant="outlined"
           multiline
           rows={8}
           fullWidth

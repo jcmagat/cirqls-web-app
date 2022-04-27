@@ -1,25 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useUnreadMessages } from "../../context/NotificationsContext";
-import Paper from "@material-ui/core/Paper";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-import Popover from "@material-ui/core/Popover";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import TollIcon from "@material-ui/icons/Toll";
-import ChatOutlinedIcon from "@material-ui/icons/ChatOutlined";
-import AddIcon from "@material-ui/icons/Add";
-import Avatar from "@material-ui/core/Avatar";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AccountCircleOutlinedIcon from "@material-ui/icons/AccountCircleOutlined";
-import SettingsOutlinedIcon from "@material-ui/icons/SettingsOutlined";
-import ExitToAppOutlinedIcon from "@material-ui/icons/ExitToAppOutlined";
+import Paper from "@mui/material/Paper";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import Popover from "@mui/material/Popover";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import TollIcon from "@mui/icons-material/Toll";
+import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
+import AddIcon from "@mui/icons-material/Add";
+import Avatar from "@mui/material/Avatar";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import AccountCircleOutlinedIcon from "@mui/icons-material/AccountCircleOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
+import ExitToAppOutlinedIcon from "@mui/icons-material/ExitToAppOutlined";
 import SearchBar from "./SearchBar";
 import SignUpDialog from "./SignUpDialog";
 import NotificationsButton from "./NotificationsButton";
@@ -86,7 +86,13 @@ function NavBar(props) {
     <Paper>
       <AppBar color="inherit">
         <Toolbar>
-          <IconButton edge="start" color="inherit" component={Link} to={"/"}>
+          <IconButton
+            edge="start"
+            color="inherit"
+            component={Link}
+            to={"/"}
+            size="large"
+          >
             <TollIcon fontSize="large" />
           </IconButton>
           <Paper className={classes.titleAndSearch} elevation={0}>
@@ -97,11 +103,11 @@ function NavBar(props) {
 
           {isLoggedIn ? (
             <Paper elevation={0}>
-              <IconButton component={Link} to={"/submit"}>
+              <IconButton component={Link} to={"/submit"} size="large">
                 <AddIcon />
               </IconButton>
 
-              <IconButton component={Link} to={"/messages"}>
+              <IconButton component={Link} to={"/messages"} size="large">
                 <Badge color="secondary" badgeContent={unreadMessages.length}>
                   <ChatOutlinedIcon />
                 </Badge>
@@ -109,7 +115,7 @@ function NavBar(props) {
 
               <NotificationsButton />
 
-              <IconButton onClick={handleAccountMenuOpen}>
+              <IconButton onClick={handleAccountMenuOpen} size="large">
                 <Avatar src={authUser.profile_pic_src} />
                 <ExpandMoreIcon />
               </IconButton>
@@ -123,17 +129,21 @@ function NavBar(props) {
                 }}
               >
                 <ButtonGroup orientation="vertical">
-                  <IconButton component={Link} to={`/u/${authUser.username}`}>
+                  <IconButton
+                    component={Link}
+                    to={`/u/${authUser.username}`}
+                    size="large"
+                  >
                     <AccountCircleOutlinedIcon />
                     <Typography>Profile</Typography>
                   </IconButton>
 
-                  <IconButton component={Link} to={"/settings"}>
+                  <IconButton component={Link} to={"/settings"} size="large">
                     <SettingsOutlinedIcon />
                     <Typography>Settings</Typography>
                   </IconButton>
 
-                  <IconButton onClick={handleLogout}>
+                  <IconButton onClick={handleLogout} size="large">
                     <ExitToAppOutlinedIcon />
                     <Typography>Log Out</Typography>
                   </IconButton>

@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { Button, makeStyles, Typography } from "@material-ui/core";
+import { Button, Typography } from "@mui/material";
+import makeStyles from '@mui/styles/makeStyles';
 import { useHistory } from "react-router-dom";
 import { useNotifications } from "../../context/NotificationsContext";
 import { useMutation } from "@apollo/client";
 import { READ_COMMENTS } from "../../graphql/mutations";
-import IconButton from "@material-ui/core/IconButton";
-import Badge from "@material-ui/core/Badge";
-import NotificationsOutlinedIcon from "@material-ui/icons/NotificationsOutlined";
-import Popper from "@material-ui/core/Popper";
-import Paper from "@material-ui/core/Paper";
-import Card from "@material-ui/core/Card";
-import CardActionArea from "@material-ui/core/CardActionArea";
-import CardHeader from "@material-ui/core/CardHeader";
-import Avatar from "@material-ui/core/Avatar";
-import Divider from "@material-ui/core/Divider";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
+import Popper from "@mui/material/Popper";
+import Paper from "@mui/material/Paper";
+import Card from "@mui/material/Card";
+import CardActionArea from "@mui/material/CardActionArea";
+import CardHeader from "@mui/material/CardHeader";
+import Avatar from "@mui/material/Avatar";
+import Divider from "@mui/material/Divider";
 import { GET_NOTIFICATIONS } from "../../graphql/queries";
 
 const useStyles = makeStyles({
@@ -123,40 +124,38 @@ function NotificationsButton(props) {
     });
   };
 
-  return (
-    <>
-      <IconButton onClick={handleButtonClick}>
-        <Badge color="secondary" badgeContent={notifications.length}>
-          <NotificationsOutlinedIcon />
-        </Badge>
-      </IconButton>
+  return <>
+    <IconButton onClick={handleButtonClick} size="large">
+      <Badge color="secondary" badgeContent={notifications.length}>
+        <NotificationsOutlinedIcon />
+      </Badge>
+    </IconButton>
 
-      <Popper
-        open={open}
-        anchorEl={anchorEl}
-        placement="bottom-end"
-        disablePortal
-      >
-        <Paper className={classes.popper}>
-          <Paper className={classes.header} elevation={0}>
-            <Typography variant="subtitle1">Notifications</Typography>
+    <Popper
+      open={open}
+      anchorEl={anchorEl}
+      placement="bottom-end"
+      disablePortal
+    >
+      <Paper className={classes.popper}>
+        <Paper className={classes.header} elevation={0}>
+          <Typography variant="subtitle1">Notifications</Typography>
 
-            <Button color="primary" onClick={handleReadAll}>
-              Mark All As Read
-            </Button>
-          </Paper>
-
-          {notifications.map((notification, index) => (
-            <NotificationCard
-              key={index}
-              notification={notification}
-              isLast={index === notifications.length - 1}
-            />
-          ))}
+          <Button color="primary" onClick={handleReadAll}>
+            Mark All As Read
+          </Button>
         </Paper>
-      </Popper>
-    </>
-  );
+
+        {notifications.map((notification, index) => (
+          <NotificationCard
+            key={index}
+            notification={notification}
+            isLast={index === notifications.length - 1}
+          />
+        ))}
+      </Paper>
+    </Popper>
+  </>;
 }
 
 export default NotificationsButton;

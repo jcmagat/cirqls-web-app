@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import { CONFIRM_DELETE_ACCOUNT } from "../../graphql/mutations";
-import Paper from "@material-ui/core/Paper";
-import Button from "@material-ui/core/Button";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import CloseIcon from "@material-ui/icons/Close";
-import Alert from "@material-ui/lab/Alert";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import Paper from "@mui/material/Paper";
+import Button from "@mui/material/Button";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
+import Alert from "@mui/material/Alert";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
 
 const useStyles = makeStyles({
   root: {
@@ -106,7 +106,7 @@ function DeleteAccountForm(props) {
         <DialogTitle>
           <Paper className={classes.title} elevation={0}>
             <Typography variant="h6">Delete Account</Typography>
-            <IconButton onClick={handleClose}>
+            <IconButton onClick={handleClose} size="large">
               <CloseIcon />
             </IconButton>
           </Paper>
@@ -124,7 +124,6 @@ function DeleteAccountForm(props) {
 
           <form noValidate onSubmit={handleConfirmDeleteAccout}>
             <TextField
-              variant="outlined"
               margin="normal"
               type="password"
               id="password"

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../context/AuthUserContext";
 import { useQuery } from "@apollo/client";
 import { GET_COMMUNITIES } from "../graphql/queries";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import MenuItem from "@material-ui/core/MenuItem";
-import Button from "@material-ui/core/Button";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import MenuItem from "@mui/material/MenuItem";
+import Button from "@mui/material/Button";
 import NavBar from "../components/Navigation/NavBar";
 import SubmitTabBar from "../components/Submit/SubmitTabBar";
 import { COMMUNITY_TYPES } from "../utils/constants";
@@ -68,7 +68,6 @@ function SubmitPage(props) {
             className={classes.select}
             id="community"
             label="Community"
-            variant="outlined"
             select
             defaultValue={"0"}
             onChange={(event) => setCommunityId(parseInt(event.target.value))}

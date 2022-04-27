@@ -1,9 +1,9 @@
 import React from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useConversations } from "../../context/MessagesContext";
-import Paper from "@material-ui/core/Paper";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
+import Paper from "@mui/material/Paper";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
 import ConversationCard from "./ConversationCard";
 
 const useStyles = makeStyles({

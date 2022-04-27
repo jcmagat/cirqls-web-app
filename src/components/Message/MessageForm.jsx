@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useMessageSender } from "../../context/MessagesContext";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import IconButton from "@material-ui/core/IconButton";
-import SendIcon from "@material-ui/icons/Send";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import IconButton from "@mui/material/IconButton";
+import SendIcon from "@mui/icons-material/Send";
 
 const useStyles = makeStyles({
   paper: {
@@ -35,11 +35,10 @@ function MessageForm(props) {
           id="message"
           label="Message"
           value={message}
-          variant="outlined"
           fullWidth
           onChange={(event) => setMessage(event.target.value)}
         />
-        <IconButton color="primary" type="submit">
+        <IconButton color="primary" type="submit" size="large">
           <SendIcon />
         </IconButton>
       </Paper>

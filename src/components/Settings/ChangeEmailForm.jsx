@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import { CHANGE_EMAIL } from "../../graphql/mutations";
 import isEmail from "validator/lib/isEmail";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   root: {
@@ -126,7 +126,6 @@ function ChangeEmailForm(props) {
       {isChangeMode ? (
         <Paper className={classes.textfields} elevation={0}>
           <TextField
-            variant="outlined"
             size="small"
             type="password"
             id="password"
@@ -139,7 +138,6 @@ function ChangeEmailForm(props) {
             helperText={passwordError}
           />
           <TextField
-            variant="outlined"
             size="small"
             type="email"
             id="new-email-address"
@@ -151,7 +149,6 @@ function ChangeEmailForm(props) {
             helperText={newEmailError}
           />
           <TextField
-            variant="outlined"
             size="small"
             type="email"
             id="confirm-new-email-address"

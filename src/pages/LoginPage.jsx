@@ -1,14 +1,14 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Button from "@material-ui/core/Button";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import makeStyles from "@mui/styles/makeStyles";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { LOGIN } from "../graphql/mutations";
@@ -87,7 +87,6 @@ function LoginPage(props) {
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleLogin}>
           <TextField
-            variant="outlined"
             margin="normal"
             required
             fullWidth
@@ -101,7 +100,6 @@ function LoginPage(props) {
             helperText={error}
           />
           <TextField
-            variant="outlined"
             margin="normal"
             required
             fullWidth

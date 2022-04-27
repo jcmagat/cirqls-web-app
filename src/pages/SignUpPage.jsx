@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { makeStyles } from "@material-ui/core/styles";
+import makeStyles from "@mui/styles/makeStyles";
 import { useParams } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { REGISTER } from "../graphql/mutations";
 import isStrongPassword from "validator/lib/isStrongPassword";
-import Container from "@material-ui/core/Container";
-import Paper from "@material-ui/core/Paper";
-import TextField from "@material-ui/core/TextField";
-import Typography from "@material-ui/core/Typography";
-import Avatar from "@material-ui/core/Avatar";
-import PersonOutlineOutlinedIcon from "@material-ui/icons/PersonOutlineOutlined";
-import Button from "@material-ui/core/Button";
-import Popper from "@material-ui/core/Popper";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
+import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
+import Avatar from "@mui/material/Avatar";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
+import Button from "@mui/material/Button";
+import Popper from "@mui/material/Popper";
+import CircularProgress from "@mui/material/CircularProgress";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -131,7 +131,6 @@ function SignUpPage(props) {
         </Typography>
         <form className={classes.form} noValidate onSubmit={handleRegister}>
           <TextField
-            variant="outlined"
             margin="normal"
             id="username"
             label="Username"
@@ -145,7 +144,6 @@ function SignUpPage(props) {
           />
 
           <TextField
-            variant="outlined"
             margin="normal"
             type="password"
             id="password"
@@ -172,7 +170,6 @@ function SignUpPage(props) {
           </Popper>
 
           <TextField
-            variant="outlined"
             margin="normal"
             type="password"
             id="confirm-password"

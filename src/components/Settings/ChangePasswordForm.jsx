@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/core";
+import makeStyles from "@mui/styles/makeStyles";
 import { useMutation } from "@apollo/client";
 import { CHANGE_PASSWORD } from "../../graphql/mutations";
 import isStrongPassword from "validator/lib/isStrongPassword";
-import Paper from "@material-ui/core/Paper";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
 
 const useStyles = makeStyles({
   root: {
@@ -126,7 +126,6 @@ function ChangePasswordForm(props) {
           <Paper className={classes.form} elevation={0}>
             <Paper className={classes.textfields} elevation={0}>
               <TextField
-                variant="outlined"
                 size="small"
                 type="password"
                 id="current-password"
@@ -139,7 +138,6 @@ function ChangePasswordForm(props) {
                 helperText={currentPasswordError}
               />
               <TextField
-                variant="outlined"
                 size="small"
                 type="password"
                 id="new-password"
@@ -151,7 +149,6 @@ function ChangePasswordForm(props) {
                 helperText={newPasswordError}
               />
               <TextField
-                variant="outlined"
                 size="small"
                 type="password"
                 id="confirm-new-password"

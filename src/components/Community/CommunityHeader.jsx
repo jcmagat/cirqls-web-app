@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@mui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useCommunity } from "../../context/CommunityContext";
 import { useMutation } from "@apollo/client";
 import { JOIN, LEAVE } from "../../graphql/mutations";
-import Paper from "@material-ui/core/Paper";
-import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
-import Popover from "@material-ui/core/Popover";
-import ButtonGroup from "@material-ui/core/ButtonGroup";
-import EditOutlinedIcon from "@material-ui/icons/EditOutlined";
-import FlagOutlinedIcon from "@material-ui/icons/FlagOutlined";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import Paper from "@mui/material/Paper";
+import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import Popover from "@mui/material/Popover";
+import ButtonGroup from "@mui/material/ButtonGroup";
+import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles({
@@ -87,7 +87,7 @@ function CommunityHeader(props) {
       <IconButton
         className={classes.more}
         onClick={(event) => setMoreMenuAnchor(event.currentTarget)}
-      >
+        size="large">
         <MoreVertIcon />
       </IconButton>
       <Popover
@@ -105,13 +105,13 @@ function CommunityHeader(props) {
       >
         <ButtonGroup orientation="vertical">
           {isModerator && (
-            <IconButton component={Link} to={`/c/${community.name}/edit`}>
+            <IconButton component={Link} to={`/c/${community.name}/edit`} size="large">
               <EditOutlinedIcon />
               <Typography>Edit</Typography>
             </IconButton>
           )}
 
-          <IconButton>
+          <IconButton size="large">
             <FlagOutlinedIcon />
             <Typography>Report</Typography>
           </IconButton>
