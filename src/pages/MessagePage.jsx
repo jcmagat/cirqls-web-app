@@ -1,11 +1,12 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Divider from "@mui/material/Divider";
 import NavBar from "../components/Navigation/NavBar";
 import ConversationList from "../components/Message/ConversationList";
 import MessageArea from "../components/Message/MessageArea";
+import BottomNavBar from "../components/Navigation/BottomNavBar";
 
 const useStyles = makeStyles({
   paper: {
@@ -40,6 +41,8 @@ function MessagesPage(props) {
             <MessageArea />
           </Paper>
         </Paper>
+
+        <BottomNavBar />
       </Paper>
     </Container>
   );

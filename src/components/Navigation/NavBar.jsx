@@ -51,11 +51,11 @@ function AuthNavButtons({ screenSize }) {
     <>
       {screenSize !== "small" && (
         <Box>
-          <IconButton component={Link} href={"/submit"} size="large">
+          <IconButton component={Link} href={"/submit"}>
             <AddIcon />
           </IconButton>
 
-          <IconButton component={Link} href={"/messages"} size="large">
+          <IconButton component={Link} href={"/messages"}>
             <Badge color="secondary" badgeContent={unreadMessages.length}>
               <ChatOutlinedIcon />
             </Badge>
@@ -65,10 +65,7 @@ function AuthNavButtons({ screenSize }) {
         </Box>
       )}
 
-      <IconButton
-        onClick={(event) => setAnchorEl(event.currentTarget)}
-        size="large"
-      >
+      <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
         <Avatar src={authUser.profile_pic_src} />
         <ExpandMoreIcon />
       </IconButton>

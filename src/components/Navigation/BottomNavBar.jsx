@@ -1,8 +1,14 @@
-import React, { useState } from "react";
+import React from "react";
 import { styled } from "@mui/material/styles";
+import {
+  useUnreadMessages,
+  useNotifications,
+} from "../../context/NotificationsContext";
 import AppBar from "@mui/material/AppBar";
-import BottomNavigation from "@mui/material/BottomNavigation";
-import BottomNavigationAction from "@mui/material/BottomNavigationAction";
+import Toolbar from "@mui/material/Toolbar";
+import IconButton from "@mui/material/IconButton";
+import Badge from "@mui/material/Badge";
+import Link from "@mui/material/Link";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import AddIcon from "@mui/icons-material/Add";
@@ -17,44 +23,44 @@ const NAV_TABS = {
   NOTIFICATIONS: "Notifications",
 };
 
-const StyledBottomNavigation = styled(BottomNavigation)(({ theme }) => ({
+const StyledAppBar = styled(AppBar)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     display: "none",
   },
 }));
 
 function BottomNavBar(props) {
-  const [tab, setTab] = useState(NAV_TABS.HOME);
+  const unreadMessages = useUnreadMessages();
+  const notifications = useNotifications();
 
   return (
-    <AppBar sx={{ top: "auto", bottom: 0 }}>
-      <StyledBottomNavigation
-        value={tab}
-        onChange={(event, newValue) => setTab(newValue)}
-      >
-        <BottomNavigationAction
-          label={NAV_TABS.HOME}
-          icon={<HomeOutlinedIcon />}
-        />
+    <StyledAppBar color="inherit" sx={{ top: "auto", bottom: 0 }}>
+      <Toolbar sx={{ justifyContent: "space-evenly" }}>
+        <IconButton component={Link} href={"/"}>
+          <HomeOutlinedIcon />
+        </IconButton>
 
-        <BottomNavigationAction
-          label={NAV_TABS.EXPLORE}
-          icon={<SearchIcon />}
-        />
+        <IconButton component={Link} href={"/explore"}>
+          <SearchIcon />
+        </IconButton>
 
-        <BottomNavigationAction label={NAV_TABS.SUBMIT} icon={<AddIcon />} />
+        <IconButton component={Link} href={"/submit"}>
+          <AddIcon />
+        </IconButton>
 
-        <BottomNavigationAction
-          label={NAV_TABS.MESSAGES}
-          icon={<ChatOutlinedIcon />}
-        />
+        <IconButton component={Link} href={"/messages"}>
+          <Badge color="secondary" badgeContent={unreadMessages.length}>
+            <ChatOutlinedIcon />
+          </Badge>
+        </IconButton>
 
-        <BottomNavigationAction
-          label={NAV_TABS.NOTIFICATIONS}
-          icon={<NotificationsOutlinedIcon />}
-        />
-      </StyledBottomNavigation>
-    </AppBar>
+        <IconButton component={Link} href={"/"}>
+          <Badge color="secondary" badgeContent={notifications.length}>
+            <NotificationsOutlinedIcon />
+          </Badge>
+        </IconButton>
+      </Toolbar>
+    </StyledAppBar>
   );
 }
 

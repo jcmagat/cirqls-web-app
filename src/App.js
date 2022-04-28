@@ -32,7 +32,16 @@ const theme = createTheme({
         elevation: 1,
       },
     },
+    MuiLink: {
+      defaultProps: {
+        color: "inherit",
+        underline: "none",
+      },
+    },
     MuiIconButton: {
+      defaultProps: {
+        size: "large",
+      },
       styleOverrides: {
         root: {
           borderRadius: 4,
@@ -45,7 +54,7 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter forceRefresh={true}>
+      <BrowserRouter>
         <Switch>
           <Route exact path="/">
             <HomePage />

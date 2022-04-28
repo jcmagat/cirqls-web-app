@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { useQuery } from "@apollo/client";
 import { GET_EXPLORE_PAGE_POSTS } from "../graphql/queries";
 import Container from "@mui/material/Container";
@@ -7,6 +7,7 @@ import Paper from "@mui/material/Paper";
 import NavBar from "../components/Navigation/NavBar";
 import PostList from "../components/Post/PostList";
 import SortSelect from "../components/Post/SortSelect";
+import BottomNavBar from "../components/Navigation/BottomNavBar";
 import { SORT_TYPES } from "../components/Post/SortSelect";
 
 const useStyles = makeStyles({
@@ -48,6 +49,8 @@ function ExplorePage(props) {
 
         <PostList posts={posts} />
       </Paper>
+
+      <BottomNavBar />
     </Container>
   );
 }

@@ -9,8 +9,6 @@ function Logo(props) {
     <Box
       component={Link}
       href="/"
-      color="inherit"
-      underline="none"
       sx={{
         display: "flex",
         flexDirection: "row",
