@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
 import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import {
@@ -16,10 +15,10 @@ import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
 import CardActions from "@mui/material/CardActions";
 import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -39,23 +38,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 
-const useStyles = makeStyles({
-  subheader: {
-    display: "flex",
-    gap: 6,
-  },
-  media: {
-    height: "70vh", // TODO: fix
-  },
-  mediaRoot: {
-    backgroundSize: "contain",
-    backgroundPosition: "top",
-  },
-});
-
 function PostCardContent({ post }) {
-  const classes = useStyles();
-
   if (post.__typename === "TextPost") {
     return (
       <CardContent>
@@ -71,11 +54,11 @@ function PostCardContent({ post }) {
         </CardContent>
 
         <CardMedia
-          className={classes.media}
           image={post.media_src}
           alt=""
-          classes={{
-            root: classes.mediaRoot,
+          sx={{
+            height: "50vh",
+            backgroundSize: "contain",
           }}
         />
       </>
@@ -84,8 +67,6 @@ function PostCardContent({ post }) {
 }
 
 function PostCard({ post }) {
-  const classes = useStyles();
-
   const authUser = useAuthUser();
 
   const isAuthUsersPost =
@@ -232,24 +213,30 @@ function PostCard({ post }) {
     <Card style={disableIfLoading(deletePostLoading)}>
       <CardHeader
         avatar={
-          <Link href={`/c/${post.community.name}`}>
-            <Avatar src={post.community.logo_src} />
-          </Link>
+          <Avatar
+            src={post.community.logo_src}
+            component={Link}
+            href={`/c/${post.community.name}`}
+          />
         }
         disableTypography
         title={
-          <Link href={`/c/${post.community.name}`} color="inherit">
-            <Typography variant="subtitle2">{`c/${post.community.name}`}</Typography>
-          </Link>
+          <Typography
+            variant="subtitle2"
+            component={Link}
+            href={`/c/${post.community.name}`}
+          >{`c/${post.community.name}`}</Typography>
         }
         subheader={
-          <Paper className={classes.subheader} elevation={0}>
-            <Link href={`/u/${post.poster.username}`} color="inherit">
-              <Typography variant="subtitle2">{`u/${post.poster.username}`}</Typography>
-            </Link>
-
-            <Typography variant="subtitle2">{`⋅ ${post.created_since}`}</Typography>
-          </Paper>
+          <Box sx={{ display: "flex", gap: 1 }}>
+            <Typography
+              variant="subtitle2"
+              component={Link}
+              href={`/u/${post.poster.username}`}
+            >{`u/${post.poster.username}`}</Typography>
+            <Typography variant="subtitle2">⋅</Typography>
+            <Typography variant="subtitle2">{post.created_since}</Typography>
+          </Box>
         }
       />
 
@@ -257,11 +244,11 @@ function PostCard({ post }) {
 
       <CardActions disableSpacing>
         {liked ? (
-          <IconButton onClick={handleDeletePostReaction} size="large">
+          <IconButton onClick={handleDeletePostReaction}>
             <ThumbUpIcon />
           </IconButton>
         ) : (
-          <IconButton onClick={handleLikePost} size="large">
+          <IconButton onClick={handleLikePost}>
             <ThumbUpOutlinedIcon />
           </IconButton>
         )}
@@ -269,33 +256,33 @@ function PostCard({ post }) {
         <Typography variant="subtitle1">{post.reactions.total}</Typography>
 
         {disliked ? (
-          <IconButton onClick={handleDeletePostReaction} size="large">
+          <IconButton onClick={handleDeletePostReaction}>
             <ThumbDownIcon />
           </IconButton>
         ) : (
-          <IconButton onClick={handleDislikePost} size="large">
+          <IconButton onClick={handleDislikePost}>
             <ThumbDownOutlinedIcon />
           </IconButton>
         )}
 
-        <Link href={`/post/${post.post_id}`} component={IconButton}>
+        <IconButton component={Link} href={`/post/${post.post_id}`}>
           <ChatBubbleOutlineIcon />
           <Typography>{`${post.comments_info.total} Comments`}</Typography>
-        </Link>
+        </IconButton>
 
         {saved ? (
-          <IconButton onClick={handleUnsavePost} size="large">
+          <IconButton onClick={handleUnsavePost}>
             <BookmarkIcon />
             <Typography>Unsave</Typography>
           </IconButton>
         ) : (
-          <IconButton onClick={handleSavePost} size="large">
+          <IconButton onClick={handleSavePost}>
             <BookmarkBorderIcon />
             <Typography>Save</Typography>
           </IconButton>
         )}
 
-        <IconButton onClick={handleMoreMenuOpen} size="large">
+        <IconButton onClick={handleMoreMenuOpen}>
           <MoreHorizIcon />
         </IconButton>
         <Popover
@@ -309,13 +296,13 @@ function PostCard({ post }) {
         >
           <ButtonGroup orientation="vertical">
             {isAuthUsersPost && (
-              <IconButton onClick={handleDeleteButtonClick} size="large">
+              <IconButton onClick={handleDeleteButtonClick}>
                 <DeleteOutlineIcon />
                 <Typography>Delete</Typography>
               </IconButton>
             )}
 
-            <IconButton size="large">
+            <IconButton>
               <FlagOutlinedIcon />
               <Typography>Report</Typography>
             </IconButton>

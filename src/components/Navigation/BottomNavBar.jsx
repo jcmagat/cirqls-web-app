@@ -15,14 +15,6 @@ import AddIcon from "@mui/icons-material/Add";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
-const NAV_TABS = {
-  HOME: "Home",
-  EXPLORE: "Explore",
-  SUBMIT: "Submit",
-  MESSAGES: "Messages",
-  NOTIFICATIONS: "Notifications",
-};
-
 const StyledAppBar = styled(AppBar)(({ theme }) => ({
   [theme.breakpoints.up("md")]: {
     display: "none",
