@@ -19,7 +19,6 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
-import Zoom from "@mui/material/Zoom";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -30,6 +29,7 @@ import BookmarkIcon from "@mui/icons-material/Bookmark";
 import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
+import CloseIcon from "@mui/icons-material/Close";
 import Popover from "@mui/material/Popover";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Dialog from "@mui/material/Dialog";
@@ -63,26 +63,48 @@ function PostCardContent({ post }) {
           sx={{
             maxHeight: "60vh",
             objectPosition: "top",
+            cursor: "pointer",
           }}
           onClick={() => setOpen(true)}
         />
 
         <Dialog
           open={open}
-          onClose={() => setOpen(false)}
-          TransitionComponent={Zoom}
-          fullWidth
-          maxWidth="xl"
+          fullScreen
+          onClick={() => setOpen(false)}
           PaperProps={{
             sx: {
-              // maxHeight: "95vh",
+              background: "rgba(0, 0, 0, 0.5)",
             },
           }}
         >
+          <CloseIcon
+            sx={{
+              color: "white",
+              cursor: "pointer",
+              position: "fixed",
+              top: 0,
+              right: 0,
+              padding: 2,
+            }}
+          />
+
           <img
             src={post.media_src}
             alt={post.title}
-            style={{ objectFit: "contain" }}
+            onClick={(event) => {
+              // Prevent closing the dialog when image is clicked
+              // Only close when background is clicked
+              event.stopPropagation();
+            }}
+            style={{
+              maxHeight: "85vh",
+              maxWidth: "100vw",
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+              transform: "translate(-50%, -50%)",
+            }}
           />
         </Dialog>
       </>
