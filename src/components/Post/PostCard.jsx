@@ -19,6 +19,7 @@ import Typography from "@mui/material/Typography";
 import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import Box from "@mui/material/Box";
+import Zoom from "@mui/material/Zoom";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
@@ -39,6 +40,8 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 
 function PostCardContent({ post }) {
+  const [open, setOpen] = useState(false);
+
   if (post.__typename === "TextPost") {
     return (
       <CardContent>
@@ -54,13 +57,34 @@ function PostCardContent({ post }) {
         </CardContent>
 
         <CardMedia
+          component="img"
           image={post.media_src}
-          alt=""
+          alt={post.title}
           sx={{
-            height: "50vh",
-            backgroundSize: "contain",
+            maxHeight: "60vh",
+            objectPosition: "top",
           }}
+          onClick={() => setOpen(true)}
         />
+
+        <Dialog
+          open={open}
+          onClose={() => setOpen(false)}
+          TransitionComponent={Zoom}
+          fullWidth
+          maxWidth="xl"
+          PaperProps={{
+            sx: {
+              // maxHeight: "95vh",
+            },
+          }}
+        >
+          <img
+            src={post.media_src}
+            alt={post.title}
+            style={{ objectFit: "contain" }}
+          />
+        </Dialog>
       </>
     );
   }
@@ -245,7 +269,7 @@ function PostCard({ post }) {
       <CardActions disableSpacing>
         {liked ? (
           <IconButton onClick={handleDeletePostReaction}>
-            <ThumbUpIcon />
+            <ThumbUpIcon color="primary" />
           </IconButton>
         ) : (
           <IconButton onClick={handleLikePost}>
@@ -257,7 +281,7 @@ function PostCard({ post }) {
 
         {disliked ? (
           <IconButton onClick={handleDeletePostReaction}>
-            <ThumbDownIcon />
+            <ThumbDownIcon color="secondary" />
           </IconButton>
         ) : (
           <IconButton onClick={handleDislikePost}>

@@ -1,19 +1,14 @@
 import React from "react";
-import Paper from "@mui/material/Paper";
-import Grid from "@mui/material/Grid";
+import Box from "@mui/material/Box";
 import PostCard from "./PostCard";
 
 function PostList({ posts }) {
   return (
-    <Paper elevation={0}>
-      <Grid container spacing={2} direction="column">
-        {posts?.map((post) => (
-          <Grid item key={post.post_id}>
-            <PostCard post={post} />
-          </Grid>
-        ))}
-      </Grid>
-    </Paper>
+    <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+      {posts?.map((post) => (
+        <PostCard key={post.post_id} post={post} />
+      ))}
+    </Box>
   );
 }
 
