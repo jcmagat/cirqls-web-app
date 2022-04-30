@@ -26,6 +26,7 @@ import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import SignUpDialog from "./SignUpDialog";
 import NotificationsButton from "./NotificationsButton";
+import BottomNavBar from "./BottomNavBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
@@ -56,7 +57,7 @@ function AuthNavButtons({ screenSize }) {
           </IconButton>
 
           <IconButton component={Link} href={"/messages"}>
-            <Badge color="secondary" badgeContent={unreadMessages.length}>
+            <Badge color="primary" badgeContent={unreadMessages.length}>
               <ChatOutlinedIcon />
             </Badge>
           </IconButton>
@@ -170,29 +171,33 @@ function NavBar(props) {
   }, [authUser]);
 
   return (
-    <AppBar color="inherit">
-      <Toolbar sx={{ gap: 4 }}>
-        <Logo />
+    <>
+      <AppBar color="inherit">
+        <Toolbar sx={{ gap: 4 }}>
+          <Logo />
 
-        {!isSmallScreen && <SearchBar />}
+          {!isSmallScreen && <SearchBar />}
 
-        <Box
-          sx={{
-            marginLeft: "auto",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 1,
-          }}
-        >
-          {isLoggedIn ? (
-            <AuthNavButtons screenSize={screenSize} />
-          ) : (
-            <NonAuthNavButtons screenSize={screenSize} />
-          )}
-        </Box>
-      </Toolbar>
-    </AppBar>
+          <Box
+            sx={{
+              marginLeft: "auto",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 1,
+            }}
+          >
+            {isLoggedIn ? (
+              <AuthNavButtons screenSize={screenSize} />
+            ) : (
+              <NonAuthNavButtons screenSize={screenSize} />
+            )}
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      {isSmallScreen && <BottomNavBar />}
+    </>
   );
 }
 

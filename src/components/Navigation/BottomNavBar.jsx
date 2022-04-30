@@ -15,18 +15,12 @@ import AddIcon from "@mui/icons-material/Add";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
-const StyledAppBar = styled(AppBar)(({ theme }) => ({
-  [theme.breakpoints.up("md")]: {
-    display: "none",
-  },
-}));
-
 function BottomNavBar(props) {
   const unreadMessages = useUnreadMessages();
   const notifications = useNotifications();
 
   return (
-    <StyledAppBar color="inherit" sx={{ top: "auto", bottom: 0 }}>
+    <AppBar color="inherit" sx={{ top: "auto", bottom: 0 }}>
       <Toolbar sx={{ justifyContent: "space-evenly" }}>
         <IconButton component={Link} href={"/"}>
           <HomeOutlinedIcon />
@@ -41,18 +35,18 @@ function BottomNavBar(props) {
         </IconButton>
 
         <IconButton component={Link} href={"/messages"}>
-          <Badge color="secondary" badgeContent={unreadMessages.length}>
+          <Badge color="primary" badgeContent={unreadMessages.length}>
             <ChatOutlinedIcon />
           </Badge>
         </IconButton>
 
         <IconButton component={Link} href={"/"}>
-          <Badge color="secondary" badgeContent={notifications.length}>
+          <Badge color="primary" badgeContent={notifications.length}>
             <NotificationsOutlinedIcon />
           </Badge>
         </IconButton>
       </Toolbar>
-    </StyledAppBar>
+    </AppBar>
   );
 }
 

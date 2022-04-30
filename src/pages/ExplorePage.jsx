@@ -7,7 +7,6 @@ import Paper from "@mui/material/Paper";
 import NavBar from "../components/Navigation/NavBar";
 import PostList from "../components/Post/PostList";
 import SortSelect from "../components/Post/SortSelect";
-import BottomNavBar from "../components/Navigation/BottomNavBar";
 import { SORT_TYPES } from "../components/Post/SortSelect";
 
 const useStyles = makeStyles({
@@ -49,8 +48,6 @@ function ExplorePage(props) {
 
         <PostList posts={posts} />
       </Paper>
-
-      <BottomNavBar />
     </Container>
   );
 }

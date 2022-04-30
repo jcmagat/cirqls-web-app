@@ -8,7 +8,6 @@ import NavBar from "../components/Navigation/NavBar";
 import HomePageNav from "../components/Navigation/HomePageNav";
 import PostList from "../components/Post/PostList";
 import SortSelect from "../components/Post/SortSelect";
-import BottomNavBar from "../components/Navigation/BottomNavBar";
 import { SORT_TYPES } from "../components/Post/SortSelect";
 
 const useStyles = makeStyles({
@@ -63,8 +62,6 @@ function HomePage(props) {
           </>
         )}
       </Paper>
-
-      <BottomNavBar />
     </Container>
   );
 }

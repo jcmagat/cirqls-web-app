@@ -10,7 +10,6 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import NavBar from "../components/Navigation/NavBar";
 import SubmitTabBar from "../components/Submit/SubmitTabBar";
-import BottomNavBar from "../components/Navigation/BottomNavBar";
 import { COMMUNITY_TYPES } from "../utils/constants";
 import { Link } from "react-router-dom";
 
@@ -98,8 +97,6 @@ function SubmitPage(props) {
         </Paper>
 
         <SubmitTabBar communityId={communityId} />
-
-        <BottomNavBar />
       </Paper>
     </Container>
   );

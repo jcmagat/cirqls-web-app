@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Typography } from "@mui/material";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { useHistory } from "react-router-dom";
 import { useNotifications } from "../../context/NotificationsContext";
 import { useMutation } from "@apollo/client";
@@ -109,7 +109,7 @@ function NotificationsButton(props) {
 
   const [readComments] = useMutation(READ_COMMENTS, {
     refetchQueries: [GET_NOTIFICATIONS],
-    onCompleted: () => setOpen(false)
+    onCompleted: () => setOpen(false),
   });
 
   const handleReadAll = () => {
@@ -124,38 +124,40 @@ function NotificationsButton(props) {
     });
   };
 
-  return <>
-    <IconButton onClick={handleButtonClick} size="large">
-      <Badge color="secondary" badgeContent={notifications.length}>
-        <NotificationsOutlinedIcon />
-      </Badge>
-    </IconButton>
+  return (
+    <>
+      <IconButton onClick={handleButtonClick} size="large">
+        <Badge color="primary" badgeContent={notifications.length}>
+          <NotificationsOutlinedIcon />
+        </Badge>
+      </IconButton>
 
-    <Popper
-      open={open}
-      anchorEl={anchorEl}
-      placement="bottom-end"
-      disablePortal
-    >
-      <Paper className={classes.popper}>
-        <Paper className={classes.header} elevation={0}>
-          <Typography variant="subtitle1">Notifications</Typography>
+      <Popper
+        open={open}
+        anchorEl={anchorEl}
+        placement="bottom-end"
+        disablePortal
+      >
+        <Paper className={classes.popper}>
+          <Paper className={classes.header} elevation={0}>
+            <Typography variant="subtitle1">Notifications</Typography>
 
-          <Button color="primary" onClick={handleReadAll}>
-            Mark All As Read
-          </Button>
+            <Button color="primary" onClick={handleReadAll}>
+              Mark All As Read
+            </Button>
+          </Paper>
+
+          {notifications.map((notification, index) => (
+            <NotificationCard
+              key={index}
+              notification={notification}
+              isLast={index === notifications.length - 1}
+            />
+          ))}
         </Paper>
-
-        {notifications.map((notification, index) => (
-          <NotificationCard
-            key={index}
-            notification={notification}
-            isLast={index === notifications.length - 1}
-          />
-        ))}
-      </Paper>
-    </Popper>
-  </>;
+      </Popper>
+    </>
+  );
 }
 
 export default NotificationsButton;
