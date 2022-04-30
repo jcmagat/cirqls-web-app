@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
 import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import {
@@ -30,14 +31,25 @@ import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
-import Popover from "@mui/material/Popover";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+
+const StyledCardActions = styled(CardActions)(({ theme }) => ({
+  [theme.breakpoints.down("sm")]: {
+    justifyContent: "space-between",
+  },
+}));
+
+const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
+  gap: theme.spacing(1),
+  color: theme.palette.text.secondary,
+}));
 
 function PostCardContent({ post }) {
   const [open, setOpen] = useState(false);
@@ -288,72 +300,77 @@ function PostCard({ post }) {
 
       <PostCardContent post={post} />
 
-      <CardActions disableSpacing>
-        {liked ? (
-          <IconButton onClick={handleDeletePostReaction}>
-            <ThumbUpIcon color="primary" />
-          </IconButton>
-        ) : (
-          <IconButton onClick={handleLikePost}>
-            <ThumbUpOutlinedIcon />
-          </IconButton>
-        )}
+      <StyledCardActions disableSpacing>
+        <Box
+          sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+        >
+          {liked ? (
+            <IconButton onClick={handleDeletePostReaction}>
+              <ThumbUpIcon color="primary" />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleLikePost}>
+              <ThumbUpOutlinedIcon />
+            </IconButton>
+          )}
 
-        <Typography variant="subtitle1">{post.reactions.total}</Typography>
+          <Typography variant="subtitle1">{post.reactions.total}</Typography>
 
-        {disliked ? (
-          <IconButton onClick={handleDeletePostReaction}>
-            <ThumbDownIcon color="secondary" />
-          </IconButton>
-        ) : (
-          <IconButton onClick={handleDislikePost}>
-            <ThumbDownOutlinedIcon />
-          </IconButton>
-        )}
+          {disliked ? (
+            <IconButton onClick={handleDeletePostReaction}>
+              <ThumbDownIcon color="secondary" />
+            </IconButton>
+          ) : (
+            <IconButton onClick={handleDislikePost}>
+              <ThumbDownOutlinedIcon />
+            </IconButton>
+          )}
+        </Box>
 
         <IconButton component={Link} href={`/post/${post.post_id}`}>
           <ChatBubbleOutlineIcon />
-          <Typography>{`${post.comments_info.total} Comments`}</Typography>
+          <Typography
+            sx={{ marginLeft: 1 }}
+          >{`${post.comments_info.total} Comments`}</Typography>
         </IconButton>
-
-        {saved ? (
-          <IconButton onClick={handleUnsavePost}>
-            <BookmarkIcon />
-            <Typography>Unsave</Typography>
-          </IconButton>
-        ) : (
-          <IconButton onClick={handleSavePost}>
-            <BookmarkBorderIcon />
-            <Typography>Save</Typography>
-          </IconButton>
-        )}
 
         <IconButton onClick={handleMoreMenuOpen}>
           <MoreHorizIcon />
         </IconButton>
-        <Popover
+
+        <Menu
           open={Boolean(moreMenuAnchor)}
           anchorEl={moreMenuAnchor}
           onClose={handleMoreMenuClose}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left",
-          }}
         >
-          <ButtonGroup orientation="vertical">
-            {isAuthUsersPost && (
-              <IconButton onClick={handleDeleteButtonClick}>
-                <DeleteOutlineIcon />
-                <Typography>Delete</Typography>
-              </IconButton>
-            )}
+          {!!authUser && (
+            <>
+              {saved ? (
+                <StyledMenuItem onClick={handleUnsavePost}>
+                  <BookmarkIcon />
+                  Unsave
+                </StyledMenuItem>
+              ) : (
+                <StyledMenuItem onClick={handleSavePost}>
+                  <BookmarkBorderIcon />
+                  Save
+                </StyledMenuItem>
+              )}
+            </>
+          )}
 
-            <IconButton>
-              <FlagOutlinedIcon />
-              <Typography>Report</Typography>
-            </IconButton>
-          </ButtonGroup>
-        </Popover>
+          {isAuthUsersPost && (
+            <StyledMenuItem onClick={handleDeleteButtonClick}>
+              <DeleteOutlineIcon />
+              Delete
+            </StyledMenuItem>
+          )}
+
+          <StyledMenuItem>
+            <FlagOutlinedIcon />
+            Report
+          </StyledMenuItem>
+        </Menu>
 
         <Dialog open={deleteDialogOpen} onClose={handleDeleteDialogClose}>
           <DialogTitle>Delete post</DialogTitle>
@@ -379,7 +396,7 @@ function PostCard({ post }) {
             </Button>
           </DialogActions>
         </Dialog>
-      </CardActions>
+      </StyledCardActions>
     </Card>
   );
 }
