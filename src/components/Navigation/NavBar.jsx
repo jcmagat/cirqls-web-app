@@ -70,6 +70,7 @@ function AuthNavButtons({ screenSize }) {
         <Avatar src={authUser.profile_pic_src} />
         <ExpandMoreIcon />
       </IconButton>
+
       <Menu
         open={Boolean(anchorEl)}
         anchorEl={anchorEl}
@@ -147,6 +148,7 @@ function NonAuthNavButtons({ screenSize }) {
             variant="contained"
             color="primary"
             onClick={handleOpenDialog}
+            sx={{ marginRight: 2 }}
           >
             Sign Up
           </Button>
@@ -172,11 +174,17 @@ function NavBar(props) {
 
   return (
     <>
-      <AppBar color="inherit">
-        <Toolbar sx={{ gap: 4 }}>
-          <Logo />
+      <AppBar color="inherit" sx={{ padding: 0, margin: 0 }}>
+        <Toolbar disableGutters>
+          <Logo size={screenSize} sx={{ paddingLeft: 2 }} />
 
-          {!isSmallScreen && <SearchBar />}
+          <SearchBar
+            sx={{
+              position: "absolute",
+              left: "50%",
+              transform: "translateX(-50%)",
+            }}
+          />
 
           <Box
             sx={{

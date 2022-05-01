@@ -4,6 +4,7 @@ import { useHistory } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import { SEARCH } from "../../graphql/queries";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Popper from "@mui/material/Popper";
 import Card from "@mui/material/Card";
@@ -63,7 +64,7 @@ function ResultCard({ result }) {
   );
 }
 
-function SearchBar(props) {
+function SearchBar({ sx }) {
   const classes = useStyles();
   const history = useHistory();
 
@@ -125,7 +126,7 @@ function SearchBar(props) {
   }
 
   return (
-    <>
+    <Box sx={{ ...sx }}>
       <form onSubmit={handleSubmit}>
         <TextField
           size="small"
@@ -151,7 +152,7 @@ function SearchBar(props) {
           <Button onClick={handleSubmit}>More Results</Button>
         </Paper>
       </Popper>
-    </>
+    </Box>
   );
 }
 

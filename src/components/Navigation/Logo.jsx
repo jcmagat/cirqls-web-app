@@ -4,7 +4,7 @@ import Link from "@mui/material/Link";
 import TollIcon from "@mui/icons-material/Toll";
 import Typography from "@mui/material/Typography";
 
-function Logo(props) {
+function Logo({ sx, size }) {
   return (
     <Box
       component={Link}
@@ -14,10 +14,11 @@ function Logo(props) {
         flexDirection: "row",
         alignItems: "center",
         gap: 1,
+        ...sx,
       }}
     >
       <TollIcon fontSize="large" />
-      <Typography variant="h5">Cirqls</Typography>
+      {size !== "small" && <Typography variant="h5">Cirqls</Typography>}
     </Box>
   );
 }

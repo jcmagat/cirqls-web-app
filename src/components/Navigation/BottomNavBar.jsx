@@ -1,5 +1,4 @@
 import React from "react";
-import { styled } from "@mui/material/styles";
 import {
   useUnreadMessages,
   useNotifications,
@@ -21,7 +20,7 @@ function BottomNavBar(props) {
 
   return (
     <AppBar color="inherit" sx={{ top: "auto", bottom: 0 }}>
-      <Toolbar sx={{ justifyContent: "space-evenly" }}>
+      <Toolbar disableGutters sx={{ justifyContent: "space-evenly" }}>
         <IconButton component={Link} href={"/"}>
           <HomeOutlinedIcon />
         </IconButton>
