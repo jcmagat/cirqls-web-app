@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import React, { useState, useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useLazyQuery } from "@apollo/client";
 import { SEARCH } from "../../graphql/queries";
 import Paper from "@mui/material/Paper";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import FormControl from "@mui/material/FormControl";
+import OutlinedInput from "@mui/material/OutlinedInput";
+import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
 import Popper from "@mui/material/Popper";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -14,13 +15,6 @@ import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import Button from "@mui/material/Button";
 import { Link } from "react-router-dom";
-
-const useStyles = makeStyles({
-  results: {
-    display: "flex",
-    flexDirection: "column",
-  },
-});
 
 function ResultCard({ result }) {
   const [linkTo, setLinkTo] = useState("");
@@ -65,14 +59,15 @@ function ResultCard({ result }) {
 }
 
 function SearchBar({ sx }) {
-  const classes = useStyles();
   const history = useHistory();
 
   const [term, setTerm] = useState("");
   const [results, setResults] = useState([]);
 
   const [open, setOpen] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
+
+  const formRef = useRef(null);
+  const inputRef = useRef(null);
 
   const [search] = useLazyQuery(SEARCH, { onCompleted: finishSearch });
 
@@ -101,18 +96,17 @@ function SearchBar({ sx }) {
     });
   };
 
-  const handleFocus = (event) => {
-    setAnchorEl(event.currentTarget);
-
+  const handleFocus = () => {
     if (results.length > 0) {
-      setOpen(true);
+      // Delay opening the popper to outset the closing delay
+      // for when the search icon is clicked while already focused on input
+      setTimeout(() => setOpen(true), 101);
     }
   };
 
   const handleUnfocus = () => {
     // Delay closing the popper to allow clicking results
-    const timeOutId = setTimeout(() => setOpen(false), 100);
-    return () => clearTimeout(timeOutId);
+    setTimeout(() => setOpen(false), 100);
   };
 
   function finishSearch(data) {
@@ -126,25 +120,44 @@ function SearchBar({ sx }) {
   }
 
   return (
-    <Box sx={{ ...sx }}>
-      <form onSubmit={handleSubmit}>
-        <TextField
-          size="small"
-          id="search"
-          label="Search"
-          onFocus={handleFocus}
-          onBlur={handleUnfocus}
-          onChange={(event) => setTerm(event.target.value)}
-        />
+    <>
+      <form ref={formRef} style={{ ...sx }} onSubmit={handleSubmit}>
+        <FormControl size="small" fullWidth>
+          <OutlinedInput
+            id="search"
+            type="text"
+            placeholder="Search"
+            inputRef={inputRef}
+            onFocus={handleFocus}
+            onBlur={handleUnfocus}
+            onChange={(event) => setTerm(event.target.value)}
+            startAdornment={
+              <IconButton
+                edge="start"
+                size="medium"
+                disableRipple
+                onClick={() => inputRef.current.focus()}
+              >
+                <SearchIcon />
+              </IconButton>
+            }
+          />
+        </FormControl>
       </form>
 
       <Popper
         open={open}
-        anchorEl={anchorEl}
+        anchorEl={formRef.current}
         placement="bottom-start"
         disablePortal
       >
-        <Paper className={classes.results} elevation={2}>
+        <Paper
+          elevation={2}
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
           {results.map((result, index) => (
             <ResultCard key={index} result={result} />
           ))}
@@ -152,7 +165,7 @@ function SearchBar({ sx }) {
           <Button onClick={handleSubmit}>More Results</Button>
         </Paper>
       </Popper>
-    </Box>
+    </>
   );
 }
 

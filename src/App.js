@@ -22,16 +22,6 @@ import NotFoundPage from "./pages/NotFoundPage";
 
 const theme = createTheme({
   components: {
-    MuiPaper: {
-      defaultProps: {
-        elevation: 0,
-      },
-    },
-    MuiCard: {
-      defaultProps: {
-        elevation: 1,
-      },
-    },
     MuiLink: {
       defaultProps: {
         color: "inherit",

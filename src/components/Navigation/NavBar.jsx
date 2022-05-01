@@ -174,7 +174,7 @@ function NavBar(props) {
 
   return (
     <>
-      <AppBar color="inherit" sx={{ padding: 0, margin: 0 }}>
+      <AppBar color="inherit">
         <Toolbar disableGutters>
           <Logo size={screenSize} sx={{ paddingLeft: 2 }} />
 
@@ -183,6 +183,7 @@ function NavBar(props) {
               position: "absolute",
               left: "50%",
               transform: "translateX(-50%)",
+              minWidth: "40vw",
             }}
           />
 

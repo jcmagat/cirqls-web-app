@@ -344,7 +344,7 @@ function PostCard({ post }) {
           onClose={handleMoreMenuClose}
         >
           {!!authUser && (
-            <>
+            <Box>
               {saved ? (
                 <StyledMenuItem onClick={handleUnsavePost}>
                   <BookmarkIcon />
@@ -356,7 +356,7 @@ function PostCard({ post }) {
                   Save
                 </StyledMenuItem>
               )}
-            </>
+            </Box>
           )}
 
           {isAuthUsersPost && (
