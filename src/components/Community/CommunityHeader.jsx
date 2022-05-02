@@ -1,50 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useCommunity } from "../../context/CommunityContext";
 import { useMutation } from "@apollo/client";
 import { JOIN, LEAVE } from "../../graphql/mutations";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import IconButton from "@mui/material/IconButton";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import Popover from "@mui/material/Popover";
-import ButtonGroup from "@mui/material/ButtonGroup";
+import Menu from "@mui/material/Menu";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
-
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 16,
-    position: "relative",
-  },
-  more: {
-    position: "absolute",
-    top: 0,
-    right: 8,
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-  },
-});
+import StyledMenuItem from "../Common/StyledMenuItem";
+import Link from "@mui/material/Link";
 
 function CommunityHeader(props) {
-  const classes = useStyles();
-
   const authUser = useAuthUser();
   const community = useCommunity();
 
   const isModerator =
     authUser &&
     community.moderators.some(
-      (moderator) => moderator.username === authUser.username
+      (moderator) => moderator.user_id === authUser.user_id
     );
 
   const [joined, setJoined] = useState(false);
@@ -81,42 +59,41 @@ function CommunityHeader(props) {
   };
 
   return (
-    <Paper className={classes.root} elevation={0}>
-      <Avatar className={classes.avatar} src={community.logo_src} />
+    <Box
+      sx={{
+        position: "relative",
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+      }}
+    >
+      <Avatar src={community.logo_src} sx={{ height: 120, width: 120 }} />
 
       <IconButton
-        className={classes.more}
+        sx={{ position: "absolute", top: 0, right: 0 }}
         onClick={(event) => setMoreMenuAnchor(event.currentTarget)}
-        size="large">
+      >
         <MoreVertIcon />
       </IconButton>
-      <Popover
+
+      <Menu
         open={Boolean(moreMenuAnchor)}
         anchorEl={moreMenuAnchor}
         onClose={(event) => setMoreMenuAnchor(null)}
-        anchorOrigin={{
-          vertical: "bottom",
-          horizontal: "left",
-        }}
-        transformOrigin={{
-          vertical: "top",
-          horizontal: "center",
-        }}
       >
-        <ButtonGroup orientation="vertical">
-          {isModerator && (
-            <IconButton component={Link} to={`/c/${community.name}/edit`} size="large">
-              <EditOutlinedIcon />
-              <Typography>Edit</Typography>
-            </IconButton>
-          )}
+        {isModerator && (
+          <StyledMenuItem component={Link} href={`/c/${community.name}/edit`}>
+            <EditOutlinedIcon />
+            Edit
+          </StyledMenuItem>
+        )}
 
-          <IconButton size="large">
-            <FlagOutlinedIcon />
-            <Typography>Report</Typography>
-          </IconButton>
-        </ButtonGroup>
-      </Popover>
+        <StyledMenuItem>
+          <FlagOutlinedIcon />
+          Report
+        </StyledMenuItem>
+      </Menu>
 
       <Typography variant="h5">{`c/${community.name}`}</Typography>
       <Typography variant="h5">{community.title}</Typography>
@@ -131,7 +108,7 @@ function CommunityHeader(props) {
           Join
         </Button>
       )}
-    </Paper>
+    </Box>
   );
 }
 

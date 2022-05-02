@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { styled } from "@mui/material/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useUnreadMessages } from "../../context/NotificationsContext";
 import AppBar from "@mui/material/AppBar";
@@ -11,7 +10,6 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Divider from "@mui/material/Divider";
 import LoginIcon from "@mui/icons-material/Login";
 import PersonAddAltIcon from "@mui/icons-material/PersonAddAlt";
@@ -24,15 +22,11 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LogoutIcon from "@mui/icons-material/Logout";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
+import StyledMenuItem from "../Common/StyledMenuItem";
 import SignUpDialog from "./SignUpDialog";
 import NotificationsButton from "./NotificationsButton";
 import BottomNavBar from "./BottomNavBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
-
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-  gap: theme.spacing(1),
-  color: theme.palette.text.secondary,
-}));
 
 // Nav buttons for when the user is logged in
 function AuthNavButtons({ screenSize }) {

@@ -32,23 +32,18 @@ import DeleteOutlineIcon from "@mui/icons-material/DeleteOutline";
 import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 import Dialog from "@mui/material/Dialog";
 import DialogTitle from "@mui/material/DialogTitle";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
+import StyledMenuItem from "../Common/StyledMenuItem";
 
 const StyledCardActions = styled(CardActions)(({ theme }) => ({
   [theme.breakpoints.down("sm")]: {
     justifyContent: "space-between",
   },
-}));
-
-const StyledMenuItem = styled(MenuItem)(({ theme }) => ({
-  gap: theme.spacing(1),
-  color: theme.palette.text.secondary,
 }));
 
 function PostCardContent({ post }) {
