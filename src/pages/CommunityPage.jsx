@@ -2,23 +2,26 @@ import React, { useState } from "react";
 import { useCommunity } from "../context/CommunityContext";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 import NavBar from "../components/Navigation/NavBar";
 import CommunityHeader from "../components/Community/CommunityHeader";
-import CommunityTabBar from "../components/Community/CommunityTabBar";
+import PostList from "../components/Post/PostList";
+import CommunityAbout from "../components/Community/CommunityAbout";
 
-export const COMMUNITY_TABS = {
+const TABS = {
   POSTS: "posts",
   ABOUT: "about",
 };
 
+function TabPanel({ value, tab, children }) {
+  return <>{value === tab && <>{children}</>}</>;
+}
+
 function CommunityPage(props) {
   const community = useCommunity();
 
-  const [tab, setTab] = useState("posts");
-
-  const handleChangeTab = (newTab) => {
-    setTab(newTab);
-  };
+  const [tab, setTab] = useState(TABS.POSTS);
 
   return (
     <Container>
@@ -28,9 +31,23 @@ function CommunityPage(props) {
         <Box sx={{ marginTop: 12, maxWidth: 800, marginInline: "auto" }}>
           <CommunityHeader />
 
-          <Box sx={{ marginTop: 4 }}>
-            <CommunityTabBar tab={tab} handleChangeTab={handleChangeTab} />
-          </Box>
+          <Tabs
+            centered
+            value={tab}
+            onChange={(event, value) => setTab(value)}
+            sx={{ marginTop: 4, marginBottom: 4 }}
+          >
+            <Tab disableRipple label="Posts" value={TABS.POSTS} />
+            <Tab disableRipple label="About" value={TABS.ABOUT} />
+          </Tabs>
+
+          <TabPanel value={TABS.POSTS} tab={tab}>
+            <PostList posts={community.posts} />
+          </TabPanel>
+
+          <TabPanel value={TABS.ABOUT} tab={tab}>
+            <CommunityAbout />
+          </TabPanel>
         </Box>
       )}
     </Container>
