@@ -1,10 +1,10 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { useCommunity } from "../../context/CommunityContext";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import { Link } from "react-router-dom";
+import Link from "@mui/material/Link";
 
 const useStyles = makeStyles({
   moderator: {
@@ -31,7 +31,7 @@ function CommunityAbout(props) {
   );
 
   return (
-    <Paper elevation={0}>
+    <>
       <Typography variant="body1" paragraph>
         {community.description}
       </Typography>
@@ -49,19 +49,32 @@ function CommunityAbout(props) {
         Moderators:
       </Typography>
 
-      {community.moderators.map((moderator) => (
-        <Paper
-          className={classes.moderator}
-          elevation={0}
-          key={moderator.user_id}
-          component={Link}
-          to={`/u/${moderator.username}`}
-        >
-          <Avatar src={moderator.profile_pic_src} />
-          <Typography>{`u/${moderator.username}`}</Typography>
-        </Paper>
-      ))}
-    </Paper>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "flex-start",
+          gap: 1,
+        }}
+      >
+        {community.moderators.map((moderator) => (
+          <Box
+            key={moderator.user_id}
+            component={Link}
+            href={`/u/${moderator.username}`}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              gap: 2,
+            }}
+          >
+            <Avatar src={moderator.profile_pic_src} />
+            <Typography>{`u/${moderator.username}`}</Typography>
+          </Box>
+        ))}
+      </Box>
+    </>
   );
 }
 
