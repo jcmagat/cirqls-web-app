@@ -1,26 +1,15 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import { useQuery } from "@apollo/client";
 import { GET_HOME_PAGE_POSTS } from "../graphql/queries";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import NavBar from "../components/Navigation/NavBar";
 import HomePageNav from "../components/Navigation/HomePageNav";
 import PostList from "../components/Post/PostList";
 import SortSelect from "../components/Post/SortSelect";
 import { SORT_TYPES } from "../components/Post/SortSelect";
 
-const useStyles = makeStyles({
-  content: {
-    marginTop: 80,
-    maxWidth: 800,
-    marginInline: "auto",
-  },
-});
-
 function HomePage(props) {
-  const classes = useStyles();
-
   const [displayNav, setDisplayNav] = useState(false);
   const [posts, setPosts] = useState([]);
   const [sort, setSort] = useState(SORT_TYPES.HOT);
@@ -48,10 +37,10 @@ function HomePage(props) {
   };
 
   return (
-    <Container component="main">
+    <Container>
       <NavBar />
 
-      <Paper className={classes.content} elevation={0}>
+      <Box sx={{ marginTop: 12, maxWidth: 800, marginInline: "auto" }}>
         {displayNav ? (
           <HomePageNav />
         ) : (
@@ -61,7 +50,7 @@ function HomePage(props) {
             <PostList posts={posts} />
           </>
         )}
-      </Paper>
+      </Box>
     </Container>
   );
 }

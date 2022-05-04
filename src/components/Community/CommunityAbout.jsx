@@ -1,24 +1,11 @@
 import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import { useCommunity } from "../../context/CommunityContext";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 
-const useStyles = makeStyles({
-  moderator: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    width: "max-content",
-  },
-});
-
 function CommunityAbout(props) {
-  const classes = useStyles();
-
   const community = useCommunity();
 
   const startedDate = new Date(community.created_at).toLocaleDateString(

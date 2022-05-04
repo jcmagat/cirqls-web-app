@@ -14,6 +14,7 @@ function Logo({ sx, size }) {
         flexDirection: "row",
         alignItems: "center",
         gap: 1,
+        width: "max-content",
         ...sx,
       }}
     >

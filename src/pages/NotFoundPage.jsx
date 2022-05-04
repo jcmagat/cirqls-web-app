@@ -1,72 +1,57 @@
 import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
 import { useHistory } from "react-router-dom";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Logo from "../components/Navigation/Logo";
 
-const useStyles = makeStyles({
-  paper: {
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    minHeight: "75vh",
-  },
-  content: {
-    padding: 32,
-    textAlign: "center",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  buttons: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-  },
-});
-
 function NotFoundPage(props) {
-  const classes = useStyles();
   const history = useHistory();
 
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+
   return (
-    <Container>
-      <Logo />
+    <Container disableGutters maxWidth={false}>
+      <Logo sx={{ padding: 2 }} />
 
-      <Paper className={classes.paper}>
-        <Paper className={classes.content} elevation={1}>
-          <Typography variant="h5" paragraph>
-            Page Not Found
-          </Typography>
+      <Paper
+        sx={{
+          padding: 4,
+          textAlign: "center",
+          width: "fit-content",
+          position: "absolute",
+          top: "25%",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
+        elevation={isSmallScreen ? 0 : 1}
+      >
+        <Typography variant="h5" paragraph>
+          Page Not Found
+        </Typography>
 
-          <Typography variant="body1" paragraph>
-            You may have encountered a broken link
-          </Typography>
+        <Typography variant="body1" paragraph>
+          You may have encountered a broken link
+        </Typography>
 
-          <Typography variant="body1" paragraph>
-            You could go back to the previous page or go to homepage
-          </Typography>
+        <Typography variant="body1" paragraph sx={{ marginBottom: 4 }}>
+          You could go back to the previous page or go to homepage
+        </Typography>
 
-          <Paper className={classes.buttons}>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => history.goBack()}
-            >
-              Go Back
-            </Button>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => history.push("/")}
-            >
-              Go to Homepage
-            </Button>
-          </Paper>
-        </Paper>
+        <Button
+          variant="outlined"
+          color="primary"
+          onClick={() => history.goBack()}
+          sx={{ marginRight: 1 }}
+        >
+          Go Back
+        </Button>
+
+        <Button variant="contained" color="primary" href="/">
+          Go to Homepage
+        </Button>
       </Paper>
     </Container>
   );

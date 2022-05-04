@@ -44,7 +44,7 @@ const theme = createTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-      <BrowserRouter>
+      <BrowserRouter forceRefresh={true}>
         <Switch>
           <Route exact path="/">
             <HomePage />
