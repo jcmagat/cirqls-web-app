@@ -1,6 +1,5 @@
-import React from "react";
-import makeStyles from '@mui/styles/makeStyles';
-import Paper from "@mui/material/Paper";
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
@@ -9,55 +8,61 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import { DropzoneArea } from "material-ui-dropzone";
+import { DropzoneArea } from "react-mui-dropzone";
 
-const useStyles = makeStyles({
-  title: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
-
-function UploadDialog({ open, onClose, onChange }) {
-  const classes = useStyles();
+function UploadDialog({ open, onClose, onDone, disabled }) {
+  const [file, setFile] = useState(null);
 
   const handleClose = () => {
     onClose();
   };
 
-  const handleChange = (loadedFiles) => {
-    onChange(loadedFiles[0]);
+  const handleDone = () => {
+    onDone(file);
   };
 
   return (
-    <Paper elevation={0}>
-      <Dialog open={open}>
-        <DialogTitle>
-          <Paper className={classes.title} elevation={0}>
-            <Typography variant="h6">Upload</Typography>
-            <IconButton onClick={handleClose} size="large">
-              <CloseIcon />
-            </IconButton>
-          </Paper>
-        </DialogTitle>
+    <Dialog open={open} fullWidth>
+      <DialogTitle>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <Typography variant="h6">Upload</Typography>
+          <IconButton onClick={handleClose} disabled={disabled}>
+            <CloseIcon />
+          </IconButton>
+        </Box>
+      </DialogTitle>
 
-        <DialogContent>
-          <DropzoneArea
-            filesLimit={1}
-            acceptedFiles={["image/jpeg"]}
-            onChange={handleChange}
-          />
-        </DialogContent>
+      <DialogContent>
+        <DropzoneArea
+          filesLimit={1}
+          acceptedFiles={["image/jpeg"]}
+          onChange={(loadedFiles) => setFile(loadedFiles[0])}
+          dropzoneProps={{ disabled: disabled }}
+        />
+      </DialogContent>
 
-        <DialogActions>
-          <Button variant="contained" color="primary" onClick={handleClose}>
-            Done
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </Paper>
+      <DialogActions>
+        <Button
+          variant="outlined"
+          color="error"
+          onClick={handleClose}
+          disabled={disabled}
+        >
+          Cancel
+        </Button>
+
+        <Button variant="contained" onClick={handleDone} disabled={disabled}>
+          Done
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 

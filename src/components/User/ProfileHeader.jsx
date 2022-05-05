@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, CHANGE_PROFILE_PIC } from "../../graphql/mutations";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import AddIcon from "@mui/icons-material/Add";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
 import Typography from "@mui/material/Typography";
 import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
@@ -29,10 +32,6 @@ const useStyles = makeStyles({
     top: 0,
     right: 0,
   },
-  avatar: {
-    width: 80,
-    height: 80,
-  },
   buttons: {
     display: "flex",
     gap: 8,
@@ -40,150 +39,98 @@ const useStyles = makeStyles({
 });
 
 function ProfileHeaderForAuthUser({ handleChangeTab }) {
-  const classes = useStyles();
-
   const profileUser = useProfileUser();
 
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [newProfilePic, setNewProfilePic] = useState(null);
-  const [isProfilePicDialogOpen, setIsProfilePicDialogOpen] = useState(false);
+  const [dialogOpen, setDialogOpen] = useState(false);
 
-  const [changeProfilePic, { loading: changeProfilePicLoading }] = useMutation(
-    CHANGE_PROFILE_PIC,
-    {
-      onCompleted: finishChangeProfilePic,
-    }
-  );
+  const [changeProfilePic, { loading }] = useMutation(CHANGE_PROFILE_PIC, {
+    onCompleted: () => setDialogOpen(false),
+  });
 
-  const handleEditProfile = () => {
-    setIsEditMode(true);
-  };
-
-  const handleSaveEdit = () => {
-    if (!newProfilePic) {
-      setIsEditMode(false);
-      return;
-    }
-
+  const handleChangeProfilePic = (file) => {
     changeProfilePic({
       variables: {
-        profile_pic: newProfilePic,
+        profile_pic: file,
       },
     });
   };
 
-  // Called when the edit button on the profile pic is clicked
-  const handleEditProfilePic = () => {
-    setIsProfilePicDialogOpen(true);
-  };
-
-  // Called in UploadDialog to set newProfilePic
-  const handleSetNewProfilePic = (pic) => {
-    setNewProfilePic(pic);
-  };
-
-  // Called in ProfilePicDialog to close the dialog
-  const handleCloseProfilePicDialog = () => {
-    setIsProfilePicDialogOpen(false);
-  };
-
-  const handleCancelEdit = () => {
-    setNewProfilePic(null);
-    setIsEditMode(false);
-  };
-
-  function finishChangeProfilePic() {
-    setNewProfilePic(null);
-    setIsEditMode(false);
-  }
-
-  const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
-    "en-us",
-    {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    }
-  );
-
   return (
-    <Paper className={classes.paper} elevation={0}>
-      {isEditMode ? (
-        <Badge
-          overlap="circular"
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "right",
-          }}
-          badgeContent={
-            <IconButton
-              onClick={handleEditProfilePic}
-              disabled={changeProfilePicLoading}
-              size="large">
-              <EditOutlinedIcon />
-            </IconButton>
-          }
-        >
-          <Avatar
-            className={classes.avatar}
-            src={
-              newProfilePic
-                ? URL.createObjectURL(newProfilePic)
-                : profileUser.profile_pic_src
-            }
-          />
-        </Badge>
-      ) : (
-        <Avatar className={classes.avatar} src={profileUser.profile_pic_src} />
-      )}
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        position: "relative",
+      }}
+    >
+      <Badge
+        overlap="circular"
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "right",
+        }}
+        badgeContent={
+          <IconButton
+            size="small"
+            sx={{
+              borderRadius: "50%",
+              color: (theme) => theme.palette.primary.contrastText,
+              background: (theme) => theme.palette.primary.main,
+              boxShadow: (theme) => theme.shadows[2],
+              "&:hover": {
+                background: (theme) => theme.palette.primary.dark,
+                boxShadow: (theme) => theme.shadows[4],
+              },
+            }}
+            onClick={() => setDialogOpen(true)}
+          >
+            {profileUser.profile_pic_src ? (
+              <EditOutlinedIcon fontSize="small" />
+            ) : (
+              <AddIcon fontSize="small" />
+            )}
+          </IconButton>
+        }
+      >
+        <Avatar
+          src={profileUser.profile_pic_src}
+          sx={{ width: 80, height: 80 }}
+        />
+      </Badge>
 
       <UploadDialog
-        open={isProfilePicDialogOpen}
-        onClose={handleCloseProfilePicDialog}
-        onChange={handleSetNewProfilePic}
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onDone={handleChangeProfilePic}
+        disabled={loading}
       />
 
       <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
-
-      <Typography variant="body2">
-        {`member since ${memberSinceDate}`}
-      </Typography>
 
       <ButtonGroup variant="text">
         <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWING)}>
           {profileUser.following.length} Following
         </Button>
+
         <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
           {profileUser.followers.length} Followers
         </Button>
+
         <Button>{100} Likes</Button>
       </ButtonGroup>
 
-      {isEditMode ? (
-        <Paper className={classes.buttons} elevation={0}>
-          <Button
-            variant="outlined"
-            color="secondary"
-            onClick={handleCancelEdit}
-            disabled={changeProfilePicLoading}
-          >
-            Cancel
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={handleSaveEdit}
-            disabled={changeProfilePicLoading}
-          >
-            Save
-          </Button>
-        </Paper>
-      ) : (
-        <Button variant="contained" color="primary" onClick={handleEditProfile}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
+        <Button variant="contained" href="/settings">
           Edit Profile
         </Button>
-      )}
-    </Paper>
+
+        <Button variant="outlined">
+          <BookmarkBorderIcon />
+        </Button>
+      </Box>
+    </Box>
   );
 }
 
@@ -238,7 +185,10 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
 
   return (
     <Paper className={classes.paper} elevation={0}>
-      <Avatar className={classes.avatar} src={profileUser.profile_pic_src} />
+      <Avatar
+        src={profileUser.profile_pic_src}
+        sx={{ width: 80, height: 80 }}
+      />
 
       <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
 
@@ -253,7 +203,6 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
         <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
           {profileUser.followers.length} Followers
         </Button>
-        <Button>{100} Likes</Button>
       </ButtonGroup>
 
       <Paper className={classes.buttons} elevation={0}>
@@ -290,13 +239,13 @@ function ProfileHeader({ handleChangeTab }) {
     authUser && authUser.username === profileUser.username;
 
   return (
-    <Paper elevation={0}>
+    <>
       {isAuthUsersProfile ? (
         <ProfileHeaderForAuthUser handleChangeTab={handleChangeTab} />
       ) : (
         <ProfileHeaderForNonAuthUser handleChangeTab={handleChangeTab} />
       )}
-    </Paper>
+    </>
   );
 }
 

@@ -6,7 +6,7 @@ import { ADD_MEDIA_POST } from "../../graphql/mutations";
 import Paper from "@mui/material/Paper";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
-import { DropzoneArea } from "material-ui-dropzone";
+import { DropzoneArea } from "react-mui-dropzone";
 
 const useStyles = makeStyles({
   form: {

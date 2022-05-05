@@ -1,20 +1,10 @@
 import React, { useState } from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import { useProfileUser } from "../context/ProfileUserContext";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import NavBar from "../components/Navigation/NavBar";
 import ProfileHeader from "../components/User/ProfileHeader";
 import ProfileTabBar from "../components/User/ProfileTabBar";
-
-const useStyles = makeStyles({
-  paper: {
-    marginTop: 80,
-  },
-  tabs: {
-    marginTop: 16,
-  },
-});
 
 export const PROFILE_TABS = {
   POSTS: "posts",
@@ -25,8 +15,6 @@ export const PROFILE_TABS = {
 };
 
 function ProfilePage(props) {
-  const classes = useStyles();
-
   const user = useProfileUser();
 
   const [tab, setTab] = useState(PROFILE_TABS.POSTS);
@@ -36,17 +24,17 @@ function ProfilePage(props) {
   };
 
   return (
-    <Container component="main">
+    <Container>
       <NavBar />
 
       {user && (
-        <Paper className={classes.paper} elevation={0}>
+        <Box sx={{ marginTop: 12, maxWidth: 800, marginInline: "auto" }}>
           <ProfileHeader handleChangeTab={handleChangeTab} />
 
-          <Paper className={classes.tabs} elevation={0}>
+          <Box sx={{ marginTop: 4, marginBottom: 4 }}>
             <ProfileTabBar tab={tab} handleChangeTab={handleChangeTab} />
-          </Paper>
-        </Paper>
+          </Box>
+        </Box>
       )}
     </Container>
   );
