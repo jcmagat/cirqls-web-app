@@ -107,6 +107,7 @@ function CreateCommunityPage(props) {
   // Called in UploadDialog to set logo
   const handleSetNewLogo = (logo) => {
     setLogo(logo);
+    setUploadDialogOpen(false);
   };
 
   // Called after the mutation is completed
@@ -153,7 +154,7 @@ function CreateCommunityPage(props) {
         <UploadDialog
           open={uploadDialogOpen}
           onClose={handleCloseUploadDialog}
-          onChange={handleSetNewLogo}
+          onDone={handleSetNewLogo}
         />
 
         <TextField

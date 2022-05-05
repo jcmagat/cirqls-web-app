@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, CHANGE_PROFILE_PIC } from "../../graphql/mutations";
-import Paper from "@mui/material/Paper";
 import Box from "@mui/material/Box";
 import Avatar from "@mui/material/Avatar";
 import Badge from "@mui/material/Badge";
@@ -17,26 +15,6 @@ import ButtonGroup from "@mui/material/ButtonGroup";
 import Button from "@mui/material/Button";
 import UploadDialog from "../Common/UploadDialog";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
-import { Link } from "react-router-dom";
-
-const useStyles = makeStyles({
-  paper: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 16,
-    position: "relative",
-  },
-  delete: {
-    position: "absolute",
-    top: 0,
-    right: 0,
-  },
-  buttons: {
-    display: "flex",
-    gap: 8,
-  },
-});
 
 function ProfileHeaderForAuthUser({ handleChangeTab }) {
   const profileUser = useProfileUser();
@@ -135,8 +113,6 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
 }
 
 function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
-  const classes = useStyles();
-
   const authUser = useAuthUser();
   const profileUser = useProfileUser();
 
@@ -174,17 +150,16 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
     });
   };
 
-  const memberSinceDate = new Date(profileUser.created_at).toLocaleDateString(
-    "en-us",
-    {
-      month: "long",
-      day: "numeric",
-      year: "numeric",
-    }
-  );
-
   return (
-    <Paper className={classes.paper} elevation={0}>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        position: "relative",
+      }}
+    >
       <Avatar
         src={profileUser.profile_pic_src}
         sx={{ width: 80, height: 80 }}
@@ -192,20 +167,19 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
 
       <Typography variant="h6">{`u/${profileUser.username}`}</Typography>
 
-      <Typography variant="body2">
-        {`member since ${memberSinceDate}`}
-      </Typography>
-
       <ButtonGroup variant="text">
         <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWING)}>
           {profileUser.following.length} Following
         </Button>
+
         <Button onClick={() => handleChangeTab(PROFILE_TABS.FOLLOWERS)}>
           {profileUser.followers.length} Followers
         </Button>
+
+        <Button>{100} Likes</Button>
       </ButtonGroup>
 
-      <Paper className={classes.buttons} elevation={0}>
+      <Box sx={{ display: "flex", flexDirection: "row", gap: 1 }}>
         {isFollowed ? (
           <Button
             variant="contained"
@@ -215,19 +189,19 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
             Unfollow
           </Button>
         ) : (
-          <Button variant="contained" color="primary" onClick={handleFollow}>
+          <Button variant="contained" onClick={handleFollow}>
             Follow
           </Button>
         )}
+
         <Button
           variant="outlined"
-          component={Link}
-          to={`/messages?user=${profileUser.username}`}
+          href={`/messages?user=${profileUser.username}`}
         >
           Message
         </Button>
-      </Paper>
-    </Paper>
+      </Box>
+    </Box>
   );
 }
 
