@@ -1,17 +1,15 @@
 import React from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
-import Paper from "@mui/material/Paper";
+import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
-import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
-import TabPanel from "@mui/lab/TabPanel";
+import TabPanel from "../Common/TabPanel";
 import PostList from "../Post/PostList";
 import CommentList from "../Comment/CommentList";
 import FollowList from "./FollowList";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 
-function ProfileTabBar(props) {
+function ProfileTabBar({ tab, handleChangeTab }) {
   const authUser = useAuthUser();
   const profileUser = useProfileUser();
 
@@ -19,53 +17,48 @@ function ProfileTabBar(props) {
     authUser && authUser.username === profileUser.username;
 
   return (
-    <Paper elevation={0}>
-      <TabContext value={props.tab}>
-        {isAuthUsersProfile ? (
-          <TabList
-            centered={true}
-            indicatorColor="primary"
-            onChange={(event, value) => props.handleChangeTab(value)}
-          >
-            <Tab label="Posts" value={PROFILE_TABS.POSTS} />
-            <Tab label="Comments" value={PROFILE_TABS.COMMENTS} />
-            <Tab label="Following" value={PROFILE_TABS.FOLLOWING} />
-            <Tab label="Followers" value={PROFILE_TABS.FOLLOWERS} />
-            <Tab label="Saved" value={PROFILE_TABS.SAVED} />
-          </TabList>
-        ) : (
-          <TabList
-            centered={true}
-            indicatorColor="primary"
-            onChange={(event, value) => props.handleChangeTab(value)}
-          >
-            <Tab label="Posts" value={PROFILE_TABS.POSTS} />
-            <Tab label="Following" value={PROFILE_TABS.FOLLOWING} />
-            <Tab label="Followers" value={PROFILE_TABS.FOLLOWERS} />
-          </TabList>
+    <>
+      <Tabs
+        centered
+        value={tab}
+        onChange={(event, value) => handleChangeTab(value)}
+        sx={{ marginTop: 4 }}
+      >
+        <Tab disableRipple label="Posts" value={PROFILE_TABS.POSTS} />
+
+        {isAuthUsersProfile && (
+          <Tab disableRipple label="Comments" value={PROFILE_TABS.COMMENTS} />
         )}
 
-        <TabPanel value={PROFILE_TABS.POSTS}>
-          <PostList posts={profileUser.posts} />
-        </TabPanel>
+        <Tab disableRipple label="Following" value={PROFILE_TABS.FOLLOWING} />
 
-        <TabPanel value={PROFILE_TABS.COMMENTS}>
-          <CommentList comments={profileUser.comments} />
-        </TabPanel>
+        <Tab disableRipple label="Followers" value={PROFILE_TABS.FOLLOWERS} />
 
-        <TabPanel value={PROFILE_TABS.FOLLOWING}>
-          <FollowList users={profileUser.following} type="following" />
-        </TabPanel>
+        {isAuthUsersProfile && (
+          <Tab disableRipple label="Saved" value={PROFILE_TABS.SAVED} />
+        )}
+      </Tabs>
 
-        <TabPanel value={PROFILE_TABS.FOLLOWERS}>
-          <FollowList users={profileUser.followers} type="follower" />
-        </TabPanel>
+      <TabPanel value={PROFILE_TABS.POSTS} tab={tab}>
+        <PostList posts={profileUser.posts} />
+      </TabPanel>
 
-        <TabPanel value={PROFILE_TABS.SAVED}>
-          <PostList posts={profileUser.saved_posts} />
-        </TabPanel>
-      </TabContext>
-    </Paper>
+      <TabPanel value={PROFILE_TABS.COMMENTS} tab={tab}>
+        <CommentList comments={profileUser.comments} />
+      </TabPanel>
+
+      <TabPanel value={PROFILE_TABS.FOLLOWING} tab={tab}>
+        <FollowList users={profileUser.following} type="following" />
+      </TabPanel>
+
+      <TabPanel value={PROFILE_TABS.FOLLOWERS} tab={tab}>
+        <FollowList users={profileUser.followers} type="follower" />
+      </TabPanel>
+
+      <TabPanel value={PROFILE_TABS.SAVED} tab={tab}>
+        <PostList posts={profileUser.saved_posts} />
+      </TabPanel>
+    </>
   );
 }
 

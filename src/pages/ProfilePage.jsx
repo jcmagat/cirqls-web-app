@@ -28,12 +28,17 @@ function ProfilePage(props) {
       <NavBar />
 
       {user && (
-        <Box sx={{ marginTop: 12, maxWidth: 800, marginInline: "auto" }}>
+        <Box
+          sx={{
+            marginTop: 12,
+            marginBottom: 12,
+            maxWidth: 800,
+            marginInline: "auto",
+          }}
+        >
           <ProfileHeader handleChangeTab={handleChangeTab} />
 
-          <Box sx={{ marginTop: 4, marginBottom: 4 }}>
-            <ProfileTabBar tab={tab} handleChangeTab={handleChangeTab} />
-          </Box>
+          <ProfileTabBar tab={tab} handleChangeTab={handleChangeTab} />
         </Box>
       )}
     </Container>

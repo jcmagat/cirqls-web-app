@@ -6,6 +6,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import NavBar from "../components/Navigation/NavBar";
 import CommunityHeader from "../components/Community/CommunityHeader";
+import TabPanel from "../components/Common/TabPanel";
 import PostList from "../components/Post/PostList";
 import CommunityAbout from "../components/Community/CommunityAbout";
 
@@ -13,10 +14,6 @@ const TABS = {
   POSTS: "posts",
   ABOUT: "about",
 };
-
-function TabPanel({ value, tab, children }) {
-  return <>{value === tab && <>{children}</>}</>;
-}
 
 function CommunityPage(props) {
   const community = useCommunity();
@@ -28,14 +25,21 @@ function CommunityPage(props) {
       <NavBar />
 
       {community && (
-        <Box sx={{ marginTop: 12, maxWidth: 800, marginInline: "auto" }}>
+        <Box
+          sx={{
+            marginTop: 12,
+            marginBottom: 12,
+            maxWidth: 800,
+            marginInline: "auto",
+          }}
+        >
           <CommunityHeader />
 
           <Tabs
             centered
             value={tab}
             onChange={(event, value) => setTab(value)}
-            sx={{ marginTop: 4, marginBottom: 4 }}
+            sx={{ marginTop: 4 }}
           >
             <Tab disableRipple label="Posts" value={TABS.POSTS} />
             <Tab disableRipple label="About" value={TABS.ABOUT} />

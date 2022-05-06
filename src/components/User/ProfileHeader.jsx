@@ -34,15 +34,7 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 2,
-        position: "relative",
-      }}
-    >
+    <>
       <Badge
         overlap="circular"
         anchorOrigin={{
@@ -104,11 +96,14 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
           Edit Profile
         </Button>
 
-        <Button variant="outlined">
+        <Button
+          variant="outlined"
+          onClick={() => handleChangeTab(PROFILE_TABS.SAVED)}
+        >
           <BookmarkBorderIcon />
         </Button>
       </Box>
-    </Box>
+    </>
   );
 }
 
@@ -151,15 +146,7 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
   };
 
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        gap: 2,
-        position: "relative",
-      }}
-    >
+    <>
       <Avatar
         src={profileUser.profile_pic_src}
         sx={{ width: 80, height: 80 }}
@@ -201,7 +188,7 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
           Message
         </Button>
       </Box>
-    </Box>
+    </>
   );
 }
 
@@ -213,13 +200,21 @@ function ProfileHeader({ handleChangeTab }) {
     authUser && authUser.username === profileUser.username;
 
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: 2,
+        position: "relative",
+      }}
+    >
       {isAuthUsersProfile ? (
         <ProfileHeaderForAuthUser handleChangeTab={handleChangeTab} />
       ) : (
         <ProfileHeaderForNonAuthUser handleChangeTab={handleChangeTab} />
       )}
-    </>
+    </Box>
   );
 }
 
