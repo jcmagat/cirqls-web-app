@@ -1,43 +1,54 @@
 import React, { useState } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { styled } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { ADD_MEDIA_POST } from "../../graphql/mutations";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
+import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
+import CloudUploadOutlinedIcon from "@mui/icons-material/CloudUploadOutlined";
 import { DropzoneArea } from "react-mui-dropzone";
 
-const useStyles = makeStyles({
-  form: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 8,
+const StyledDropzoneAreaBox = styled(Box, {
+  shouldForwardProp: (prop) => prop !== "error",
+})(({ theme, error }) => ({
+  color: error ? theme.palette.error.main : "inherit",
+  "& .MuiDropzoneArea-root": {
+    borderColor: error ? theme.palette.error.light : "rgba(0, 0, 0, 0.2)",
   },
-  buttons: {
-    marginTop: 8,
-    display: "flex",
-    gap: 8,
-    float: "right",
+  "& .MuiDropzoneArea-icon": {
+    color: "inherit",
   },
-});
+  "& .MuiTypography-caption": {
+    display: error ? "block" : "none",
+    marginLeft: 16,
+    marginTop: 4,
+  },
+}));
 
 function SubmitMediaPostForm({ communityId }) {
-  const classes = useStyles();
   const history = useHistory();
 
   const [title, setTitle] = useState("");
   const [media, setMedia] = useState();
 
+  const [titleError, setTitleError] = useState("");
+  const [mediaError, setMediaError] = useState("");
+
   const [addMediaPost, { loading }] = useMutation(ADD_MEDIA_POST, {
-    onCompleted: finishAddMediaPost,
+    onCompleted: (data) => history.push(`/post/${data.addMediaPost.post_id}`),
   });
 
-  const handleSetMedia = (loadedFiles) => {
-    setMedia(loadedFiles[0]);
-  };
-
   const handleAddMediaPost = () => {
+    if (!title) {
+      setTitleError("Please provide a title");
+      return;
+    } else if (!media) {
+      setMediaError("Please provide media");
+      return;
+    }
+
     addMediaPost({
       variables: {
         title: title,
@@ -47,37 +58,58 @@ function SubmitMediaPostForm({ communityId }) {
     });
   };
 
-  function finishAddMediaPost(data) {
-    history.push(`/post/${data.addMediaPost.post_id}`);
-  }
+  const handleChangeTitle = (event) => {
+    setTitle(event.target.value);
+    setTitleError("");
+  };
 
-  const handleCancel = () => {
-    history.push("/");
+  const handleChangeMedia = (loadedFiles) => {
+    setMedia(loadedFiles[0]);
+    setMediaError("");
   };
 
   return (
-    <Paper elevation={0}>
-      <form className={classes.form} noValidate autoComplete="off">
-        <TextField
-          id="title"
-          label="Title"
-          fullWidth
-          onChange={(event) => setTitle(event.target.value)}
-          disabled={loading}
-        />
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        gap: 2,
+      }}
+    >
+      <TextField
+        id="title"
+        label="Title"
+        fullWidth
+        error={Boolean(titleError)}
+        helperText={titleError}
+        onChange={handleChangeTitle}
+        disabled={loading}
+      />
 
+      <StyledDropzoneAreaBox error={Boolean(mediaError)}>
         <DropzoneArea
+          Icon={CloudUploadOutlinedIcon}
+          dropzoneText="Click to choose a file, or drag and drop it here"
           filesLimit={1}
           acceptedFiles={["image/*"]}
-          onChange={handleSetMedia}
+          onChange={handleChangeMedia}
+          dropzoneProps={{ disabled: loading }}
         />
-      </form>
+        <Typography variant="caption">{mediaError}</Typography>
+      </StyledDropzoneAreaBox>
 
-      <Paper className={classes.buttons} elevation={0}>
+      <Box
+        sx={{
+          alignSelf: "flex-end",
+          display: "flex",
+          flexDirection: "row",
+          gap: 1,
+        }}
+      >
         <Button
           variant="outlined"
           color="secondary"
-          onClick={handleCancel}
+          onClick={() => history.push("/")}
           disabled={loading}
         >
           Cancel
@@ -86,12 +118,12 @@ function SubmitMediaPostForm({ communityId }) {
           variant="contained"
           color="primary"
           onClick={handleAddMediaPost}
-          disabled={!communityId || !title || !media || loading}
+          disabled={loading}
         >
           Submit
         </Button>
-      </Paper>
-    </Paper>
+      </Box>
+    </Box>
   );
 }
 
