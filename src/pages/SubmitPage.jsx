@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { styled } from "@mui/material/styles";
 import { useAuthUser } from "../context/AuthUserContext";
 import { useQuery } from "@apollo/client";
 import { GET_COMMUNITIES } from "../graphql/queries";
@@ -10,6 +11,15 @@ import Button from "@mui/material/Button";
 import NavBar from "../components/Navigation/NavBar";
 import SubmitTabBar from "../components/Submit/SubmitTabBar";
 import { COMMUNITY_TYPES } from "../utils/constants";
+
+const StyledTextField = styled(TextField)(({ theme, error }) => ({
+  "& .MuiSelect-select": {
+    color: error ? theme.palette.error.main : "inherit",
+  },
+  "& .MuiSelect-icon": {
+    color: error ? theme.palette.error.main : "inherit",
+  },
+}));
 
 function SubmitPage(props) {
   const authUser = useAuthUser();
@@ -37,6 +47,16 @@ function SubmitPage(props) {
   }, [data, authUser]);
 
   const [communityId, setCommunityId] = useState();
+  const [communityIdError, setCommunityIdError] = useState("");
+
+  const handleChangeCommunityId = (event) => {
+    setCommunityId(parseInt(event.target.value));
+    setCommunityIdError("");
+  };
+
+  const handleCommunityIdError = () => {
+    setCommunityIdError("Please choose a community");
+  };
 
   return (
     <Container component="main" maxWidth="md">
@@ -60,13 +80,15 @@ function SubmitPage(props) {
             marginBottom: 1,
           }}
         >
-          <TextField
+          <StyledTextField
             select
             id="community"
             label="Community"
             defaultValue={"default"}
             sx={{ width: 300 }}
-            onChange={(event) => setCommunityId(parseInt(event.target.value))}
+            error={Boolean(communityIdError)}
+            helperText={communityIdError}
+            onChange={handleChangeCommunityId}
             disabled={loading}
           >
             <MenuItem value="default" disabled>
@@ -80,14 +102,17 @@ function SubmitPage(props) {
                 {community.name}
               </MenuItem>
             ))}
-          </TextField>
+          </StyledTextField>
 
           <Button variant="outlined" color="primary" href={"/create-community"}>
             Create A Community
           </Button>
         </Box>
 
-        <SubmitTabBar communityId={communityId} />
+        <SubmitTabBar
+          communityId={communityId}
+          onCommunityIdError={handleCommunityIdError}
+        />
       </Box>
     </Container>
   );

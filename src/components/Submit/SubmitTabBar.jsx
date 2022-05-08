@@ -12,7 +12,7 @@ const TABS = {
   MEDIA: "media",
 };
 
-function SubmitTabBar({ communityId }) {
+function SubmitTabBar({ communityId, onCommunityIdError }) {
   const [tab, setTab] = useState(TABS.TEXT);
 
   return (
@@ -27,11 +27,17 @@ function SubmitTabBar({ communityId }) {
         </TabList>
 
         <TabPanel value={TABS.TEXT}>
-          <SubmitTextPostForm communityId={communityId} />
+          <SubmitTextPostForm
+            communityId={communityId}
+            onCommunityIdError={onCommunityIdError}
+          />
         </TabPanel>
 
         <TabPanel value={TABS.MEDIA}>
-          <SubmitMediaPostForm communityId={communityId} />
+          <SubmitMediaPostForm
+            communityId={communityId}
+            onCommunityIdError={onCommunityIdError}
+          />
         </TabPanel>
       </TabContext>
     </Paper>

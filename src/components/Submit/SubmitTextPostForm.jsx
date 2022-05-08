@@ -6,7 +6,7 @@ import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-function SubmitTextPostForm({ communityId }) {
+function SubmitTextPostForm({ communityId, onCommunityIdError }) {
   const history = useHistory();
 
   const [title, setTitle] = useState("");
@@ -20,7 +20,10 @@ function SubmitTextPostForm({ communityId }) {
   });
 
   const handleAddTextPost = () => {
-    if (!title) {
+    if (!communityId) {
+      onCommunityIdError();
+      return;
+    } else if (!title) {
       setTitleError("Please provide a title");
       return;
     } else if (!description) {

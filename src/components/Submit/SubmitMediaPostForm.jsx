@@ -27,7 +27,7 @@ const StyledDropzoneAreaBox = styled(Box, {
   },
 }));
 
-function SubmitMediaPostForm({ communityId }) {
+function SubmitMediaPostForm({ communityId, onCommunityIdError }) {
   const history = useHistory();
 
   const [title, setTitle] = useState("");
@@ -41,7 +41,10 @@ function SubmitMediaPostForm({ communityId }) {
   });
 
   const handleAddMediaPost = () => {
-    if (!title) {
+    if (!communityId) {
+      onCommunityIdError();
+      return;
+    } else if (!title) {
       setTitleError("Please provide a title");
       return;
     } else if (!media) {
