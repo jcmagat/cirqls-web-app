@@ -1,42 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { makeStyles } from "@mui/styles";
+import { styled } from "@mui/material/styles";
+import { useHistory } from "react-router-dom";
 import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardHeader from "@mui/material/CardHeader";
 import Avatar from "@mui/material/Avatar";
-import Paper from "@mui/material/Paper";
 import Button from "@mui/material/Button";
-import { Link } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, REMOVE_FOLLOWER } from "../../graphql/mutations";
 
-const useStyles = makeStyles({
-  card: {
+const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
+  "& .MuiCardHeader-action": {
+    alignSelf: "center",
     display: "flex",
-    justifyContent: "space-between",
-  },
-  buttonPaper: {
-    display: "flex",
-    alignItems: "center",
-    marginRight: 16,
-  },
-  twoButtons: {
-    display: "flex",
-    flexDirection: "row",
     gap: 8,
   },
-  button: {
-    height: 32,
-    whiteSpace: "nowrap",
-  },
-});
+}));
 
 // Button for when the card is in the auth user's profile
 function ButtonForAuthUser(props) {
-  const classes = useStyles();
-
   const authUser = useAuthUser();
   const profileUser = useProfileUser();
 
@@ -62,7 +46,9 @@ function ButtonForAuthUser(props) {
     onCompleted: useAuthUserUpdate(),
   });
 
-  const handleUnfollow = () => {
+  const handleUnfollow = (event) => {
+    event.stopPropagation();
+
     unfollow({
       variables: {
         username: props.user.username,
@@ -83,7 +69,9 @@ function ButtonForAuthUser(props) {
     });
   };
 
-  const handleRemoveFollower = () => {
+  const handleRemoveFollower = (event) => {
+    event.stopPropagation();
+
     removeFollower({
       variables: {
         username: props.user.username,
@@ -104,7 +92,9 @@ function ButtonForAuthUser(props) {
     });
   };
 
-  const handleFollow = () => {
+  const handleFollow = (event) => {
+    event.stopPropagation();
+
     follow({
       variables: {
         username: props.user.username,
@@ -113,22 +103,24 @@ function ButtonForAuthUser(props) {
   };
 
   return (
-    <Paper elevation={0}>
+    <>
       {props.type === "following" ? (
         <Button
-          className={classes.button}
           variant="outlined"
           color="secondary"
+          component="div"
+          onMouseDown={(event) => event.stopPropagation()}
           onClick={handleUnfollow}
         >
           Unfollow
         </Button>
       ) : (
-        <Paper className={classes.twoButtons} elevation={0}>
+        <>
           <Button
-            className={classes.button}
             variant="outlined"
             color="secondary"
+            component="div"
+            onMouseDown={(event) => event.stopPropagation()}
             onClick={handleRemoveFollower}
           >
             Remove
@@ -136,33 +128,33 @@ function ButtonForAuthUser(props) {
 
           {followed ? (
             <Button
-              className={classes.button}
               variant="outlined"
               color="primary"
+              component="div"
+              onMouseDown={(event) => event.stopPropagation()}
               onClick={handleUnfollow}
             >
               Following
             </Button>
           ) : (
             <Button
-              className={classes.button}
               variant="outlined"
               color="primary"
+              component="div"
+              onMouseDown={(event) => event.stopPropagation()}
               onClick={handleFollow}
             >
               Follow Back
             </Button>
           )}
-        </Paper>
+        </>
       )}
-    </Paper>
+    </>
   );
 }
 
 // Button for when the card is not in the auth user's profile
 function ButtonForNotAuthUser(props) {
-  const classes = useStyles();
-
   const authUser = useAuthUser();
   const isAuthUsersCard = authUser && authUser.username === props.user.username;
 
@@ -189,7 +181,9 @@ function ButtonForNotAuthUser(props) {
     onCompleted: useAuthUserUpdate(),
   });
 
-  const handleFollow = () => {
+  const handleFollow = (event) => {
+    event.stopPropagation();
+
     follow({
       variables: {
         username: props.user.username,
@@ -197,7 +191,9 @@ function ButtonForNotAuthUser(props) {
     });
   };
 
-  const handleUnfollow = () => {
+  const handleUnfollow = (event) => {
+    event.stopPropagation();
+
     unfollow({
       variables: {
         username: props.user.username,
@@ -206,38 +202,40 @@ function ButtonForNotAuthUser(props) {
   };
 
   return (
-    <Paper elevation={0}>
+    <>
       {isAuthUsersCard ? (
         <></>
       ) : (
-        <Paper elevation={0}>
+        <>
           {followed ? (
             <Button
-              className={classes.button}
               variant="outlined"
               color="primary"
+              component="div"
+              onMouseDown={(event) => event.stopPropagation()}
               onClick={handleUnfollow}
             >
               Following
             </Button>
           ) : (
             <Button
-              className={classes.button}
               variant="outlined"
               color="primary"
+              component="div"
+              onMouseDown={(event) => event.stopPropagation()}
               onClick={handleFollow}
             >
               Follow
             </Button>
           )}
-        </Paper>
+        </>
       )}
-    </Paper>
+    </>
   );
 }
 
 function FollowCard(props) {
-  const classes = useStyles();
+  const history = useHistory();
 
   const authUser = useAuthUser();
   const profileUser = useProfileUser();
@@ -253,25 +251,31 @@ function FollowCard(props) {
     }
   );
 
+  const handleCardClick = () => {
+    history.push(`/u/${props.user.username}`);
+  };
+
   return (
-    <Card className={classes.card}>
-      <CardActionArea component={Link} to={`/u/${props.user.username}`}>
-        <CardHeader
+    <Card>
+      <CardActionArea onClick={handleCardClick}>
+        <StyledCardHeader
           avatar={
             <Avatar>{props.user.username.charAt(0).toUpperCase()}</Avatar>
           }
-          title={props.user.username}
+          title={`u/${props.user.username}`}
           subheader={`${props.type} since ${followSinceDate}`}
+          subheaderTypographyProps={{ noWrap: true }}
+          action={
+            <>
+              {isAuthUsersProfile ? (
+                <ButtonForAuthUser user={props.user} type={props.type} />
+              ) : (
+                <ButtonForNotAuthUser user={props.user} type={props.type} />
+              )}
+            </>
+          }
         />
       </CardActionArea>
-
-      <Paper className={classes.buttonPaper} elevation={0}>
-        {isAuthUsersProfile ? (
-          <ButtonForAuthUser user={props.user} type={props.type} />
-        ) : (
-          <ButtonForNotAuthUser user={props.user} type={props.type} />
-        )}
-      </Paper>
     </Card>
   );
 }

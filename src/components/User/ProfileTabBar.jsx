@@ -1,6 +1,7 @@
 import React from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useProfileUser } from "../../context/ProfileUserContext";
+import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import TabPanel from "../Common/TabPanel";
@@ -18,26 +19,28 @@ function ProfileTabBar({ tab, handleChangeTab }) {
 
   return (
     <>
-      <Tabs
-        centered
-        value={tab}
-        onChange={(event, value) => handleChangeTab(value)}
-        sx={{ marginTop: 4 }}
-      >
-        <Tab disableRipple label="Posts" value={PROFILE_TABS.POSTS} />
+      <Box sx={{ display: "flex", justifyContent: "center", marginTop: 4 }}>
+        <Tabs
+          variant="scrollable"
+          allowScrollButtonsMobile
+          value={tab}
+          onChange={(event, value) => handleChangeTab(value)}
+        >
+          <Tab disableRipple label="Posts" value={PROFILE_TABS.POSTS} />
 
-        {isAuthUsersProfile && (
-          <Tab disableRipple label="Comments" value={PROFILE_TABS.COMMENTS} />
-        )}
+          {isAuthUsersProfile && (
+            <Tab disableRipple label="Comments" value={PROFILE_TABS.COMMENTS} />
+          )}
 
-        <Tab disableRipple label="Following" value={PROFILE_TABS.FOLLOWING} />
+          <Tab disableRipple label="Following" value={PROFILE_TABS.FOLLOWING} />
 
-        <Tab disableRipple label="Followers" value={PROFILE_TABS.FOLLOWERS} />
+          <Tab disableRipple label="Followers" value={PROFILE_TABS.FOLLOWERS} />
 
-        {isAuthUsersProfile && (
-          <Tab disableRipple label="Saved" value={PROFILE_TABS.SAVED} />
-        )}
-      </Tabs>
+          {isAuthUsersProfile && (
+            <Tab disableRipple label="Saved" value={PROFILE_TABS.SAVED} />
+          )}
+        </Tabs>
+      </Box>
 
       <TabPanel value={PROFILE_TABS.POSTS} tab={tab}>
         <PostList posts={profileUser.posts} />
