@@ -35,7 +35,9 @@ function MessagesPage(props) {
           flexDirection: "row",
         }}
       >
-        <ConversationList sx={{ width: isSmallScreen ? 0 : "20vw" }} />
+        <ConversationList
+          sx={{ width: 300, display: isSmallScreen ? "none" : "block" }}
+        />
 
         <Divider
           orientation="vertical"
