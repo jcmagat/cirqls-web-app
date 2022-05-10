@@ -1,7 +1,7 @@
 import React from "react";
 import { makeStyles } from "@mui/styles";
 import { useConversations } from "../../context/MessagesContext";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import ConversationCard from "./ConversationCard";
@@ -12,13 +12,13 @@ const useStyles = makeStyles({
   },
 });
 
-function ConversationList(props) {
+function ConversationList({ sx }) {
   const classes = useStyles();
 
   const conversations = useConversations();
 
   return (
-    <Paper elevation={0}>
+    <Box sx={{ ...sx }}>
       <List disablePadding>
         {conversations.map((conversation) => (
           <ListItem
@@ -27,13 +27,13 @@ function ConversationList(props) {
             dense
             disableGutters
           >
-            <Paper className={classes.card} elevation={0}>
+            <Box className={classes.card}>
               <ConversationCard conversation={conversation} />
-            </Paper>
+            </Box>
           </ListItem>
         ))}
       </List>
-    </Paper>
+    </Box>
   );
 }
 

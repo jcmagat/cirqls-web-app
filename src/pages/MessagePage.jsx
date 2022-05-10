@@ -1,46 +1,51 @@
 import React from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import useMediaQuery from "@mui/material/useMediaQuery";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import NavBar from "../components/Navigation/NavBar";
 import ConversationList from "../components/Message/ConversationList";
 import MessageArea from "../components/Message/MessageArea";
 
-const useStyles = makeStyles({
-  paper: {
-    marginTop: 80,
-    height: "85vh",
-    display: "flex",
-  },
-  conversationList: {
-    width: "20%",
-  },
-  messageArea: {
-    flexGrow: 1,
-  },
-});
-
 function MessagesPage(props) {
-  const classes = useStyles();
+  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
+
+  const topNavBarHeight = 64;
+  const bottomNavBarHeight = isSmallScreen ? 64 : 0;
+  const dividersHeight = isSmallScreen ? 2 : 1;
 
   return (
-    <Container>
-      <Paper elevation={0}>
-        <NavBar />
+    <Container
+      disableGutters
+      maxWidth={false}
+      sx={{
+        height: "100vh",
+        paddingTop: topNavBarHeight / 8,
+        paddingBottom: bottomNavBarHeight / 8,
+      }}
+    >
+      <NavBar elevation={0} />
 
-        <Paper className={classes.paper}>
-          <Paper className={classes.conversationList} elevation={0}>
-            <ConversationList />
-          </Paper>
+      <Divider />
 
-          <Divider orientation="vertical" />
+      <Box
+        sx={{
+          height: `calc(100% - ${dividersHeight}px)`,
+          display: "flex",
+          flexDirection: "row",
+        }}
+      >
+        <ConversationList sx={{ width: isSmallScreen ? 0 : "20vw" }} />
 
-          <Paper className={classes.messageArea} elevation={0}>
-            <MessageArea />
-          </Paper>
-        </Paper>
-      </Paper>
+        <Divider
+          orientation="vertical"
+          sx={{ display: isSmallScreen ? "none" : "block" }}
+        />
+
+        <MessageArea sx={{ flexGrow: 1 }} />
+      </Box>
+
+      <Divider sx={{ display: isSmallScreen ? "block" : "none" }} />
     </Container>
   );
 }

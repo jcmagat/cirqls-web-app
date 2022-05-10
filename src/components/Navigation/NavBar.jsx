@@ -154,7 +154,7 @@ function NonAuthNavButtons({ screenSize }) {
   );
 }
 
-function NavBar(props) {
+function NavBar({ elevation }) {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const screenSize = isSmallScreen ? "small" : "normal";
 
@@ -168,7 +168,10 @@ function NavBar(props) {
 
   return (
     <>
-      <AppBar color="inherit">
+      <AppBar
+        color="inherit"
+        elevation={Number.isInteger(elevation) ? elevation : 4}
+      >
         <Toolbar disableGutters>
           <Logo size={screenSize} sx={{ paddingLeft: 2 }} />
 
@@ -199,7 +202,7 @@ function NavBar(props) {
         </Toolbar>
       </AppBar>
 
-      {isSmallScreen && <BottomNavBar />}
+      {isSmallScreen && <BottomNavBar elevation={elevation} />}
     </>
   );
 }

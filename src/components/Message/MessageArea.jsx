@@ -1,40 +1,16 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { makeStyles } from "@mui/styles";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMessages } from "../../context/MessagesContext";
 import { useMutation } from "@apollo/client";
 import { READ_MESSAGES } from "../../graphql/mutations";
 import { GET_NOTIFICATIONS } from "../../graphql/queries";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import List from "@mui/material/List";
 import ListItem from "@mui/material/ListItem";
 import MessageCard from "./MessageCard";
 import MessageForm from "./MessageForm";
 
-const useStyles = makeStyles({
-  paper: {
-    height: "100%",
-  },
-  area: {
-    height: "100%",
-    display: "flex",
-    flexDirection: "column",
-  },
-  messages: {
-    flexGrow: 1,
-    overflowY: "auto",
-  },
-  leftMessage: {
-    justifyContent: "flex-start",
-  },
-  rightMessage: {
-    justifyContent: "flex-end",
-  },
-});
-
-function MessageArea(props) {
-  const classes = useStyles();
-
+function MessageArea({ sx }) {
   const authUser = useAuthUser();
   const messages = useMessages();
 
@@ -84,21 +60,22 @@ function MessageArea(props) {
   }, []);
 
   return (
-    <Paper className={classes.paper} elevation={0}>
+    <Box sx={{ ...sx }}>
       {authUser && messages && (
-        <Paper className={classes.area} elevation={0}>
-          <List className={classes.messages}>
+        <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          <List sx={{ flexGrow: 1, overflowY: "auto" }}>
             {messages
               .slice()
               .reverse()
               .map((message) => (
                 <ListItem
                   key={message.message_id}
-                  className={
-                    authUser.username === message.sender.username
-                      ? classes.rightMessage
-                      : classes.leftMessage
-                  }
+                  sx={{
+                    justifyContent:
+                      authUser.username === message.sender.username
+                        ? "flex-end"
+                        : "flex-start",
+                  }}
                   ref={
                     message.message_id === newMessageId ? newMessageRef : null
                   }
@@ -109,9 +86,9 @@ function MessageArea(props) {
           </List>
 
           <MessageForm />
-        </Paper>
+        </Box>
       )}
-    </Paper>
+    </Box>
   );
 }
 

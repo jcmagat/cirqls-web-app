@@ -14,12 +14,16 @@ import AddIcon from "@mui/icons-material/Add";
 import ChatOutlinedIcon from "@mui/icons-material/ChatOutlined";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 
-function BottomNavBar(props) {
+function BottomNavBar({ elevation }) {
   const unreadMessages = useUnreadMessages();
   const notifications = useNotifications();
 
   return (
-    <AppBar color="inherit" sx={{ top: "auto", bottom: 0 }}>
+    <AppBar
+      color="inherit"
+      elevation={Number.isInteger(elevation) ? elevation : 4}
+      sx={{ top: "auto", bottom: 0 }}
+    >
       <Toolbar disableGutters sx={{ justifyContent: "space-evenly" }}>
         <IconButton component={Link} href={"/"}>
           <HomeOutlinedIcon />
