@@ -32,7 +32,14 @@ function ExplorePage(props) {
     <Container>
       <NavBar />
 
-      <Box sx={{ marginTop: 12, maxWidth: 800, marginInline: "auto" }}>
+      <Box
+        sx={{
+          marginTop: 12,
+          marginBottom: 12,
+          maxWidth: 800,
+          marginInline: "auto",
+        }}
+      >
         <SortSelect sort={sort} handleChangeSort={handleChangeSort} />
 
         <PostList posts={posts} />

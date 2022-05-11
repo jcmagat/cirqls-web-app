@@ -50,7 +50,7 @@ function MessagesPage(props) {
           </>
         ) : (
           <>
-            <ConversationList sx={{ minWidth: 300 }} />
+            <ConversationList sx={{ width: 300 }} />
 
             <Divider orientation="vertical" />
 
