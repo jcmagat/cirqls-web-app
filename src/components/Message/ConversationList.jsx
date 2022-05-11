@@ -66,7 +66,9 @@ function ConversationList({ sx }) {
   const conversations = useConversations();
 
   return (
-    <Box sx={{ display: "flex", flexDirection: "column", ...sx }}>
+    <Box
+      sx={{ width: "100%", display: "flex", flexDirection: "column", ...sx }}
+    >
       {conversations.map((conversation) => (
         <ConversationCard
           key={conversation.user.user_id}
