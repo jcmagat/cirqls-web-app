@@ -1,4 +1,6 @@
 import React from "react";
+import { useLocation } from "react-router-dom";
+import queryString from "query-string";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -8,9 +10,12 @@ import ConversationList from "../components/Message/ConversationList";
 import MessageArea from "../components/Message/MessageArea";
 
 function MessagesPage(props) {
+  const { search } = useLocation();
+  const { user } = queryString.parse(search);
+
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
 
-  const topNavBarHeight = 64;
+  const topNavBarHeight = isSmallScreen ? 0 : 64;
   const bottomNavBarHeight = isSmallScreen ? 64 : 0;
   const dividersHeight = isSmallScreen ? 2 : 1;
 
@@ -24,7 +29,7 @@ function MessagesPage(props) {
         paddingBottom: bottomNavBarHeight / 8,
       }}
     >
-      <NavBar elevation={0} />
+      <NavBar elevation={0} bottomOnly={isSmallScreen} />
 
       <Divider />
 
@@ -35,19 +40,23 @@ function MessagesPage(props) {
           flexDirection: "row",
         }}
       >
-        <ConversationList
-          sx={{
-            display: isSmallScreen ? "none" : "block",
-            minWidth: 300,
-          }}
-        />
+        {isSmallScreen ? (
+          <>
+            {user ? (
+              <MessageArea showNav user={user} sx={{ flexGrow: 1 }} />
+            ) : (
+              <ConversationList sx={{ flexGrow: 1 }} />
+            )}
+          </>
+        ) : (
+          <>
+            <ConversationList sx={{ minWidth: 300 }} />
 
-        <Divider
-          orientation="vertical"
-          sx={{ display: isSmallScreen ? "none" : "block" }}
-        />
+            <Divider orientation="vertical" />
 
-        <MessageArea sx={{ flexGrow: 1 }} />
+            <MessageArea sx={{ flexGrow: 1 }} />
+          </>
+        )}
       </Box>
 
       <Divider sx={{ display: isSmallScreen ? "block" : "none" }} />

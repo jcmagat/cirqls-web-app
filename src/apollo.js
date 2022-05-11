@@ -5,7 +5,7 @@ import { onError } from "@apollo/client/link/error";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from "@apollo/client/utilities";
 
-const subscriptionUri = "ws://localhost:5000/subscriptions";
+const subscriptionUri = "wss://cirqls-backend.herokuapp.com/subscriptions";
 
 const token = localStorage.getItem("token");
 

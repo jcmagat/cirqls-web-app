@@ -11,7 +11,32 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import SendIcon from "@mui/icons-material/Send";
+import Divider from "@mui/material/Divider";
+
+function MessageNav({ user }) {
+  return (
+    <Box sx={{ position: "relative" }}>
+      <IconButton size="medium" sx={{ paddingLeft: 2 }} href="/messages">
+        <ArrowBackIosIcon />
+      </IconButton>
+
+      <Typography
+        sx={{
+          position: "absolute",
+          top: "50%",
+          left: "50%",
+          transform: "translate(-50%, -50%)",
+        }}
+      >
+        {`u/${user}`}
+      </Typography>
+
+      <Divider />
+    </Box>
+  );
+}
 
 function MessageCard({ message, align }) {
   const sentAtTime = new Date(message.sent_at).toLocaleTimeString("en-us", {
@@ -74,7 +99,7 @@ function MessageForm(props) {
   );
 }
 
-function MessageArea({ sx }) {
+function MessageArea({ showNav, user, sx }) {
   const authUser = useAuthUser();
   const messages = useMessages();
 
@@ -139,6 +164,8 @@ function MessageArea({ sx }) {
     <Box sx={{ ...sx }}>
       {authUser && messages && (
         <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
+          {showNav && <MessageNav user={user} />}
+
           <Box
             sx={{
               flexGrow: 1,

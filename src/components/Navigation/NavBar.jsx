@@ -154,7 +154,7 @@ function NonAuthNavButtons({ screenSize }) {
   );
 }
 
-function NavBar({ elevation }) {
+function NavBar({ elevation, bottomOnly }) {
   const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("md"));
   const screenSize = isSmallScreen ? "small" : "normal";
 
@@ -168,39 +168,41 @@ function NavBar({ elevation }) {
 
   return (
     <>
-      <AppBar
-        color="inherit"
-        elevation={Number.isInteger(elevation) ? elevation : 4}
-      >
-        <Toolbar disableGutters>
-          <Logo size={screenSize} sx={{ paddingLeft: 2 }} />
+      {!bottomOnly && (
+        <AppBar
+          color="inherit"
+          elevation={Number.isInteger(elevation) ? elevation : 3}
+        >
+          <Toolbar disableGutters>
+            <Logo size={screenSize} sx={{ paddingLeft: 2 }} />
 
-          <SearchBar
-            sx={{
-              position: "absolute",
-              left: "50%",
-              transform: "translateX(-50%)",
-              minWidth: "40vw",
-            }}
-          />
+            <SearchBar
+              sx={{
+                position: "absolute",
+                left: "50%",
+                transform: "translateX(-50%)",
+                minWidth: "40vw",
+              }}
+            />
 
-          <Box
-            sx={{
-              marginLeft: "auto",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              gap: 1,
-            }}
-          >
-            {isLoggedIn ? (
-              <AuthNavButtons screenSize={screenSize} />
-            ) : (
-              <NonAuthNavButtons screenSize={screenSize} />
-            )}
-          </Box>
-        </Toolbar>
-      </AppBar>
+            <Box
+              sx={{
+                marginLeft: "auto",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+              }}
+            >
+              {isLoggedIn ? (
+                <AuthNavButtons screenSize={screenSize} />
+              ) : (
+                <NonAuthNavButtons screenSize={screenSize} />
+              )}
+            </Box>
+          </Toolbar>
+        </AppBar>
+      )}
 
       {isSmallScreen && <BottomNavBar elevation={elevation} />}
     </>
