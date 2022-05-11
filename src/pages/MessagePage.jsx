@@ -36,7 +36,10 @@ function MessagesPage(props) {
         }}
       >
         <ConversationList
-          sx={{ width: 300, display: isSmallScreen ? "none" : "block" }}
+          sx={{
+            display: isSmallScreen ? "none" : "block",
+            minWidth: 300,
+          }}
         />
 
         <Divider
