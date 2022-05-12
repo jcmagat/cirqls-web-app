@@ -1,34 +1,32 @@
-import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
-import Paper from "@mui/material/Paper";
+import React, { useState } from "react";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 
-const useStyles = makeStyles((theme) => ({
-  buttons: {
-    marginTop: 8,
-    float: "right",
-  },
-  cancelButton: {
-    marginRight: 8,
-  },
-}));
-
-function CommentForm(props) {
-  const classes = useStyles();
-
-  const [open, setOpen] = useState(false);
+function CommentForm({
+  open,
+  onSubmit,
+  onCancel,
+  autoFocus,
+  showCancelButton,
+  sx,
+}) {
   const [message, setMessage] = useState("");
+  const [messageError, setMessageError] = useState("");
 
-  useEffect(() => {
-    setOpen(props.open);
-  }, [props.open]);
+  const handleChangeMessage = (event) => {
+    setMessage(event.target.value);
+    setMessageError("");
+  };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
+  const handleSubmit = () => {
+    if (!message) {
+      setMessageError("Please leave a comment");
+      return;
+    }
 
-    if (props.onSubmit) {
-      props.onSubmit(message);
+    if (onSubmit) {
+      onSubmit(message);
     }
 
     setMessage("");
@@ -37,56 +35,54 @@ function CommentForm(props) {
   const handleCancel = () => {
     setMessage("");
 
-    if (props.onCancel) {
-      props.onCancel();
+    if (onCancel) {
+      onCancel();
     }
   };
 
   return (
-    <Paper elevation={0}>
+    <>
       {open && (
-        <Paper elevation={0}>
-          <form noValidate autoComplete="off" onSubmit={handleSubmit}>
-            <Paper elevation={0}>
-              <TextField
-                id="comment"
-                label="Comment"
-                value={message}
-                multiline
-                rows={8}
-                fullWidth
-                autoFocus={props.autoFocus}
-                onChange={(event) => setMessage(event.target.value)}
-                // disabled={loading}
-              />
-            </Paper>
+        <Box sx={{ ...sx }}>
+          <TextField
+            id="comment"
+            label="Comment"
+            value={message}
+            multiline
+            rows={8}
+            fullWidth
+            autoFocus={autoFocus}
+            error={Boolean(messageError)}
+            helperText={messageError}
+            onChange={handleChangeMessage}
+          />
 
-            <Paper className={classes.buttons} elevation={0}>
-              {props.showCancelButton && (
-                <Button
-                  className={classes.cancelButton}
-                  variant="outlined"
-                  color="secondary"
-                  onClick={handleCancel}
-                  // disabled={loading}
-                >
-                  Cancel
-                </Button>
-              )}
-
+          <Box
+            sx={{
+              marginTop: 1,
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "flex-end",
+              gap: 1,
+            }}
+          >
+            {showCancelButton && (
               <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                disabled={!message}
+                variant="outlined"
+                color="secondary"
+                onClick={handleCancel}
               >
-                Submit
+                Cancel
               </Button>
-            </Paper>
-          </form>
-        </Paper>
+            )}
+
+            <Button variant="contained" color="primary" onClick={handleSubmit}>
+              Submit
+            </Button>
+          </Box>
+        </Box>
       )}
-    </Paper>
+    </>
   );
 }
 

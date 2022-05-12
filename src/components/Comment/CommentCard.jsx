@@ -9,12 +9,12 @@ import {
 } from "../../graphql/mutations";
 import { GET_POST, GET_COMMENTS } from "../../graphql/queries";
 import { COMMENT_FRAGMENT } from "../../graphql/fragments";
-import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
+import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
@@ -24,7 +24,6 @@ import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
 import Typography from "@mui/material/Typography";
 import CommentForm from "./CommentForm";
-import { Link } from "react-router-dom";
 
 function CommentCard({ comment, elevation }) {
   const authUser = useAuthUser();
@@ -137,14 +136,14 @@ function CommentCard({ comment, elevation }) {
   }
 
   return (
-    <Box>
+    <>
       <Card elevation={elevation}>
         <CardHeader
           avatar={
             <Avatar
               src={comment.commenter.profile_pic_src}
               component={Link}
-              to={`/u/${comment.commenter.username}`}
+              href={`/u/${comment.commenter.username}`}
             />
           }
           disableTypography
@@ -152,7 +151,7 @@ function CommentCard({ comment, elevation }) {
             <Typography
               variant="subtitle2"
               component={Link}
-              to={`/u/${comment.commenter.username}`}
+              href={`/u/${comment.commenter.username}`}
             >
               {`u/${comment.commenter.username}`}
             </Typography>
@@ -173,7 +172,7 @@ function CommentCard({ comment, elevation }) {
                 handleDeleteCommentReaction(comment.comment_id, comment_id)
               }
             >
-              <ThumbUpIcon />
+              <ThumbUpIcon color="primary" />
             </IconButton>
           ) : (
             <IconButton
@@ -193,7 +192,7 @@ function CommentCard({ comment, elevation }) {
                 handleDeleteCommentReaction(comment.comment_id, comment_id)
               }
             >
-              <ThumbDownIcon />
+              <ThumbDownIcon color="secondary" />
             </IconButton>
           ) : (
             <IconButton
@@ -223,16 +222,15 @@ function CommentCard({ comment, elevation }) {
         </CardActions>
       </Card>
 
-      <Box sx={{ marginTop: 2, marginLeft: 2 }}>
-        <CommentForm
-          open={replyFormOpen}
-          autoFocus={true}
-          showCancelButton={true}
-          onCancel={handleReplyFormClose}
-          onSubmit={handleAddCommentReply}
-        />
-      </Box>
-    </Box>
+      <CommentForm
+        open={replyFormOpen}
+        autoFocus={true}
+        showCancelButton={true}
+        onCancel={handleReplyFormClose}
+        onSubmit={handleAddCommentReply}
+        sx={{ marginTop: 2, marginLeft: 3.5 }}
+      />
+    </>
   );
 }
 

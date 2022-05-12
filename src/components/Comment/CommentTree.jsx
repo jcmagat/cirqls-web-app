@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { styled } from "@mui/material/styles";
 import TreeView from "@mui/lab/TreeView";
 import TreeItem from "@mui/lab/TreeItem";
+import Typography from "@mui/material/Typography";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CommentCard from "./CommentCard";
@@ -9,7 +10,6 @@ import CommentCard from "./CommentCard";
 const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
   "& .MuiTreeItem-content": {
     paddingLeft: 0,
-    paddingBottom: 0,
     background: "inherit",
     "&:hover": {
       background: "inherit",
@@ -23,6 +23,8 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
 }));
 
 function CommentTree({ comments, comment_ids, ref_comment_id }) {
+  // TODO: have maxHeight based on screen size
+
   const [expanded, setExpanded] = useState([]);
 
   useEffect(() => {
@@ -39,6 +41,13 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
         key={comment.comment_id}
         nodeId={comment.comment_id.toString()}
         ref={comment.comment_id === ref_comment_id ? commentRef : null}
+        label={
+          !expanded.includes(comment.comment_id.toString()) && (
+            <Typography variant="body2">
+              {`Expand u/${comment.commenter.username}'s comment`}
+            </Typography>
+          )
+        }
       >
         <CommentCard
           comment={comment}
