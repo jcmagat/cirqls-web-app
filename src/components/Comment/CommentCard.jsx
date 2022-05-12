@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useMutation } from "@apollo/client";
 import {
@@ -10,7 +9,7 @@ import {
 } from "../../graphql/mutations";
 import { GET_POST, GET_COMMENTS } from "../../graphql/queries";
 import { COMMENT_FRAGMENT } from "../../graphql/fragments";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
 import CardActions from "@mui/material/CardActions";
@@ -27,26 +26,13 @@ import Typography from "@mui/material/Typography";
 import CommentForm from "./CommentForm";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
-  comment: {
-    position: "relative",
-    top: -16,
-    // boxShadow: "none",
-  },
-  replyForm: {
-    marginLeft: 16,
-  },
-});
-
-function CommentCard(props) {
-  const classes = useStyles();
-
+function CommentCard({ comment, elevation }) {
   const authUser = useAuthUser();
 
   const isAuthUsersComment =
-    authUser && authUser.username === props.comment.commenter.username;
+    authUser && authUser.username === comment.commenter.username;
 
-  const authUserReaction = props.comment.reactions.auth_user_reaction;
+  const authUserReaction = comment.reactions.auth_user_reaction;
   const [liked, setLiked] = useState(false);
   const [disliked, setDisliked] = useState(false);
 
@@ -67,8 +53,8 @@ function CommentCard(props) {
 
   const [deleteComment] = useMutation(DELETE_COMMENT, {
     refetchQueries: [
-      { query: GET_POST, variables: { post_id: props.comment.post_id } },
-      { query: GET_COMMENTS, variables: { post_id: props.comment.post_id } },
+      { query: GET_POST, variables: { post_id: comment.post_id } },
+      { query: GET_COMMENTS, variables: { post_id: comment.post_id } },
     ],
   });
 
@@ -79,11 +65,11 @@ function CommentCard(props) {
   const [addCommentReply] = useMutation(ADD_COMMENT, {
     onCompleted: handleReplyFormClose,
     refetchQueries: [
-      { query: GET_POST, variables: { post_id: props.comment.post_id } },
+      { query: GET_POST, variables: { post_id: comment.post_id } },
     ],
     update(cache, { data: { addComment } }) {
       cache.modify({
-        id: cache.identify(props.comment),
+        id: cache.identify(comment),
         fields: {
           child_comments(existingCommentRefs = []) {
             const newCommentRef = cache.writeFragment({
@@ -135,8 +121,8 @@ function CommentCard(props) {
   const handleAddCommentReply = (message) => {
     addCommentReply({
       variables: {
-        parent_comment_id: props.comment.comment_id,
-        post_id: props.comment.post_id,
+        parent_comment_id: comment.comment_id,
+        post_id: comment.post_id,
         message: message,
       },
     });
@@ -151,14 +137,14 @@ function CommentCard(props) {
   }
 
   return (
-    <Paper elevation={0}>
-      <Card className={classes.comment} elevation={props.elevation}>
+    <Box>
+      <Card elevation={elevation}>
         <CardHeader
           avatar={
             <Avatar
-              src={props.comment.commenter.profile_pic_src}
+              src={comment.commenter.profile_pic_src}
               component={Link}
-              to={`/u/${props.comment.commenter.username}`}
+              to={`/u/${comment.commenter.username}`}
             />
           }
           disableTypography
@@ -166,70 +152,60 @@ function CommentCard(props) {
             <Typography
               variant="subtitle2"
               component={Link}
-              to={`/u/${props.comment.commenter.username}`}
+              to={`/u/${comment.commenter.username}`}
             >
-              {`u/${props.comment.commenter.username}`}
+              {`u/${comment.commenter.username}`}
             </Typography>
           }
           subheader={
-            <Typography variant="subtitle2">
-              {props.comment.created_since}
-            </Typography>
+            <Typography variant="subtitle2">{comment.created_since}</Typography>
           }
         />
 
         <CardContent>
-          <Typography variant="body1">{props.comment.message}</Typography>
+          <Typography variant="body1">{comment.message}</Typography>
         </CardContent>
 
         <CardActions disableSpacing>
           {liked ? (
             <IconButton
               onClick={(comment_id) =>
-                handleDeleteCommentReaction(
-                  props.comment.comment_id,
-                  comment_id
-                )
+                handleDeleteCommentReaction(comment.comment_id, comment_id)
               }
-              size="large">
+            >
               <ThumbUpIcon />
             </IconButton>
           ) : (
             <IconButton
               onClick={(comment_id) =>
-                handleLikeComment(props.comment.comment_id, comment_id)
+                handleLikeComment(comment.comment_id, comment_id)
               }
-              size="large">
+            >
               <ThumbUpOutlinedIcon />
             </IconButton>
           )}
 
-          <Typography variant="subtitle1">
-            {props.comment.reactions.total}
-          </Typography>
+          <Typography variant="subtitle1">{comment.reactions.total}</Typography>
 
           {disliked ? (
             <IconButton
               onClick={(comment_id) =>
-                handleDeleteCommentReaction(
-                  props.comment.comment_id,
-                  comment_id
-                )
+                handleDeleteCommentReaction(comment.comment_id, comment_id)
               }
-              size="large">
+            >
               <ThumbDownIcon />
             </IconButton>
           ) : (
             <IconButton
               onClick={(comment_id) =>
-                handleDislikeComment(props.comment.comment_id, comment_id)
+                handleDislikeComment(comment.comment_id, comment_id)
               }
-              size="large">
+            >
               <ThumbDownOutlinedIcon />
             </IconButton>
           )}
 
-          <IconButton onClick={handleReplyButtonClick} size="large">
+          <IconButton onClick={handleReplyButtonClick}>
             <ChatBubbleOutlineIcon />
             <Typography>Reply</Typography>
           </IconButton>
@@ -237,9 +213,9 @@ function CommentCard(props) {
           {isAuthUsersComment && (
             <IconButton
               onClick={(comment_id) =>
-                handleDeleteComment(props.comment.comment_id, comment_id)
+                handleDeleteComment(comment.comment_id, comment_id)
               }
-              size="large">
+            >
               <DeleteOutlinedIcon />
               <Typography>Delete</Typography>
             </IconButton>
@@ -247,7 +223,7 @@ function CommentCard(props) {
         </CardActions>
       </Card>
 
-      <Paper className={classes.replyForm} elevation={0}>
+      <Box sx={{ marginTop: 2, marginLeft: 2 }}>
         <CommentForm
           open={replyFormOpen}
           autoFocus={true}
@@ -255,8 +231,8 @@ function CommentCard(props) {
           onCancel={handleReplyFormClose}
           onSubmit={handleAddCommentReply}
         />
-      </Paper>
-    </Paper>
+      </Box>
+    </Box>
   );
 }
 

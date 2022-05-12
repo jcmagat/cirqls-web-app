@@ -1,9 +1,26 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { styled } from "@mui/material/styles";
 import TreeView from "@mui/lab/TreeView";
 import TreeItem from "@mui/lab/TreeItem";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import CommentCard from "./CommentCard";
+
+const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
+  "& .MuiTreeItem-content": {
+    paddingLeft: 0,
+    paddingBottom: 0,
+    background: "inherit",
+    "&:hover": {
+      background: "inherit",
+    },
+  },
+  "& .MuiTreeItem-group": {
+    marginLeft: 7,
+    paddingLeft: 20,
+    borderLeft: "1px solid black",
+  },
+}));
 
 function CommentTree({ comments, comment_ids, ref_comment_id }) {
   const [expanded, setExpanded] = useState([]);
@@ -18,7 +35,7 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
 
   const renderCommentTree = (comment) => {
     return (
-      <TreeItem
+      <StyledTreeItem
         key={comment.comment_id}
         nodeId={comment.comment_id.toString()}
         ref={comment.comment_id === ref_comment_id ? commentRef : null}
@@ -33,7 +50,7 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
               renderCommentTree(comments)
             )
           : null}
-      </TreeItem>
+      </StyledTreeItem>
     );
   };
 
