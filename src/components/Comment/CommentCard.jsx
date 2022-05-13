@@ -7,7 +7,7 @@ import {
   DELETE_COMMENT_REACTION,
   ADD_COMMENT,
 } from "../../graphql/mutations";
-import { GET_POST, GET_COMMENTS } from "../../graphql/queries";
+import { GET_POST, GET_POST_COMMENTS } from "../../graphql/queries";
 import { COMMENT_FRAGMENT } from "../../graphql/fragments";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -16,13 +16,17 @@ import CardContent from "@mui/material/CardContent";
 import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 import IconButton from "@mui/material/IconButton";
+import Menu from "@mui/material/Menu";
 import ThumbUpOutlinedIcon from "@mui/icons-material/ThumbUpOutlined";
 import ThumbDownOutlinedIcon from "@mui/icons-material/ThumbDownOutlined";
 import ThumbUpIcon from "@mui/icons-material/ThumbUp";
 import ThumbDownIcon from "@mui/icons-material/ThumbDown";
 import ChatBubbleOutlineIcon from "@mui/icons-material/ChatBubbleOutline";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
 import DeleteOutlinedIcon from "@mui/icons-material/DeleteOutlined";
+import FlagOutlinedIcon from "@mui/icons-material/FlagOutlined";
 import Typography from "@mui/material/Typography";
+import StyledMenuItem from "../Common/StyledMenuItem";
 import CommentForm from "./CommentForm";
 
 function CommentCard({ comment, elevation }) {
@@ -36,6 +40,8 @@ function CommentCard({ comment, elevation }) {
   const [disliked, setDisliked] = useState(false);
 
   const [replyFormOpen, setReplyFormOpen] = useState(false);
+
+  const [anchorEl, setAnchorEl] = useState();
 
   useEffect(() => {
     if (authUserReaction === "like") {
@@ -53,7 +59,7 @@ function CommentCard({ comment, elevation }) {
   const [deleteComment] = useMutation(DELETE_COMMENT, {
     refetchQueries: [
       { query: GET_POST, variables: { post_id: comment.post_id } },
-      { query: GET_COMMENTS, variables: { post_id: comment.post_id } },
+      { query: GET_POST_COMMENTS, variables: { post_id: comment.post_id } },
     ],
   });
 
@@ -137,7 +143,7 @@ function CommentCard({ comment, elevation }) {
 
   return (
     <>
-      <Card elevation={elevation}>
+      <Card elevation={Number.isInteger(elevation) ? elevation : 1}>
         <CardHeader
           avatar={
             <Avatar
@@ -206,19 +212,34 @@ function CommentCard({ comment, elevation }) {
 
           <IconButton onClick={handleReplyButtonClick}>
             <ChatBubbleOutlineIcon />
-            <Typography>Reply</Typography>
+            <Typography sx={{ marginLeft: 1 }}>Reply</Typography>
           </IconButton>
 
-          {isAuthUsersComment && (
-            <IconButton
-              onClick={(comment_id) =>
-                handleDeleteComment(comment.comment_id, comment_id)
-              }
-            >
-              <DeleteOutlinedIcon />
-              <Typography>Delete</Typography>
-            </IconButton>
-          )}
+          <IconButton onClick={(event) => setAnchorEl(event.currentTarget)}>
+            <MoreHorizIcon />
+          </IconButton>
+
+          <Menu
+            open={Boolean(anchorEl)}
+            anchorEl={anchorEl}
+            onClose={() => setAnchorEl(null)}
+          >
+            {isAuthUsersComment && (
+              <StyledMenuItem
+                onClick={(comment_id) =>
+                  handleDeleteComment(comment.comment_id, comment_id)
+                }
+              >
+                <DeleteOutlinedIcon />
+                Delete
+              </StyledMenuItem>
+            )}
+
+            <StyledMenuItem>
+              <FlagOutlinedIcon />
+              Report
+            </StyledMenuItem>
+          </Menu>
         </CardActions>
       </Card>
 

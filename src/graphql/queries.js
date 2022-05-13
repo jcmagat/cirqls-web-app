@@ -131,10 +131,79 @@ export const GET_POST = gql`
 
 /* ========== Comment Queries ========== */
 
-export const GET_COMMENTS = gql`
+export const GET_POST_COMMENTS = gql`
   ${COMMENT_FRAGMENT}
-  query Comments($post_id: Int!) {
-    comments(post_id: $post_id) {
+  query PostComments($post_id: Int!) {
+    postComments(post_id: $post_id) {
+      ...CommentFragment
+      child_comments {
+        ...CommentFragment
+        child_comments {
+          ...CommentFragment
+          child_comments {
+            ...CommentFragment
+            child_comments {
+              ...CommentFragment
+              child_comments {
+                ...CommentFragment
+                child_comments {
+                  ...CommentFragment
+                  child_comments {
+                    ...CommentFragment
+                    child_comments {
+                      ...CommentFragment
+                      child_comments {
+                        ...CommentFragment
+                        child_comments {
+                          ...CommentFragment
+                          child_comments {
+                            ...CommentFragment
+                            child_comments {
+                              ...CommentFragment
+                              child_comments {
+                                ...CommentFragment
+                                child_comments {
+                                  ...CommentFragment
+                                  child_comments {
+                                    ...CommentFragment
+                                    child_comments {
+                                      ...CommentFragment
+                                      child_comments {
+                                        ...CommentFragment
+                                        child_comments {
+                                          ...CommentFragment
+                                          child_comments {
+                                            ...CommentFragment
+                                            child_comments {
+                                              ...CommentFragment
+                                            }
+                                          }
+                                        }
+                                      }
+                                    }
+                                  }
+                                }
+                              }
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const GET_COMMENT = gql`
+  ${COMMENT_FRAGMENT}
+  query Comment($comment_id: Int!) {
+    comment(comment_id: $comment_id) {
       ...CommentFragment
       child_comments {
         ...CommentFragment

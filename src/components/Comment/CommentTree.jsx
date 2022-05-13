@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { styled } from "@mui/material/styles";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import { useHistory } from "react-router-dom";
 import TreeView from "@mui/lab/TreeView";
 import TreeItem from "@mui/lab/TreeItem";
 import Typography from "@mui/material/Typography";
@@ -22,13 +23,42 @@ const StyledTreeItem = styled(TreeItem)(({ theme }) => ({
     paddingLeft: 20,
     borderLeft: "1px solid black",
   },
+  [theme.breakpoints.down("md")]: {
+    "& .MuiTreeItem-group": {
+      paddingLeft: 15,
+    },
+  },
+  [theme.breakpoints.down("sm")]: {
+    "& .MuiTreeItem-group": {
+      paddingLeft: 10,
+    },
+  },
 }));
+
+function MoreCommentsButton({ comment }) {
+  const history = useHistory();
+
+  const handleClick = () => {
+    history.push({ search: `comment=${comment.comment_id}` });
+  };
+
+  return (
+    <StyledTreeItem
+      key={comment.child_comments[0].comment_id}
+      nodeId={comment.child_comments[0].comment_id.toString()}
+    >
+      <Button variant="outlined" onClick={handleClick}>
+        More Comments
+      </Button>
+    </StyledTreeItem>
+  );
+}
 
 function CommentTree({ comments, comment_ids, ref_comment_id }) {
   let maxHeight = 20;
 
   if (useMediaQuery((theme) => theme.breakpoints.down("md"))) {
-    maxHeight = 10;
+    maxHeight = 12;
   }
 
   if (useMediaQuery((theme) => theme.breakpoints.down("sm"))) {
@@ -46,50 +76,39 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
   }, []);
 
   const renderCommentTree = (comment, height) => {
-    if (!comment) return;
+    return (
+      <StyledTreeItem
+        key={comment.comment_id}
+        nodeId={comment.comment_id.toString()}
+        ref={comment.comment_id === ref_comment_id ? commentRef : null}
+        label={
+          !expanded.includes(comment.comment_id.toString()) && (
+            <Typography variant="body2">
+              {`Expand u/${comment.commenter.username}'s comment`}
+            </Typography>
+          )
+        }
+      >
+        <CommentCard
+          comment={comment}
+          elevation={comment.comment_id === ref_comment_id && 4}
+        />
 
-    if (height <= maxHeight) {
-      return (
-        <StyledTreeItem
-          key={comment.comment_id}
-          nodeId={comment.comment_id.toString()}
-          ref={comment.comment_id === ref_comment_id ? commentRef : null}
-          label={
-            !expanded.includes(comment.comment_id.toString()) && (
-              <Typography variant="body2">
-                {`Expand u/${comment.commenter.username}'s comment`}
-              </Typography>
-            )
-          }
-        >
-          <CommentCard
-            comment={comment}
-            elevation={comment.comment_id === ref_comment_id ? 16 : 1}
-          />
-
-          {
-            // Only render 1 child comment past maxHeight (which will be a
-            // button to show more comments, see else condition below)
-            height < maxHeight
-              ? Array.isArray(comment.child_comments) &&
-                comment.child_comments.map((comments) =>
-                  renderCommentTree(comments, height + 1)
-                )
-              : Array.isArray(comment.child_comments) &&
-                renderCommentTree(comment.child_comments[0], height + 1)
-          }
-        </StyledTreeItem>
-      );
-    } else {
-      return (
-        <StyledTreeItem
-          key={comment.comment_id}
-          nodeId={comment.comment_id.toString()}
-        >
-          <Button variant="outlined">More Comments</Button>
-        </StyledTreeItem>
-      );
-    }
+        {
+          // Only render 1 child comment past maxHeight (which will be a
+          // button to show more comments, see else condition below)
+          height < maxHeight
+            ? Array.isArray(comment.child_comments) &&
+              comment.child_comments.map((child_comment) =>
+                renderCommentTree(child_comment, height + 1)
+              )
+            : Array.isArray(comment.child_comments) &&
+              comment.child_comments.length > 0 && (
+                <MoreCommentsButton comment={comment} />
+              )
+        }
+      </StyledTreeItem>
+    );
   };
 
   return (
@@ -99,7 +118,8 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
       defaultExpandIcon={<ChevronRightIcon />}
       onNodeToggle={(event, nodeIds) => setExpanded(nodeIds)}
     >
-      {comments.map((comment) => renderCommentTree(comment, 1))}
+      {Array.isArray(comments) &&
+        comments.map((comment) => renderCommentTree(comment, 1))}
     </TreeView>
   );
 }

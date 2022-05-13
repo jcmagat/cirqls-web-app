@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
-import { useQuery, useMutation } from "@apollo/client";
-import { GET_POST, GET_COMMENTS } from "../graphql/queries";
+import { useQuery, useLazyQuery, useMutation } from "@apollo/client";
+import { GET_POST, GET_POST_COMMENTS, GET_COMMENT } from "../graphql/queries";
 import { ADD_COMMENT } from "../graphql/mutations";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
@@ -26,15 +26,25 @@ function PostPage(props) {
     variables: { post_id: post_id },
   });
 
-  const { data: getCommentsData } = useQuery(GET_COMMENTS, {
+  // Get all comments for post
+  const [getPostComments] = useLazyQuery(GET_POST_COMMENTS, {
     variables: { post_id: post_id },
+    onCompleted: (data) => setComments(data.postComments),
+  });
+
+  // Get a single comment tree
+  const [getComment] = useLazyQuery(GET_COMMENT, {
+    variables: {
+      comment_id: parseInt(comment),
+    },
+    onCompleted: (data) => setComments([data.comment]),
   });
 
   const [addComment] = useMutation(ADD_COMMENT, {
     refetchQueries: [
       { query: GET_POST, variables: { post_id: post ? post.post_id : null } },
       {
-        query: GET_COMMENTS,
+        query: GET_POST_COMMENTS,
         variables: { post_id: post ? post.post_id : null },
       },
     ],
@@ -47,10 +57,12 @@ function PostPage(props) {
   }, [getPostData]);
 
   useEffect(() => {
-    if (getCommentsData) {
-      setComments(getCommentsData.comments);
+    if (comment) {
+      getComment();
+    } else {
+      getPostComments();
     }
-  }, [getCommentsData]);
+  }, [comment, getComment, getPostComments]);
 
   const handleAddComment = (message) => {
     addComment({
