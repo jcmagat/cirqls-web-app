@@ -22,23 +22,55 @@ function PostPage(props) {
   const [post, setPost] = useState();
   const [comments, setComments] = useState([]);
 
+  /* ========== Get Post ========== */
+
   const { data: getPostData } = useQuery(GET_POST, {
     variables: { post_id: post_id },
   });
 
+  useEffect(() => {
+    if (getPostData) {
+      setPost(getPostData.post);
+    }
+  }, [getPostData]);
+
+  /* ========== Get Comments ========== */
+
   // Get all comments for post
-  const [getPostComments] = useLazyQuery(GET_POST_COMMENTS, {
-    variables: { post_id: post_id },
-    onCompleted: (data) => setComments(data.postComments),
-  });
+  const [getPostComments, { data: getPostCommentsData }] = useLazyQuery(
+    GET_POST_COMMENTS,
+    {
+      variables: { post_id: post_id },
+    }
+  );
 
   // Get a single comment tree
-  const [getComment] = useLazyQuery(GET_COMMENT, {
-    variables: {
-      comment_id: parseInt(comment),
-    },
-    onCompleted: (data) => setComments([data.comment]),
+  const [getComment, { data: getCommentData }] = useLazyQuery(GET_COMMENT, {
+    variables: { comment_id: parseInt(comment) },
   });
+
+  // This has to be done instead of using onCompleted, because otherwise
+  // the comments in cache would not update after a mutation
+  // such as adding a comment reaction
+  useEffect(() => {
+    if (comment) {
+      getComment();
+
+      if (getCommentData) setComments([getCommentData.comment]);
+    } else {
+      getPostComments();
+
+      if (getPostCommentsData) setComments(getPostCommentsData.postComments);
+    }
+  }, [
+    comment,
+    getComment,
+    getCommentData,
+    getPostComments,
+    getPostCommentsData,
+  ]);
+
+  /* ========== Add Comment ========== */
 
   const [addComment] = useMutation(ADD_COMMENT, {
     refetchQueries: [
@@ -49,20 +81,6 @@ function PostPage(props) {
       },
     ],
   });
-
-  useEffect(() => {
-    if (getPostData) {
-      setPost(getPostData.post);
-    }
-  }, [getPostData]);
-
-  useEffect(() => {
-    if (comment) {
-      getComment();
-    } else {
-      getPostComments();
-    }
-  }, [comment, getComment, getPostComments]);
 
   const handleAddComment = (message) => {
     addComment({
