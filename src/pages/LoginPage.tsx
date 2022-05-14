@@ -1,40 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import makeStyles from "@mui/styles/makeStyles";
+import { useMutation, ApolloError } from "@apollo/client";
+import { LOGIN } from "../graphql/mutations";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import Button from "@mui/material/Button";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Link } from "react-router-dom";
-import { useMutation } from "@apollo/client";
-import { LOGIN } from "../graphql/mutations";
+import Link from "@mui/material/Link";
 
-const useStyles = makeStyles((theme) => ({
-  paper: {
-    marginTop: theme.spacing(8),
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-  },
-  avatar: {
-    margin: theme.spacing(1),
-    backgroundColor: theme.palette.secondary.main,
-  },
-  form: {
-    width: "100%", // Fix IE 11 issue.
-    marginTop: theme.spacing(1),
-  },
-  submit: {
-    margin: theme.spacing(3, 0, 2),
-  },
-}));
-
-function LoginPage(props) {
-  const classes = useStyles();
+function LoginPage() {
   const history = useHistory();
 
   const [username, setUsername] = useState("");
@@ -46,7 +23,7 @@ function LoginPage(props) {
     onError: handleError,
   });
 
-  const handleLogin = (event) => {
+  const handleLogin = (event: any) => {
     event.preventDefault();
 
     login({
@@ -57,76 +34,82 @@ function LoginPage(props) {
     });
   };
 
-  function finishLogin(data) {
+  function finishLogin(data: any) {
     localStorage.setItem("token", data.login.accessToken);
     history.push("/");
   }
 
-  function handleError(error) {
+  function handleError(error: ApolloError) {
     setError(error.message);
   }
 
-  const handleUsernameChange = (username) => {
+  const handleUsernameChange = (username: string) => {
     setUsername(username);
     setError("");
   };
 
-  const handlePasswordChange = (password) => {
+  const handlePasswordChange = (password: string) => {
     setPassword(password);
     setError("");
   };
 
   return (
-    <Container component="main" maxWidth="xs">
-      <Paper className={classes.paper} elevation={0}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
+    <Container maxWidth="xs">
+      <Box
+        sx={{
+          marginTop: 12,
+          textAlign: "center",
+        }}
+      >
+        <Avatar sx={{ marginInline: "auto" }}>
+          <PersonOutlineOutlinedIcon />
         </Avatar>
-        <Typography component="h1" variant="h5">
+
+        <Typography variant="h5" sx={{ marginBottom: 3 }}>
           Log In
         </Typography>
-        <form className={classes.form} noValidate onSubmit={handleLogin}>
+
+        <form noValidate onSubmit={handleLogin}>
           <TextField
-            margin="normal"
-            required
-            fullWidth
             id="username"
             label="Username"
             autoComplete="username"
+            margin="dense"
+            fullWidth
             autoFocus
             onChange={(event) => handleUsernameChange(event.target.value)}
             disabled={loading}
             error={Boolean(error)}
             helperText={error}
           />
+
           <TextField
-            margin="normal"
-            required
-            fullWidth
             type="password"
             id="password"
             label="Password"
             autoComplete="current-password"
+            margin="dense"
+            fullWidth
             onChange={(event) => handlePasswordChange(event.target.value)}
             disabled={loading}
             error={Boolean(error)}
           />
+
           <Button
-            className={classes.submit}
             fullWidth
             type="submit"
             variant="contained"
-            color="primary"
-            disabled={!username || !password || loading}
+            disabled={loading}
+            sx={{ marginTop: 1, marginBottom: 4 }}
           >
             Login
           </Button>
         </form>
-        <Typography component={Link} to={"/signup"}>
+
+        <Typography component={Link} href={"/"}>
           Don't have an account? Sign Up
         </Typography>
-        {loading && <CircularProgress />}
-      </Paper>
+      </Box>
     </Container>
   );
 }
