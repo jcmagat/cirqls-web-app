@@ -1,36 +1,14 @@
-import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { useState, useEffect } from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useMutation } from "@apollo/client";
+import { useMutation, ApolloError } from "@apollo/client";
 import { CHANGE_USERNAME } from "../../graphql/mutations";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import StyledButtonBox from "./StyledButtonBox";
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    justifyContent: "space-between",
-  },
-  buttonPaper: {
-    display: "flex",
-    alignItems: "center",
-    marginRight: 16,
-  },
-  buttons: {
-    display: "flex",
-    flexDirection: "row",
-    gap: 8,
-  },
-  form: {
-    marginTop: 8,
-  },
-});
-
-function ChangeUsernameForm(props) {
-  const classes = useStyles();
-
+function ChangeUsernameForm() {
   const authUser = useAuthUser();
 
   const [isChangeMode, setIsChangeMode] = useState(false);
@@ -55,7 +33,12 @@ function ChangeUsernameForm(props) {
 
   // Called when the save button is clicked
   const handleChangeUsername = () => {
-    if (newUsername === authUser.username) {
+    if (newUsernameError) return;
+
+    if (!newUsername) {
+      setNewUsernameError("Please provide a username");
+      return;
+    } else if (newUsername === authUser.username) {
       setIsChangeMode(false);
       return;
     }
@@ -85,17 +68,24 @@ function ChangeUsernameForm(props) {
   }
 
   // Called when the mutation returns an error
-  function handleError(error) {
+  function handleError(error: ApolloError) {
     setNewUsernameError(error.message);
   }
 
   return (
-    <Paper className={classes.root} elevation={0}>
-      <Paper elevation={0}>
-        <Typography variant="body1">Username</Typography>
-        {isChangeMode ? (
+    <Box
+      sx={{
+        position: "relative",
+        marginRight: 2,
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Typography variant="body1">Username</Typography>
+
+      {isChangeMode ? (
+        <>
           <TextField
-            className={classes.form}
             size="small"
             id="username"
             label="Username"
@@ -105,15 +95,16 @@ function ChangeUsernameForm(props) {
             disabled={loading}
             error={Boolean(newUsernameError)}
             helperText={newUsernameError}
+            sx={{ width: 300, marginTop: 1 }}
           />
-        ) : (
-          <Typography variant="body2">{`u/${authUser.username}`}</Typography>
-        )}
-      </Paper>
 
-      <Paper className={classes.buttonPaper} elevation={0}>
-        {isChangeMode ? (
-          <Paper className={classes.buttons} elevation={0}>
+          <StyledButtonBox
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              gap: 1,
+            }}
+          >
             <Button
               variant="outlined"
               color="secondary"
@@ -122,26 +113,32 @@ function ChangeUsernameForm(props) {
             >
               Cancel
             </Button>
+
             <Button
-              variant="outlined"
-              color="primary"
+              variant="contained"
               onClick={handleChangeUsername}
-              disabled={!newUsername || Boolean(newUsernameError) || loading}
+              disabled={loading}
             >
               Save
             </Button>
-          </Paper>
-        ) : (
-          <Button
-            variant="outlined"
-            color="primary"
-            onClick={handleChangeButtonClick}
-          >
-            Change
-          </Button>
-        )}
-      </Paper>
-    </Paper>
+          </StyledButtonBox>
+        </>
+      ) : (
+        <>
+          <Typography variant="body2">{`u/${authUser.username}`}</Typography>
+
+          <StyledButtonBox>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleChangeButtonClick}
+            >
+              Change
+            </Button>
+          </StyledButtonBox>
+        </>
+      )}
+    </Box>
   );
 }
 

@@ -7,6 +7,7 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import StyledButtonBox from "./StyledButtonBox";
 
 function ChangeEmailForm() {
   const authUser = useAuthUser();
@@ -47,6 +48,8 @@ function ChangeEmailForm() {
 
   // Called when the save button is clicked
   const handleChangeEmail = () => {
+    if (passwordError || newEmailError || confirmNewEmailError) return;
+
     if (!password) {
       setPasswordError("Please confirm your password");
       return;
@@ -57,8 +60,6 @@ function ChangeEmailForm() {
       setConfirmNewEmailError("Please confirm your new email address");
       return;
     }
-
-    if (passwordError || newEmailError || confirmNewEmailError) return;
 
     changeEmail({
       variables: {
@@ -119,7 +120,7 @@ function ChangeEmailForm() {
         <>
           <Box
             sx={{
-              width: "max-content",
+              width: 300,
               marginTop: 1,
               display: "flex",
               flexDirection: "column",
@@ -161,11 +162,8 @@ function ChangeEmailForm() {
             />
           </Box>
 
-          <Box
+          <StyledButtonBox
             sx={{
-              position: "absolute",
-              top: 0,
-              right: 0,
               display: "flex",
               flexDirection: "row",
               gap: 1,
@@ -187,20 +185,21 @@ function ChangeEmailForm() {
             >
               Save
             </Button>
-          </Box>
+          </StyledButtonBox>
         </>
       ) : (
         <>
           <Typography variant="body2">{authUser.email}</Typography>
 
-          <Button
-            variant="outlined"
-            color="primary"
-            sx={{ position: "absolute", top: 0, right: 0 }}
-            onClick={handleChangeButtonClick}
-          >
-            Change
-          </Button>
+          <StyledButtonBox>
+            <Button
+              variant="outlined"
+              color="primary"
+              onClick={handleChangeButtonClick}
+            >
+              Change
+            </Button>
+          </StyledButtonBox>
         </>
       )}
     </Box>
