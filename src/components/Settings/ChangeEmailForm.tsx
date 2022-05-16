@@ -51,7 +51,7 @@ function ChangeEmailForm() {
     if (passwordError || newEmailError || confirmNewEmailError) return;
 
     if (!password) {
-      setPasswordError("Please confirm your password");
+      setPasswordError("Please verify your password");
       return;
     } else if (!newEmail || !isEmail(newEmail)) {
       setNewEmailError("Please provide a valid email address");

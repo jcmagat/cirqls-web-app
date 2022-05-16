@@ -52,7 +52,7 @@ function ChangePasswordForm() {
       return;
 
     if (!currentPassword) {
-      setCurrentPasswordError("Please confirm your current password");
+      setCurrentPasswordError("Please verify your current password");
       return;
     } else if (!newPassword) {
       setNewPasswordError("Please provide a new password");

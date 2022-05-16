@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import makeStyles from "@mui/styles/makeStyles";
+import { useState, useEffect } from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useMutation } from "@apollo/client";
+import { useMutation, ApolloError } from "@apollo/client";
 import { CONFIRM_DELETE_ACCOUNT } from "../../graphql/mutations";
-import Paper from "@mui/material/Paper";
+import { SxProps, Theme } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
@@ -16,21 +15,12 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 
-const useStyles = makeStyles({
-  root: {
-    display: "flex",
-    justifyContent: "center",
-  },
-  title: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-  },
-});
+interface Props {
+  sx?: SxProps<Theme>;
+}
 
-function DeleteAccountForm(props) {
-  const classes = useStyles();
+function DeleteAccountForm(props: Props) {
+  const { sx } = props;
 
   const authUser = useAuthUser();
 
@@ -54,10 +44,15 @@ function DeleteAccountForm(props) {
   );
 
   // Called when the delete account button in the dialog is clicked
-  const handleConfirmDeleteAccout = (event) => {
+  const handleConfirmDeleteAccout = (event: any) => {
     event.preventDefault();
 
-    if (!password) return;
+    if (passwordError) return;
+
+    if (!password) {
+      setPasswordError("Please verify your password");
+      return;
+    }
 
     confirmDeleteAccount({
       variables: {
@@ -88,34 +83,43 @@ function DeleteAccountForm(props) {
   }
 
   // Called when the mutation returns an error
-  function handleError(error) {
+  function handleError(error: ApolloError) {
     setPasswordError(error.message);
   }
 
   return (
-    <Paper className={classes.root} elevation={0}>
+    <>
       <Button
         variant="outlined"
         color="secondary"
         onClick={handleDeleteButtonClick}
+        sx={{ ...sx }}
       >
         Delete Account
       </Button>
 
       <Dialog open={open}>
-        <DialogTitle>
-          <Paper className={classes.title} elevation={0}>
-            <Typography variant="h6">Delete Account</Typography>
-            <IconButton onClick={handleClose} size="large">
-              <CloseIcon />
-            </IconButton>
-          </Paper>
+        <DialogTitle
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+            paddingRight: 1,
+          }}
+        >
+          <Typography variant="h6">Delete Account</Typography>
+
+          <IconButton onClick={handleClose}>
+            <CloseIcon />
+          </IconButton>
         </DialogTitle>
 
         <DialogContent>
           <DialogContentText>
             To delete your Cirqls account, you must verify your password
           </DialogContentText>
+
           {isCompleted && (
             <Alert severity="success">
               {`A confirmation email has been sent to ${authUser?.email}`}
@@ -128,7 +132,6 @@ function DeleteAccountForm(props) {
               type="password"
               id="password"
               label="Password"
-              required
               fullWidth
               autoFocus
               onChange={(event) => setPassword(event.target.value)}
@@ -139,20 +142,22 @@ function DeleteAccountForm(props) {
           </form>
         </DialogContent>
 
-        <DialogActions>
+        <DialogActions sx={{ paddingBottom: 3, paddingRight: 3 }}>
+          <Button variant="outlined" onClick={handleClose}>
+            Cancel
+          </Button>
+
           <Button
             variant="contained"
             color="secondary"
             onClick={handleConfirmDeleteAccout}
-            disabled={
-              !password || Boolean(passwordError) || loading || isCompleted
-            }
+            disabled={loading || isCompleted}
           >
             Delete Account
           </Button>
         </DialogActions>
       </Dialog>
-    </Paper>
+    </>
   );
 }
 

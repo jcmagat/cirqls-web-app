@@ -18,7 +18,7 @@ function SettingsPage() {
     <Container>
       <NavBar elevation={3} bottomOnly={false} />
 
-      <Box sx={{ marginTop: 12 }}>
+      <Box sx={{ marginTop: 12, marginBottom: 12 }}>
         {authUser && (
           <>
             <Typography variant="h6" sx={{ marginBottom: 1 }}>
@@ -40,7 +40,7 @@ function SettingsPage() {
 
               <ChangePasswordForm />
 
-              <DeleteAccountForm />
+              <DeleteAccountForm sx={{ marginTop: 4, marginInline: "auto" }} />
             </Box>
           </>
         )}
