@@ -7,6 +7,7 @@ import { GET_POST, GET_POST_COMMENTS, GET_COMMENT } from "../graphql/queries";
 import { ADD_COMMENT } from "../graphql/mutations";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
 import NavBar from "../components/Navigation/NavBar";
 import PostCard from "../components/Post/PostCard";
 import CommentForm from "../components/Comment/CommentForm";
@@ -114,6 +115,10 @@ function PostPage(props) {
             showCancelButton={false}
             onSubmit={handleAddComment}
           />
+
+          {comment && (
+            <Button href={`/post/${post.post_id}`}>View All Comments</Button>
+          )}
 
           <CommentTree
             comments={comments}

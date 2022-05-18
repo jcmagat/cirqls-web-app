@@ -72,7 +72,7 @@ function CommentTree({ comments, comment_ids, ref_comment_id }) {
   }, [comment_ids]);
 
   const commentRef = useCallback((node) => {
-    if (node) node.scrollIntoView({ behavior: "smooth", block: "center" });
+    if (node) node.scrollIntoView({ behavior: "smooth" });
   }, []);
 
   const renderCommentTree = (comment, height) => {
