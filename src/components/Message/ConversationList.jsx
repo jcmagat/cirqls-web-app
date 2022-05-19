@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { useConversations } from "../../context/MessagesContext";
 import { useUnreadMessages } from "../../context/NotificationsContext";
 import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
 import Divider from "@mui/material/Divider";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
@@ -69,6 +70,12 @@ function ConversationList({ sx }) {
     <Box
       sx={{ width: "100%", display: "flex", flexDirection: "column", ...sx }}
     >
+      {Array.isArray(conversations) && conversations.length <= 0 && (
+        <Typography sx={{ alignSelf: "center", marginTop: 8 }}>
+          Your messages will be displayed here
+        </Typography>
+      )}
+
       {conversations.map((conversation) => (
         <ConversationCard
           key={conversation.user.user_id}

@@ -54,7 +54,7 @@ function MessagesPage(props) {
 
             <Divider orientation="vertical" />
 
-            <MessageArea sx={{ flexGrow: 1 }} />
+            <MessageArea user={user} sx={{ flexGrow: 1 }} />
           </>
         )}
       </Box>

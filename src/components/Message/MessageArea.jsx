@@ -61,13 +61,15 @@ function MessageCard({ message, align }) {
   );
 }
 
-function MessageForm(props) {
+function MessageForm({ user }) {
   const sendMessage = useMessageSender();
 
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (event) => {
     event.preventDefault();
+
+    if (!user) return;
 
     sendMessage(message);
     setMessage("");
@@ -88,10 +90,11 @@ function MessageForm(props) {
           label="Message"
           value={message}
           onChange={(event) => setMessage(event.target.value)}
+          disabled={!user}
           sx={{ flexGrow: 1 }}
         />
 
-        <IconButton type="submit" color="primary">
+        <IconButton type="submit" color="primary" disabled={!user}>
           <SendIcon />
         </IconButton>
       </Box>
@@ -166,6 +169,12 @@ function MessageArea({ showNav, user, sx }) {
         <Box sx={{ height: "100%", display: "flex", flexDirection: "column" }}>
           {showNav && <MessageNav user={user} />}
 
+          {!user && (
+            <Typography sx={{ alignSelf: "center", marginTop: 8 }}>
+              Your messages will be displayed here
+            </Typography>
+          )}
+
           <Box
             sx={{
               flexGrow: 1,
@@ -212,7 +221,7 @@ function MessageArea({ showNav, user, sx }) {
               ))}
           </Box>
 
-          <MessageForm />
+          <MessageForm user={user} />
         </Box>
       )}
     </Box>
