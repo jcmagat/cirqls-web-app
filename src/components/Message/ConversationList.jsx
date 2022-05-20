@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import { useConversations } from "../../context/MessagesContext";
 import { useUnreadMessages } from "../../context/NotificationsContext";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -63,9 +62,7 @@ function ConversationCard({ conversation }) {
   );
 }
 
-function ConversationList({ sx }) {
-  const conversations = useConversations();
-
+function ConversationList({ conversations, sx }) {
   return (
     <Box
       sx={{ width: "100%", display: "flex", flexDirection: "column", ...sx }}

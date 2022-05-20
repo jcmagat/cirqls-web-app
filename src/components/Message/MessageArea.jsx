@@ -1,7 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useMessages } from "../../context/MessagesContext";
-import { useMessageSender } from "../../context/MessagesContext";
 import { useMutation } from "@apollo/client";
 import { READ_MESSAGES } from "../../graphql/mutations";
 import { GET_NOTIFICATIONS } from "../../graphql/queries";
@@ -61,17 +59,15 @@ function MessageCard({ message, align }) {
   );
 }
 
-function MessageForm({ user }) {
-  const sendMessage = useMessageSender();
-
+function MessageForm({ user, onSendMessage }) {
   const [message, setMessage] = useState("");
 
   const handleSendMessage = (event) => {
     event.preventDefault();
 
-    if (!user) return;
+    if (!user || !message) return;
 
-    sendMessage(message);
+    onSendMessage(message);
     setMessage("");
   };
 
@@ -102,9 +98,8 @@ function MessageForm({ user }) {
   );
 }
 
-function MessageArea({ showNav, user, sx }) {
+function MessageArea({ user, messages, onSendMessage, showNav, sx }) {
   const authUser = useAuthUser();
-  const messages = useMessages();
 
   /* ========== Mark Unread Messages Read ========== */
 
@@ -221,7 +216,7 @@ function MessageArea({ showNav, user, sx }) {
               ))}
           </Box>
 
-          <MessageForm user={user} />
+          <MessageForm user={user} onSendMessage={onSendMessage} />
         </Box>
       )}
     </Box>
