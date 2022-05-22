@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, CHANGE_PROFILE_PIC } from "../../graphql/mutations";
 import Box from "@mui/material/Box";
@@ -16,8 +15,8 @@ import Button from "@mui/material/Button";
 import UploadDialog from "../Common/UploadDialog";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 
-function ProfileHeaderForAuthUser({ handleChangeTab }) {
-  const profileUser = useProfileUser();
+function ProfileHeaderForAuthUser({ user, handleChangeTab }) {
+  const profileUser = user;
 
   const [dialogOpen, setDialogOpen] = useState(false);
 
@@ -107,9 +106,9 @@ function ProfileHeaderForAuthUser({ handleChangeTab }) {
   );
 }
 
-function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
+function ProfileHeaderForNonAuthUser({ user, handleChangeTab }) {
   const authUser = useAuthUser();
-  const profileUser = useProfileUser();
+  const profileUser = user;
 
   const [isFollowed, setIsFollowed] = useState(false);
 
@@ -192,9 +191,9 @@ function ProfileHeaderForNonAuthUser({ handleChangeTab }) {
   );
 }
 
-function ProfileHeader({ handleChangeTab }) {
+function ProfileHeader({ user, handleChangeTab }) {
   const authUser = useAuthUser();
-  const profileUser = useProfileUser();
+  const profileUser = user;
 
   const isAuthUsersProfile =
     authUser && authUser.username === profileUser.username;
@@ -210,9 +209,15 @@ function ProfileHeader({ handleChangeTab }) {
       }}
     >
       {isAuthUsersProfile ? (
-        <ProfileHeaderForAuthUser handleChangeTab={handleChangeTab} />
+        <ProfileHeaderForAuthUser
+          user={user}
+          handleChangeTab={handleChangeTab}
+        />
       ) : (
-        <ProfileHeaderForNonAuthUser handleChangeTab={handleChangeTab} />
+        <ProfileHeaderForNonAuthUser
+          user={user}
+          handleChangeTab={handleChangeTab}
+        />
       )}
     </Box>
   );

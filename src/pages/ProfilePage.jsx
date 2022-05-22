@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useProfileUser } from "../context/ProfileUserContext";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_USER } from "../graphql/queries";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import NavBar from "../components/Navigation/NavBar";
@@ -14,8 +16,28 @@ export const PROFILE_TABS = {
   SAVED: "saved",
 };
 
-function ProfilePage(props) {
-  const user = useProfileUser();
+function ProfilePage() {
+  const username = useParams().username;
+
+  const [user, setUser] = useState();
+
+  const { data } = useQuery(GET_USER, {
+    variables: {
+      username: username,
+    },
+    errorPolicy: "all",
+    onError: handleError,
+  });
+
+  useEffect(() => {
+    if (data) {
+      setUser(data.user);
+    }
+  }, [data]);
+
+  function handleError(error) {
+    console.error(error.message);
+  }
 
   const [tab, setTab] = useState(PROFILE_TABS.POSTS);
 
@@ -36,9 +58,13 @@ function ProfilePage(props) {
             marginInline: "auto",
           }}
         >
-          <ProfileHeader handleChangeTab={handleChangeTab} />
+          <ProfileHeader user={user} handleChangeTab={handleChangeTab} />
 
-          <ProfileTabBar tab={tab} handleChangeTab={handleChangeTab} />
+          <ProfileTabBar
+            user={user}
+            tab={tab}
+            handleChangeTab={handleChangeTab}
+          />
         </Box>
       )}
     </Container>

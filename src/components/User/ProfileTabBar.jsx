@@ -1,6 +1,4 @@
-import React from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useProfileUser } from "../../context/ProfileUserContext";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -10,9 +8,9 @@ import CommentList from "../Comment/CommentList";
 import FollowList from "./FollowList";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 
-function ProfileTabBar({ tab, handleChangeTab }) {
+function ProfileTabBar({ user, tab, handleChangeTab }) {
   const authUser = useAuthUser();
-  const profileUser = useProfileUser();
+  const profileUser = user;
 
   const isAuthUsersProfile =
     authUser && authUser.username === profileUser.username;
