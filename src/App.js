@@ -1,7 +1,5 @@
-import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { ProfileUserProvider } from "./context/ProfileUserContext";
 import { CommunityProvider } from "./context/CommunityContext";
 import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
@@ -62,9 +60,7 @@ function App() {
           </Route>
 
           <Route path="/u/:username">
-            <ProfileUserProvider>
-              <ProfilePage />
-            </ProfileUserProvider>
+            <ProfilePage />
           </Route>
 
           <Route path="/create-community">

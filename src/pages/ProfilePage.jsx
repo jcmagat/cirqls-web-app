@@ -58,10 +58,10 @@ function ProfilePage() {
             marginInline: "auto",
           }}
         >
-          <ProfileHeader user={user} handleChangeTab={handleChangeTab} />
+          <ProfileHeader profileUser={user} handleChangeTab={handleChangeTab} />
 
           <ProfileTabBar
-            user={user}
+            profileUser={user}
             tab={tab}
             handleChangeTab={handleChangeTab}
           />

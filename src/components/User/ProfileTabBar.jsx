@@ -8,9 +8,8 @@ import CommentList from "../Comment/CommentList";
 import FollowList from "./FollowList";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 
-function ProfileTabBar({ user, tab, handleChangeTab }) {
+function ProfileTabBar({ profileUser, tab, handleChangeTab }) {
   const authUser = useAuthUser();
-  const profileUser = user;
 
   const isAuthUsersProfile =
     authUser && authUser.username === profileUser.username;
@@ -49,11 +48,19 @@ function ProfileTabBar({ user, tab, handleChangeTab }) {
       </TabPanel>
 
       <TabPanel value={PROFILE_TABS.FOLLOWING} tab={tab}>
-        <FollowList users={profileUser.following} type="following" />
+        <FollowList
+          profileUser={profileUser}
+          users={profileUser.following}
+          type="following"
+        />
       </TabPanel>
 
       <TabPanel value={PROFILE_TABS.FOLLOWERS} tab={tab}>
-        <FollowList users={profileUser.followers} type="follower" />
+        <FollowList
+          profileUser={profileUser}
+          users={profileUser.followers}
+          type="follower"
+        />
       </TabPanel>
 
       <TabPanel value={PROFILE_TABS.SAVED} tab={tab}>

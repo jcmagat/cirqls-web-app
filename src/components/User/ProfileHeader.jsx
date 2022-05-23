@@ -15,9 +15,7 @@ import Button from "@mui/material/Button";
 import UploadDialog from "../Common/UploadDialog";
 import { PROFILE_TABS } from "../../pages/ProfilePage";
 
-function ProfileHeaderForAuthUser({ user, handleChangeTab }) {
-  const profileUser = user;
-
+function ProfileHeaderForAuthUser({ profileUser, handleChangeTab }) {
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const [changeProfilePic, { loading }] = useMutation(CHANGE_PROFILE_PIC, {
@@ -106,9 +104,8 @@ function ProfileHeaderForAuthUser({ user, handleChangeTab }) {
   );
 }
 
-function ProfileHeaderForNonAuthUser({ user, handleChangeTab }) {
+function ProfileHeaderForNonAuthUser({ profileUser, handleChangeTab }) {
   const authUser = useAuthUser();
-  const profileUser = user;
 
   const [isFollowed, setIsFollowed] = useState(false);
 
@@ -191,12 +188,11 @@ function ProfileHeaderForNonAuthUser({ user, handleChangeTab }) {
   );
 }
 
-function ProfileHeader({ user, handleChangeTab }) {
+function ProfileHeader({ profileUser, handleChangeTab }) {
   const authUser = useAuthUser();
-  const profileUser = user;
 
   const isAuthUsersProfile =
-    authUser && authUser.username === profileUser.username;
+    authUser && authUser.username === profileUser?.username;
 
   return (
     <Box
@@ -210,12 +206,12 @@ function ProfileHeader({ user, handleChangeTab }) {
     >
       {isAuthUsersProfile ? (
         <ProfileHeaderForAuthUser
-          user={user}
+          profileUser={profileUser}
           handleChangeTab={handleChangeTab}
         />
       ) : (
         <ProfileHeaderForNonAuthUser
-          user={user}
+          profileUser={profileUser}
           handleChangeTab={handleChangeTab}
         />
       )}

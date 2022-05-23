@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
 import { useHistory } from "react-router-dom";
 import { useAuthUser, useAuthUserUpdate } from "../../context/AuthUserContext";
-import { useProfileUser } from "../../context/ProfileUserContext";
 import { useMutation } from "@apollo/client";
 import { FOLLOW, UNFOLLOW, REMOVE_FOLLOWER } from "../../graphql/mutations";
 import Box from "@mui/material/Box";
@@ -21,24 +20,21 @@ const StyledCardHeader = styled(CardHeader)(({ theme }) => ({
 }));
 
 // Button for when the card is in the auth user's profile
-function ButtonForAuthUser(props) {
+function ButtonForAuthUser({ profileUser, user, type }) {
   const authUser = useAuthUser();
-  const profileUser = useProfileUser();
 
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
     if (
       authUser &&
-      authUser.following.some(
-        (followed) => followed.username === props.user.username
-      )
+      authUser.following.some((followed) => followed.username === user.username)
     ) {
       setFollowed(true);
     } else {
       setFollowed(false);
     }
-  }, [authUser, props.user]);
+  }, [authUser, user]);
 
   const [unfollow] = useMutation(UNFOLLOW);
   const [removeFollower] = useMutation(REMOVE_FOLLOWER);
@@ -52,7 +48,7 @@ function ButtonForAuthUser(props) {
 
     unfollow({
       variables: {
-        username: props.user.username,
+        username: user.username,
       },
       update(cache, { data: { unfollow } }) {
         cache.modify({
@@ -75,7 +71,7 @@ function ButtonForAuthUser(props) {
 
     removeFollower({
       variables: {
-        username: props.user.username,
+        username: user.username,
       },
       update(cache, { data: { removeFollower } }) {
         cache.modify({
@@ -98,14 +94,14 @@ function ButtonForAuthUser(props) {
 
     follow({
       variables: {
-        username: props.user.username,
+        username: user.username,
       },
     });
   };
 
   return (
     <>
-      {props.type === "following" ? (
+      {type === "following" ? (
         <Button
           variant="outlined"
           color="secondary"
@@ -155,24 +151,22 @@ function ButtonForAuthUser(props) {
 }
 
 // Button for when the card is not in the auth user's profile
-function ButtonForNotAuthUser(props) {
+function ButtonForNonAuthUser({ user }) {
   const authUser = useAuthUser();
-  const isAuthUsersCard = authUser && authUser.username === props.user.username;
+  const isAuthUsersCard = authUser && authUser.username === user.username;
 
   const [followed, setFollowed] = useState(false);
 
   useEffect(() => {
     if (
       authUser &&
-      authUser.following.some(
-        (followed) => followed.username === props.user.username
-      )
+      authUser.following.some((followed) => followed.username === user.username)
     ) {
       setFollowed(true);
     } else {
       setFollowed(false);
     }
-  }, [authUser, props.user]);
+  }, [authUser, user]);
 
   const [follow] = useMutation(FOLLOW, {
     onCompleted: useAuthUserUpdate(),
@@ -187,7 +181,7 @@ function ButtonForNotAuthUser(props) {
 
     follow({
       variables: {
-        username: props.user.username,
+        username: user.username,
       },
     });
   };
@@ -197,7 +191,7 @@ function ButtonForNotAuthUser(props) {
 
     unfollow({
       variables: {
-        username: props.user.username,
+        username: user.username,
       },
     });
   };
@@ -235,16 +229,15 @@ function ButtonForNotAuthUser(props) {
   );
 }
 
-function FollowCard(props) {
+function FollowCard({ profileUser, user, type }) {
   const history = useHistory();
 
   const authUser = useAuthUser();
-  const profileUser = useProfileUser();
 
   const isAuthUsersProfile =
-    authUser && authUser.username === profileUser.username;
+    authUser && authUser.username === profileUser?.username;
 
-  const followSinceDate = new Date(props.user.followed_at).toLocaleDateString(
+  const followSinceDate = new Date(user.followed_at).toLocaleDateString(
     "en-us",
     {
       month: "long",
@@ -253,25 +246,27 @@ function FollowCard(props) {
   );
 
   const handleCardClick = () => {
-    history.push(`/u/${props.user.username}`);
+    history.push(`/u/${user.username}`);
   };
 
   return (
     <Card>
       <CardActionArea onClick={handleCardClick}>
         <StyledCardHeader
-          avatar={
-            <Avatar>{props.user.username.charAt(0).toUpperCase()}</Avatar>
-          }
-          title={`u/${props.user.username}`}
-          subheader={`${props.type} since ${followSinceDate}`}
+          avatar={<Avatar>{user.username.charAt(0).toUpperCase()}</Avatar>}
+          title={`u/${user.username}`}
+          subheader={`${type} since ${followSinceDate}`}
           subheaderTypographyProps={{ noWrap: true }}
           action={
             <>
               {isAuthUsersProfile ? (
-                <ButtonForAuthUser user={props.user} type={props.type} />
+                <ButtonForAuthUser
+                  profileUser={profileUser}
+                  user={user}
+                  type={type}
+                />
               ) : (
-                <ButtonForNotAuthUser user={props.user} type={props.type} />
+                <ButtonForNonAuthUser user={user} type={type} />
               )}
             </>
           }
