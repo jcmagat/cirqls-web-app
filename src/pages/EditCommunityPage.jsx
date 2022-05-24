@@ -1,66 +1,31 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 import { useHistory } from "react-router-dom";
-import { useCommunity } from "../context/CommunityContext";
+import { useQuery } from "@apollo/client";
+import { GET_COMMUNITY } from "../graphql/queries";
 import { useMutation } from "@apollo/client";
 import { EDIT_COMMUNITY } from "../graphql/mutations";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
 import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import AddIcon from "@mui/icons-material/Add";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
 import MenuItem from "@mui/material/MenuItem";
 import Typography from "@mui/material/Typography";
+import Link from "@mui/material/Link";
 import NavBar from "../components/Navigation/NavBar";
 import UploadDialog from "../components/Common/UploadDialog";
 import { COMMUNITY_TYPES } from "../utils/constants";
-import { Link } from "react-router-dom";
-
-const useStyles = makeStyles({
-  paper: {
-    marginTop: 80,
-    display: "flex",
-    flexDirection: "column",
-    gap: 16,
-  },
-  logoAndName: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 16,
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-  },
-  moderator: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    width: "max-content",
-  },
-  buttons: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 8,
-  },
-  delete: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: 32,
-  },
-});
 
 function EditCommunityPage(props) {
-  const classes = useStyles();
+  const name = useParams().name;
   const history = useHistory();
 
-  const community = useCommunity();
+  const [community, setCommunity] = useState();
 
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
   const [title, setTitle] = useState("");
@@ -68,13 +33,18 @@ function EditCommunityPage(props) {
   const [type, setType] = useState("");
   const [logo, setLogo] = useState(null);
 
-  useEffect(() => {
-    if (!community) return;
+  const { data } = useQuery(GET_COMMUNITY, {
+    variables: { name: name },
+  });
 
-    setTitle(community.title);
-    setDescription(community.description);
-    setType(community.type);
-  }, [community]);
+  useEffect(() => {
+    if (!data) return;
+
+    setCommunity(data.community);
+    setTitle(data.community.title);
+    setDescription(data.community.description);
+    setType(data.community.type);
+  }, [data]);
 
   const [editCommunity, { loading }] = useMutation(EDIT_COMMUNITY, {
     onCompleted: finishEditCommunity,
@@ -82,6 +52,8 @@ function EditCommunityPage(props) {
 
   // Called when the save button is clicked
   const handleEditCommunity = () => {
+    // TODO: input validation
+
     editCommunity({
       variables: {
         community_id: community.community_id,
@@ -120,8 +92,16 @@ function EditCommunityPage(props) {
       <NavBar />
 
       {community && (
-        <Paper className={classes.paper} elevation={0}>
-          <Paper className={classes.logoAndName} elevation={0}>
+        <Box
+          sx={{
+            marginTop: 12,
+            marginBottom: 12,
+            display: "flex",
+            flexDirection: "column",
+            gap: 2,
+          }}
+        >
+          <Box sx={{ alignSelf: "center", textAlign: "center" }}>
             <Badge
               overlap="circular"
               anchorOrigin={{
@@ -130,22 +110,38 @@ function EditCommunityPage(props) {
               }}
               badgeContent={
                 <IconButton
+                  size="small"
+                  sx={{
+                    borderRadius: "50%",
+                    color: (theme) => theme.palette.primary.contrastText,
+                    background: (theme) => theme.palette.primary.main,
+                    boxShadow: (theme) => theme.shadows[2],
+                    "&:hover": {
+                      background: (theme) => theme.palette.primary.dark,
+                      boxShadow: (theme) => theme.shadows[4],
+                    },
+                  }}
                   onClick={handleEditLogo}
-                  disabled={loading}
-                  size="large"
                 >
-                  <EditOutlinedIcon />
+                  {community.logo_src ? (
+                    <EditOutlinedIcon fontSize="small" />
+                  ) : (
+                    <AddIcon fontSize="small" />
+                  )}
                 </IconButton>
               }
             >
               <Avatar
-                className={classes.avatar}
                 src={logo ? URL.createObjectURL(logo) : community.logo_src}
+                sx={{ width: 100, height: 100 }}
               />
             </Badge>
 
-            <Typography variant="h5">{`c/${community.name}`}</Typography>
-          </Paper>
+            <Typography
+              variant="h5"
+              sx={{ marginTop: 2, marginBottom: 3 }}
+            >{`c/${community.name}`}</Typography>
+          </Box>
 
           <UploadDialog
             open={uploadDialogOpen}
@@ -167,7 +163,6 @@ function EditCommunityPage(props) {
           </TextField>
 
           <TextField
-            className={classes.form}
             size="small"
             id="title"
             label="Title"
@@ -177,7 +172,6 @@ function EditCommunityPage(props) {
           />
 
           <TextField
-            className={classes.form}
             size="small"
             id="description"
             label="Description"
@@ -191,33 +185,43 @@ function EditCommunityPage(props) {
           <Typography>Moderators:</Typography>
 
           {community.moderators.map((moderator) => (
-            <Paper
-              className={classes.moderator}
-              elevation={0}
+            <Box
               key={moderator.user_id}
               component={Link}
-              to={`/u/${moderator.username}`}
+              href={`/u/${moderator.username}`}
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 1,
+                width: "max-content",
+              }}
             >
               <Avatar src={moderator.profile_pic_src} />
               <Typography>{`u/${moderator.username}`}</Typography>
-            </Paper>
+            </Box>
           ))}
 
           <Button
             variant="contained"
-            color="primary"
-            style={{ width: "max-content" }}
+            sx={{ alignSelf: "flex-start" }}
             disabled={loading}
           >
             + Invite
           </Button>
 
-          <Paper className={classes.buttons} elevation={0}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              justifyContent: "center",
+              gap: 1,
+            }}
+          >
             <Button
               variant="outlined"
               color="secondary"
-              component={Link}
-              to={`/c/${community.name}`}
+              href={`/c/${community.name}`}
               disabled={loading}
             >
               Cancel
@@ -225,25 +229,22 @@ function EditCommunityPage(props) {
 
             <Button
               variant="contained"
-              color="primary"
               onClick={handleEditCommunity}
               disabled={loading}
             >
               Save
             </Button>
-          </Paper>
+          </Box>
 
-          <Paper className={classes.delete} elevation={0}>
-            <Button
-              variant="outlined"
-              color="secondary"
-              style={{ width: "max-content" }}
-              disabled={loading}
-            >
-              Delete Community
-            </Button>
-          </Paper>
-        </Paper>
+          <Button
+            variant="outlined"
+            color="secondary"
+            sx={{ alignSelf: "center", marginTop: 4 }}
+            disabled={loading}
+          >
+            Delete Community
+          </Button>
+        </Box>
       )}
     </Container>
   );

@@ -12,7 +12,7 @@ function ProfileTabBar({ profileUser, tab, handleChangeTab }) {
   const authUser = useAuthUser();
 
   const isAuthUsersProfile =
-    authUser && authUser.username === profileUser.username;
+    authUser && authUser.username === profileUser?.username;
 
   return (
     <>

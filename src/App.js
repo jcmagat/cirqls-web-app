@@ -68,9 +68,7 @@ function App() {
           </Route>
 
           <Route path="/c/:name/edit">
-            <CommunityProvider>
-              <EditCommunityPage />
-            </CommunityProvider>
+            <EditCommunityPage />
           </Route>
 
           <Route path="/c/:name">
