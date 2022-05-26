@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { useAuthUser } from "../../context/AuthUserContext";
-import { useCommunity } from "../../context/CommunityContext";
 import { useMutation } from "@apollo/client";
 import { JOIN, LEAVE } from "../../graphql/mutations";
 import Box from "@mui/material/Box";
@@ -15,9 +14,8 @@ import Button from "@mui/material/Button";
 import StyledMenuItem from "../Common/StyledMenuItem";
 import Link from "@mui/material/Link";
 
-function CommunityHeader(props) {
+function CommunityHeader({ community }) {
   const authUser = useAuthUser();
-  const community = useCommunity();
 
   const isModerator =
     authUser &&

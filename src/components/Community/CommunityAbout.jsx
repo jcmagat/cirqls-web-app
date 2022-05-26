@@ -1,13 +1,9 @@
-import React from "react";
-import { useCommunity } from "../../context/CommunityContext";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Avatar from "@mui/material/Avatar";
 import Link from "@mui/material/Link";
 
-function CommunityAbout(props) {
-  const community = useCommunity();
-
+function CommunityAbout({ community }) {
   const startedDate = new Date(community.created_at).toLocaleDateString(
     "en-us",
     {

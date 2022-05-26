@@ -1,5 +1,7 @@
-import React, { useState } from "react";
-import { useCommunity } from "../context/CommunityContext";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { GET_COMMUNITY } from "../graphql/queries";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Tabs from "@mui/material/Tabs";
@@ -15,10 +17,21 @@ const TABS = {
   ABOUT: "about",
 };
 
-function CommunityPage(props) {
-  const community = useCommunity();
+function CommunityPage() {
+  const name = useParams().name;
 
+  const [community, setCommunity] = useState();
   const [tab, setTab] = useState(TABS.POSTS);
+
+  const { data } = useQuery(GET_COMMUNITY, {
+    variables: { name: name },
+  });
+
+  useEffect(() => {
+    if (data) {
+      setCommunity(data.community);
+    }
+  }, [data]);
 
   return (
     <Container>
@@ -33,7 +46,7 @@ function CommunityPage(props) {
             marginInline: "auto",
           }}
         >
-          <CommunityHeader />
+          <CommunityHeader community={community} />
 
           <Tabs
             centered
@@ -50,7 +63,7 @@ function CommunityPage(props) {
           </TabPanel>
 
           <TabPanel value={TABS.ABOUT} tab={tab}>
-            <CommunityAbout />
+            <CommunityAbout community={community} />
           </TabPanel>
         </Box>
       )}

@@ -1,6 +1,5 @@
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
-import { CommunityProvider } from "./context/CommunityContext";
 import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import LoginPage from "./pages/LoginPage";
@@ -72,9 +71,7 @@ function App() {
           </Route>
 
           <Route path="/c/:name">
-            <CommunityProvider>
-              <CommunityPage />
-            </CommunityProvider>
+            <CommunityPage />
           </Route>
 
           <Route path="/submit">
