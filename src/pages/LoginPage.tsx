@@ -19,7 +19,7 @@ function LoginPage() {
   const [error, setError] = useState("");
 
   const [login, { loading }] = useMutation(LOGIN, {
-    onCompleted: finishLogin,
+    onCompleted: () => history.push("/"),
     onError: handleError,
   });
 
@@ -33,11 +33,6 @@ function LoginPage() {
       },
     });
   };
-
-  function finishLogin(data: any) {
-    localStorage.setItem("token", data.login.accessToken);
-    history.push("/");
-  }
 
   function handleError(error: ApolloError) {
     setError(error.message);

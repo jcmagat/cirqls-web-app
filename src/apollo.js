@@ -8,8 +8,6 @@ import { getMainDefinition } from "@apollo/client/utilities";
 const subscriptionUri = "ws://localhost:5000/subscriptions";
 // const subscriptionUri = "wss://cirqls-backend.herokuapp.com/subscriptions";
 
-const token = localStorage.getItem("token");
-
 // Apollo Terminating Link, similar to HttpLink
 const uploadLink = createUploadLink({
   uri: "/graphql",
@@ -20,7 +18,6 @@ const authLink = setContext((_, { headers }) => {
   return {
     headers: {
       ...headers,
-      authorization: token ? `Bearer ${token}` : "",
     },
   };
 });
@@ -46,11 +43,7 @@ const wsLink = new WebSocketLink({
   uri: subscriptionUri,
   options: {
     reconnect: true,
-    connectionParams: {
-      headers: {
-        authorization: token ? `Bearer ${token}` : "",
-      },
-    },
+    connectionParams: {},
   },
 });
 

@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import { useAuthUser } from "../../context/AuthUserContext";
 import { useUnreadMessages } from "../../context/NotificationsContext";
+import { useMutation } from "@apollo/client";
+import { LOGOUT } from "../../graphql/mutations";
 import AppBar from "@mui/material/AppBar";
 import Toolbar from "@mui/material/Toolbar";
 import Box from "@mui/material/Box";
@@ -37,9 +39,14 @@ function AuthNavButtons({ screenSize }) {
 
   const [anchorEl, setAnchorEl] = useState(null);
 
+  const [logout] = useMutation(LOGOUT, {
+    onCompleted: () => history.push("/"),
+  });
+
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    history.push("/");
+    if (!authUser) return;
+
+    logout();
   };
 
   return (

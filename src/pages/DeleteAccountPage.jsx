@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useMutation } from "@apollo/client";
@@ -20,8 +20,8 @@ function DeleteAccountPage(props) {
     variables: {
       token: token,
     },
-    onCompleted: finishDeleteAccount,
-    onError: handleError,
+    onCompleted: () => setIsCompleted(true),
+    onError: () => setIsCompleted(true),
   });
 
   useEffect(() => {
@@ -29,15 +29,6 @@ function DeleteAccountPage(props) {
 
     deleteAccount();
   }, [isCompleted, deleteAccount]);
-
-  function finishDeleteAccount(data) {
-    localStorage.removeItem("token");
-    setIsCompleted(true);
-  }
-
-  function handleError(error) {
-    setIsCompleted(true);
-  }
 
   return (
     <Container disableGutters maxWidth={false}>

@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useLazyQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_AUTH_USER } from "../graphql/queries";
 
 const AuthUserContext = createContext();
@@ -16,19 +16,15 @@ export const useAuthUserUpdate = () => {
 export function AuthUserProvider(props) {
   const [user, setUser] = useState();
 
-  const [getAuthUser, { data, refetch }] = useLazyQuery(GET_AUTH_USER, {
+  const { data, refetch } = useQuery(GET_AUTH_USER, {
     onError: handleError,
   });
 
   useEffect(() => {
-    if (Boolean(localStorage.getItem("token"))) {
-      getAuthUser();
-    }
-
     if (data) {
       setUser(data.authUser);
     }
-  }, [getAuthUser, data]);
+  }, [data]);
 
   function handleError(error) {
     console.error(error.message);

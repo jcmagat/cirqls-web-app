@@ -20,13 +20,17 @@ export const REGISTER = gql`
 `;
 
 export const LOGIN = gql`
-  mutation Mutation($username: String!, $password: String!) {
+  mutation Login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
-      username
-      accessToken
-      refreshToken
-      accessTokenExpiration
-      refreshTokenExpiration
+      success
+    }
+  }
+`;
+
+export const LOGOUT = gql`
+  mutation Logout {
+    logout {
+      success
     }
   }
 `;
