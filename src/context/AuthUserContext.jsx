@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { GET_AUTH_USER } from "../graphql/queries";
 
@@ -12,6 +12,8 @@ export const useAuthUser = () => {
 export const useAuthUserUpdate = () => {
   return useContext(AuthUserUpdateContext);
 };
+
+// TODO: refresh token
 
 export function AuthUserProvider(props) {
   const [user, setUser] = useState();

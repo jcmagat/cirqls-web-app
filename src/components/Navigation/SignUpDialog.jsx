@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import { SIGNUP } from "../../graphql/mutations";
 import isEmail from "validator/lib/isEmail";
@@ -14,7 +14,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import getGoogleOAuthURL from "../../utils/oauth";
+import GoogleOAuthButton from "../Common/GoogleOAuthButton";
 
 function SignUpDialog({ open, onClose }) {
   const [email, setEmail] = useState("");
@@ -107,9 +107,8 @@ function SignUpDialog({ open, onClose }) {
             helperText={emailError}
           />
         </form>
-        <Button variant="outlined" href={getGoogleOAuthURL()}>
-          Sign up with Google
-        </Button>
+
+        <GoogleOAuthButton label="Sign up with Google" />
       </DialogContent>
 
       <DialogActions>
