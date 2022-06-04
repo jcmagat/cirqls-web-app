@@ -1,12 +1,15 @@
+import { SxProps } from "@mui/material";
+import Box from "@mui/material/Box";
 import Link from "@mui/material/Link";
 import GoogleButton from "react-google-button";
 
 interface Props {
   label?: string;
+  sx?: SxProps;
 }
 
 function GoogleOAuthButton(props: Props) {
-  const { label } = props;
+  const { label, sx } = props;
 
   const getGoogleOAuthURL = () => {
     const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -29,12 +32,14 @@ function GoogleOAuthButton(props: Props) {
   };
 
   return (
-    <Link href={getGoogleOAuthURL()}>
-      <GoogleButton
-        type="light"
-        label={label ? label : " Continue with Google"}
-      />
-    </Link>
+    <Box sx={{ ...sx }}>
+      <Link href={getGoogleOAuthURL()}>
+        <GoogleButton
+          type="light"
+          label={label ? label : " Continue with Google"}
+        />
+      </Link>
+    </Box>
   );
 }
 

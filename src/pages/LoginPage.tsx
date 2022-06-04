@@ -10,6 +10,7 @@ import Avatar from "@mui/material/Avatar";
 import PersonOutlineOutlinedIcon from "@mui/icons-material/PersonOutlineOutlined";
 import Button from "@mui/material/Button";
 import Link from "@mui/material/Link";
+import GoogleOAuthButton from "../components/Common/GoogleOAuthButton";
 
 function LoginPage() {
   const history = useHistory();
@@ -63,6 +64,15 @@ function LoginPage() {
         <Typography variant="h5" sx={{ marginBottom: 3 }}>
           Log In
         </Typography>
+
+        <GoogleOAuthButton
+          label="Log in with Google"
+          sx={{
+            marginBottom: 2,
+            display: "flex",
+            justifyContent: "center",
+          }}
+        />
 
         <form noValidate onSubmit={handleLogin}>
           <TextField
