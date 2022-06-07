@@ -19,6 +19,14 @@ export const REGISTER = gql`
   }
 `;
 
+export const REGISTER_OAUTH = gql`
+  mutation RegisterOAuth($token: String!, $username: String!) {
+    registerOAuth(token: $token, username: $username) {
+      success
+    }
+  }
+`;
+
 export const LOGIN = gql`
   mutation Login($username: String!, $password: String!) {
     login(username: $username, password: $password) {
