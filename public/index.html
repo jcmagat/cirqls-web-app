@@ -25,9 +25,32 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>Cirqls</title>
+    <script
+      src="https://accounts.google.com/gsi/client"
+      onload="initClient()"
+      async
+      defer
+    ></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
+
+    <script>
+      var client;
+
+      function initClient() {
+        client = google.accounts.oauth2.initCodeClient({
+          client_id: "%REACT_APP_GOOGLE_OAUTH_CLIENT_ID%",
+          scope: [
+            "https://www.googleapis.com/auth/userinfo.email",
+            "https://www.googleapis.com/auth/userinfo.profile",
+          ].join(" "),
+          ux_mode: "redirect",
+          redirect_uri: "%REACT_APP_GOOGLE_OAUTH_REDIRECT_URL%",
+        });
+      }
+    </script>
+
     <div id="root"></div>
     <!--
       This HTML file is a template.
