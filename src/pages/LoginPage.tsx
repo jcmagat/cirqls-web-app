@@ -62,26 +62,19 @@ function LoginPage() {
         </Avatar>
 
         <Typography variant="h5" sx={{ marginBottom: 3 }}>
-          Log In
+          Log in
         </Typography>
 
-        <GoogleOAuthButton
-          label="Log in with Google"
-          sx={{
-            marginBottom: 2,
-            display: "flex",
-            justifyContent: "center",
-          }}
-        />
+        <GoogleOAuthButton label="Log in with Google" />
+
+        <Typography sx={{ marginTop: 2, marginBottom: 2 }}>OR</Typography>
 
         <form noValidate onSubmit={handleLogin}>
           <TextField
             id="username"
             label="Username"
             autoComplete="username"
-            margin="dense"
             fullWidth
-            autoFocus
             onChange={(event) => handleUsernameChange(event.target.value)}
             disabled={loading}
             error={Boolean(error)}
