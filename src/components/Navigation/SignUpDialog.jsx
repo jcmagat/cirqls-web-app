@@ -74,8 +74,7 @@ function SignUpDialog({ open, onClose }) {
           paddingRight: 1,
         }}
       >
-        <Typography variant="h6">Sign up</Typography>
-
+        Sign up
         <IconButton onClick={handleClose}>
           <CloseIcon />
         </IconButton>

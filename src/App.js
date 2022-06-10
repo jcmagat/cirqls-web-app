@@ -4,6 +4,7 @@ import HomePage from "./pages/HomePage";
 import ExplorePage from "./pages/ExplorePage";
 import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
+import LinkAccountPage from "./pages/LinkAccountPage";
 import ProfilePage from "./pages/ProfilePage";
 import CreateCommunityPage from "./pages/CreateCommunityPage";
 import EditCommunityPage from "./pages/EditCommunityPage";
@@ -56,6 +57,10 @@ function App() {
 
           <Route path="/signup/:token">
             <SignUpPage />
+          </Route>
+
+          <Route path="/link-account/google">
+            <LinkAccountPage />
           </Route>
 
           <Route path="/u/:username">
