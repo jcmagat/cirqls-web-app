@@ -4,7 +4,7 @@ import { SIGNUP } from "../../graphql/mutations";
 import isEmail from "validator/lib/isEmail";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
+// import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
@@ -12,7 +12,7 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import GoogleOAuthButton from "../Common/GoogleOAuthButton";
+// import GoogleOAuthButton from "../Common/GoogleOAuthButton";
 
 function SignUpDialog({ open, onClose }) {
   const [email, setEmail] = useState("");
@@ -81,9 +81,9 @@ function SignUpDialog({ open, onClose }) {
       </DialogTitle>
 
       <DialogContent sx={{ textAlign: "center" }}>
-        <GoogleOAuthButton label="Sign up with Google" />
+        {/* <GoogleOAuthButton label="Sign up with Google" />
 
-        <Typography sx={{ marginTop: 2, marginBottom: 2 }}>OR</Typography>
+        <Typography sx={{ marginTop: 2, marginBottom: 2 }}>OR</Typography> */}
 
         {isCompleted && (
           <Alert severity="success">
