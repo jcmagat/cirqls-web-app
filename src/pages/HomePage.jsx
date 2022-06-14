@@ -14,7 +14,7 @@ function HomePage(props) {
   const [posts, setPosts] = useState([]);
   const [sort, setSort] = useState(SORT_TYPES.HOT);
 
-  const { data } = useQuery(GET_HOME_PAGE_POSTS, {
+  const { data, loading } = useQuery(GET_HOME_PAGE_POSTS, {
     variables: {
       sort: sort,
     },
@@ -52,9 +52,13 @@ function HomePage(props) {
           <HomePageNav />
         ) : (
           <>
-            <SortSelect sort={sort} handleChangeSort={handleChangeSort} />
+            <SortSelect
+              sort={sort}
+              handleChangeSort={handleChangeSort}
+              disabled={loading}
+            />
 
-            <PostList posts={posts} />
+            <PostList posts={posts} loading={loading} />
           </>
         )}
       </Box>
