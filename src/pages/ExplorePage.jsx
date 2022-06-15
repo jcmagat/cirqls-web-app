@@ -12,7 +12,7 @@ function ExplorePage(props) {
   const [posts, setPosts] = useState([]);
   const [sort, setSort] = useState(SORT_TYPES.HOT);
 
-  const { data } = useQuery(GET_EXPLORE_PAGE_POSTS, {
+  const { data, loading } = useQuery(GET_EXPLORE_PAGE_POSTS, {
     variables: {
       sort: sort,
     },
@@ -40,9 +40,13 @@ function ExplorePage(props) {
           marginInline: "auto",
         }}
       >
-        <SortSelect sort={sort} handleChangeSort={handleChangeSort} />
+        <SortSelect
+          sort={sort}
+          handleChangeSort={handleChangeSort}
+          disabled={loading}
+        />
 
-        <PostList posts={posts} />
+        <PostList posts={posts} loading={loading} />
       </Box>
     </Container>
   );
