@@ -25,7 +25,6 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import Logo from "./Logo";
 import SearchBar from "./SearchBar";
 import StyledMenuItem from "../Common/StyledMenuItem";
-import SignUpDialog from "./SignUpDialog";
 import NotificationsButton from "./NotificationsButton";
 import BottomNavBar from "./BottomNavBar";
 import useMediaQuery from "@mui/material/useMediaQuery";
@@ -100,13 +99,12 @@ function AuthNavButtons({ screenSize }) {
 
 // Nav buttons for when the user is not logged in
 function NonAuthNavButtons({ screenSize }) {
+  const history = useHistory();
+
   const [anchorEl, setAnchorEl] = useState(null);
 
-  const [dialogOpen, setDialogOpen] = useState(false);
-
-  const handleOpenDialog = () => {
-    setDialogOpen(true);
-    setAnchorEl(false);
+  const handleSignUpClick = () => {
+    history.push("/signup");
   };
 
   return (
@@ -128,7 +126,7 @@ function NonAuthNavButtons({ screenSize }) {
               Log In
             </StyledMenuItem>
 
-            <StyledMenuItem onClick={handleOpenDialog}>
+            <StyledMenuItem onClick={handleSignUpClick}>
               <PersonAddAltIcon />
               Sign Up
             </StyledMenuItem>
@@ -148,15 +146,13 @@ function NonAuthNavButtons({ screenSize }) {
           <Button
             variant="contained"
             color="primary"
-            onClick={handleOpenDialog}
+            onClick={handleSignUpClick}
             sx={{ marginRight: 2 }}
           >
             Sign Up
           </Button>
         </>
       )}
-
-      <SignUpDialog open={dialogOpen} onClose={() => setDialogOpen(false)} />
     </>
   );
 }

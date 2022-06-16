@@ -55,7 +55,7 @@ function App() {
             <LoginPage />
           </Route>
 
-          <Route path="/signup/:token">
+          <Route path="/signup">
             <SignUpPage />
           </Route>
 

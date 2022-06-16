@@ -1,10 +1,8 @@
 import { useState, useEffect } from "react";
-import { useLocation, useHistory } from "react-router-dom";
-import queryString from "query-string";
-import { useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import { useMutation, ApolloError } from "@apollo/client";
-import { REGISTER, REGISTER_OAUTH } from "../graphql/mutations";
+import { SIGNUP } from "../graphql/mutations";
 import isStrongPassword from "validator/lib/isStrongPassword";
 import Container from "@mui/material/Container";
 import Paper from "@mui/material/Paper";
@@ -18,12 +16,7 @@ import Popper from "@mui/material/Popper";
 import Link from "@mui/material/Link";
 
 function SignUpPage() {
-  const { search } = useLocation();
-  const { oauth } = queryString.parse(search, { parseBooleans: true });
-
   const history = useHistory();
-
-  const { token } = useParams<{ token?: string }>();
 
   const isSmallScreen = useMediaQuery((theme: any) =>
     theme.breakpoints.down("md")
@@ -74,17 +67,12 @@ function SignUpPage() {
     }
   }, [anchorEl, password, passwordError]);
 
-  const [register, { loading: loading1 }] = useMutation(REGISTER, {
-    onCompleted: () => history.push("/login"),
-    onError: handleError,
-  });
-
-  const [registerOAuth, { loading: loading2 }] = useMutation(REGISTER_OAUTH, {
+  const [signup, { loading }] = useMutation(SIGNUP, {
     onCompleted: () => history.push("/"),
     onError: handleError,
   });
 
-  const handleRegister = (event: any) => {
+  const handleSignUp = (event: any) => {
     event.preventDefault();
 
     if (usernameError || passwordError || confirmPasswordError) {
@@ -94,30 +82,20 @@ function SignUpPage() {
     if (!username) {
       setUsernameError("Please provide a username");
       return;
-    } else if (!oauth && !password) {
+    } else if (!password) {
       setPasswordError("Please provide a password");
       return;
-    } else if (!oauth && !confirmPassword) {
+    } else if (!confirmPassword) {
       setConfirmPasswordError("Please confirm your password");
       return;
     }
 
-    if (oauth) {
-      registerOAuth({
-        variables: {
-          token: token,
-          username: username,
-        },
-      });
-    } else {
-      register({
-        variables: {
-          token: token,
-          username: username,
-          password: password,
-        },
-      });
-    }
+    signup({
+      variables: {
+        username: username,
+        password: password,
+      },
+    });
   };
 
   function handleError(error: ApolloError) {
@@ -137,7 +115,7 @@ function SignUpPage() {
           Sign Up
         </Typography>
 
-        <form noValidate onSubmit={handleRegister}>
+        <form noValidate onSubmit={handleSignUp}>
           <TextField
             margin="dense"
             id="username"
@@ -145,46 +123,42 @@ function SignUpPage() {
             fullWidth
             autoFocus
             onChange={(event) => setUsername(event.target.value)}
-            disabled={loading1 || loading2}
+            disabled={loading}
             error={Boolean(usernameError)}
             helperText={usernameError}
           />
 
-          {!oauth && (
-            <TextField
-              margin="dense"
-              type="password"
-              id="password"
-              label="Password"
-              fullWidth
-              onChange={(event) => setPassword(event.target.value)}
-              onFocus={(event) => setAnchorEl(event.currentTarget)}
-              disabled={loading1}
-              error={Boolean(passwordError)}
-              helperText={passwordError}
-            />
-          )}
+          <TextField
+            margin="dense"
+            type="password"
+            id="password"
+            label="Password"
+            fullWidth
+            onChange={(event) => setPassword(event.target.value)}
+            onFocus={(event) => setAnchorEl(event.currentTarget)}
+            disabled={loading}
+            error={Boolean(passwordError)}
+            helperText={passwordError}
+          />
 
-          {!oauth && (
-            <TextField
-              margin="dense"
-              type="password"
-              id="confirm-password"
-              label="Confirm Password"
-              fullWidth
-              onChange={(event) => setConfirmPassword(event.target.value)}
-              disabled={loading1}
-              error={Boolean(confirmPasswordError)}
-              helperText={confirmPasswordError}
-            />
-          )}
+          <TextField
+            margin="dense"
+            type="password"
+            id="confirm-password"
+            label="Confirm Password"
+            fullWidth
+            onChange={(event) => setConfirmPassword(event.target.value)}
+            disabled={loading}
+            error={Boolean(confirmPasswordError)}
+            helperText={confirmPasswordError}
+          />
 
           <Button
             fullWidth
             variant="contained"
             color="primary"
             type="submit"
-            disabled={loading1 || loading2}
+            disabled={loading}
             sx={{ marginTop: 1, marginBottom: 4 }}
           >
             Sign Up

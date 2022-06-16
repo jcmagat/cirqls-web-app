@@ -104,7 +104,7 @@ function LoginPage() {
           </Button>
         </form>
 
-        <Typography component={Link} href={"/"}>
+        <Typography component={Link} href={"/signup"}>
           Don't have an account? Sign Up
         </Typography>
       </Box>
