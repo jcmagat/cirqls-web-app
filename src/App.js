@@ -14,7 +14,6 @@ import PostPage from "./pages/PostPage";
 import MessagePage from "./pages/MessagePage";
 import SettingsPage from "./pages/SettingsPage";
 import SearchPage from "./pages/SearchPage";
-import DeleteAccountPage from "./pages/DeleteAccountPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const theme = createTheme({
@@ -97,10 +96,6 @@ function App() {
 
           <Route path="/search">
             <SearchPage />
-          </Route>
-
-          <Route path="/delete-account/:token">
-            <DeleteAccountPage />
           </Route>
 
           <Route>

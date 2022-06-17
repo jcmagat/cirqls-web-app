@@ -110,17 +110,9 @@ export const CHANGE_PASSWORD = gql`
   }
 `;
 
-export const CONFIRM_DELETE_ACCOUNT = gql`
-  mutation ConfirmDeleteAccount($password: String!) {
-    confirmDeleteAccount(password: $password) {
-      success
-    }
-  }
-`;
-
 export const DELETE_ACCOUNT = gql`
-  mutation DeleteAccount($token: String!) {
-    deleteAccount(token: $token) {
+  mutation DeleteAccount($password: String!) {
+    deleteAccount(password: $password) {
       success
     }
   }

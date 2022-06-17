@@ -1,11 +1,10 @@
 import { useState, useEffect } from "react";
-import { useAuthUser } from "../../context/AuthUserContext";
+import { useHistory } from "react-router-dom";
 import { useMutation, ApolloError } from "@apollo/client";
-import { CONFIRM_DELETE_ACCOUNT } from "../../graphql/mutations";
+import { DELETE_ACCOUNT } from "../../graphql/mutations";
 import { SxProps, Theme } from "@mui/material";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
-import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import CloseIcon from "@mui/icons-material/Close";
 import Alert from "@mui/material/Alert";
@@ -22,7 +21,7 @@ interface Props {
 function DeleteAccountForm(props: Props) {
   const { sx } = props;
 
-  const authUser = useAuthUser();
+  const history = useHistory();
 
   const [password, setPassword] = useState("");
   const [passwordError, setPasswordError] = useState("");
@@ -35,16 +34,13 @@ function DeleteAccountForm(props: Props) {
     setPasswordError("");
   }, [password]);
 
-  const [confirmDeleteAccount, { loading }] = useMutation(
-    CONFIRM_DELETE_ACCOUNT,
-    {
-      onCompleted: finishConfirmDeleteAccount,
-      onError: handleError,
-    }
-  );
+  const [deleteAccount, { loading }] = useMutation(DELETE_ACCOUNT, {
+    onCompleted: handleCompleted,
+    onError: handleError,
+  });
 
   // Called when the delete account button in the dialog is clicked
-  const handleConfirmDeleteAccout = (event: any) => {
+  const handleDeleteAccout = (event: any) => {
     event.preventDefault();
 
     if (passwordError) return;
@@ -54,16 +50,11 @@ function DeleteAccountForm(props: Props) {
       return;
     }
 
-    confirmDeleteAccount({
+    deleteAccount({
       variables: {
         password: password,
       },
     });
-  };
-
-  // Called when the initial delete account button is clicked
-  const handleDeleteButtonClick = () => {
-    setOpen(true);
   };
 
   // Called when the close button in the dialog is clicked
@@ -74,11 +65,11 @@ function DeleteAccountForm(props: Props) {
   };
 
   // Called after the mutation is completed
-  function finishConfirmDeleteAccount() {
+  function handleCompleted() {
     setIsCompleted(true);
 
     setTimeout(() => {
-      handleClose();
+      history.push("/");
     }, 5000);
   }
 
@@ -92,7 +83,7 @@ function DeleteAccountForm(props: Props) {
       <Button
         variant="outlined"
         color="secondary"
-        onClick={handleDeleteButtonClick}
+        onClick={() => setOpen(true)}
         sx={{ ...sx }}
       >
         Delete Account
@@ -108,9 +99,8 @@ function DeleteAccountForm(props: Props) {
             paddingRight: 1,
           }}
         >
-          <Typography variant="h6">Delete Account</Typography>
-
-          <IconButton onClick={handleClose}>
+          Delete Account
+          <IconButton onClick={handleClose} disabled={loading || isCompleted}>
             <CloseIcon />
           </IconButton>
         </DialogTitle>
@@ -122,11 +112,11 @@ function DeleteAccountForm(props: Props) {
 
           {isCompleted && (
             <Alert severity="success">
-              {`A confirmation email has been sent to ${authUser?.email}`}
+              {`Your Cirqls account has been permanently deleted`}
             </Alert>
           )}
 
-          <form noValidate onSubmit={handleConfirmDeleteAccout}>
+          <form noValidate onSubmit={handleDeleteAccout}>
             <TextField
               margin="normal"
               type="password"
@@ -143,14 +133,18 @@ function DeleteAccountForm(props: Props) {
         </DialogContent>
 
         <DialogActions sx={{ paddingBottom: 3, paddingRight: 3 }}>
-          <Button variant="outlined" onClick={handleClose}>
+          <Button
+            variant="outlined"
+            onClick={handleClose}
+            disabled={loading || isCompleted}
+          >
             Cancel
           </Button>
 
           <Button
             variant="contained"
-            color="secondary"
-            onClick={handleConfirmDeleteAccout}
+            color="error"
+            onClick={handleDeleteAccout}
             disabled={loading || isCompleted}
           >
             Delete Account
