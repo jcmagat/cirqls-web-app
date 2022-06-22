@@ -16,3 +16,7 @@ This repo is for the frontend web application written using: React, TypeScript, 
 - Recieve real-time notifications
 - Follow a user
 - Real-time chat with another user
+
+## UML Class Diagram
+
+![UML Class Diagram](./images/uml-class-diagram.svg)
