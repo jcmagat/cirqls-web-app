@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { makeStyles } from "@mui/styles";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useMutation } from "@apollo/client";
 import { CREATE_COMMUNITY } from "../graphql/mutations";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Badge from "@mui/material/Badge";
 import IconButton from "@mui/material/IconButton";
-import EditOutlinedIcon from "@mui/icons-material/EditOutlined";
+import AddIcon from "@mui/icons-material/Add";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import TextField from "@mui/material/TextField";
@@ -17,45 +16,7 @@ import UploadDialog from "../components/Common/UploadDialog";
 import { COMMUNITY_TYPES } from "../utils/constants";
 import { Link } from "react-router-dom";
 
-const useStyles = makeStyles({
-  paper: {
-    marginTop: 80,
-    display: "flex",
-    flexDirection: "column",
-    gap: 16,
-  },
-  logoAndName: {
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center",
-    gap: 16,
-  },
-  avatar: {
-    width: 80,
-    height: 80,
-  },
-  moderator: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 16,
-    width: "max-content",
-  },
-  buttons: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "center",
-    gap: 8,
-  },
-  delete: {
-    display: "flex",
-    justifyContent: "center",
-    marginTop: 32,
-  },
-});
-
 function CreateCommunityPage(props) {
-  const classes = useStyles();
   const history = useHistory();
 
   const [uploadDialogOpen, setUploadDialogOpen] = useState(false);
@@ -126,8 +87,16 @@ function CreateCommunityPage(props) {
     <Container>
       <NavBar />
 
-      <Paper className={classes.paper} elevation={0}>
-        <Paper className={classes.logoAndName} elevation={0}>
+      <Box
+        sx={{
+          marginTop: 12,
+          marginBottom: 12,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Box sx={{ alignSelf: "center", marginBottom: 4 }}>
           <Badge
             overlap="circular"
             anchorOrigin={{
@@ -136,20 +105,30 @@ function CreateCommunityPage(props) {
             }}
             badgeContent={
               <IconButton
-                onClick={handleEditLogo}
+                size="small"
+                sx={{
+                  borderRadius: "50%",
+                  color: (theme) => theme.palette.primary.contrastText,
+                  background: (theme) => theme.palette.primary.main,
+                  boxShadow: (theme) => theme.shadows[2],
+                  "&:hover": {
+                    background: (theme) => theme.palette.primary.dark,
+                    boxShadow: (theme) => theme.shadows[4],
+                  },
+                }}
                 disabled={loading}
-                size="large"
+                onClick={handleEditLogo}
               >
-                <EditOutlinedIcon />
+                <AddIcon fontSize="small" />
               </IconButton>
             }
           >
             <Avatar
-              className={classes.avatar}
               src={logo ? URL.createObjectURL(logo) : null}
+              sx={{ width: 100, height: 100 }}
             />
           </Badge>
-        </Paper>
+        </Box>
 
         <UploadDialog
           open={uploadDialogOpen}
@@ -171,7 +150,6 @@ function CreateCommunityPage(props) {
         </TextField>
 
         <TextField
-          className={classes.form}
           size="small"
           id="name"
           label="Name"
@@ -182,7 +160,6 @@ function CreateCommunityPage(props) {
         />
 
         <TextField
-          className={classes.form}
           size="small"
           id="title"
           label="Title"
@@ -191,7 +168,6 @@ function CreateCommunityPage(props) {
         />
 
         <TextField
-          className={classes.form}
           size="small"
           id="description"
           label="Description"
@@ -201,7 +177,14 @@ function CreateCommunityPage(props) {
           disabled={loading}
         />
 
-        <Paper className={classes.buttons} elevation={0}>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            gap: 1,
+          }}
+        >
           <Button
             variant="outlined"
             color="secondary"
@@ -220,8 +203,8 @@ function CreateCommunityPage(props) {
           >
             Create Community
           </Button>
-        </Paper>
-      </Paper>
+        </Box>
+      </Box>
     </Container>
   );
 }
