@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from "react";
-import { Button, Typography } from "@mui/material";
-import makeStyles from "@mui/styles/makeStyles";
+import { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useNotifications } from "../../context/NotificationsContext";
 import { useMutation } from "@apollo/client";
@@ -10,6 +8,9 @@ import Badge from "@mui/material/Badge";
 import NotificationsOutlinedIcon from "@mui/icons-material/NotificationsOutlined";
 import Popper from "@mui/material/Popper";
 import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
 import Card from "@mui/material/Card";
 import CardActionArea from "@mui/material/CardActionArea";
 import CardHeader from "@mui/material/CardHeader";
@@ -17,25 +18,7 @@ import Avatar from "@mui/material/Avatar";
 import Divider from "@mui/material/Divider";
 import { GET_NOTIFICATIONS } from "../../graphql/queries";
 
-const useStyles = makeStyles({
-  popper: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  header: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingLeft: 8,
-  },
-  card: {
-    boxShadow: "none",
-  },
-});
-
 function NotificationCard({ notification, isLast }) {
-  const classes = useStyles();
   const history = useHistory();
 
   const [avatarSrc, setAvatarSrc] = useState("");
@@ -77,7 +60,7 @@ function NotificationCard({ notification, isLast }) {
 
   return (
     <>
-      <Card className={classes.card}>
+      <Card elevation={0}>
         <CardActionArea onClick={handleCardClick}>
           <CardHeader
             avatar={<Avatar src={avatarSrc} />}
@@ -93,8 +76,6 @@ function NotificationCard({ notification, isLast }) {
 }
 
 function NotificationsButton(props) {
-  const classes = useStyles();
-
   const notifications = useNotifications();
 
   const [open, setOpen] = useState(false);
@@ -138,14 +119,25 @@ function NotificationsButton(props) {
         placement="bottom-end"
         disablePortal
       >
-        <Paper className={classes.popper}>
-          <Paper className={classes.header} elevation={0}>
+        <Paper
+          elevation={2}
+          sx={{ display: "flex", flexDirection: "column", maxWidth: 400 }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "space-between",
+              paddingLeft: 1,
+            }}
+          >
             <Typography variant="subtitle1">Notifications</Typography>
 
             <Button color="primary" onClick={handleReadAll}>
               Mark All As Read
             </Button>
-          </Paper>
+          </Box>
 
           {notifications.map((notification, index) => (
             <NotificationCard
