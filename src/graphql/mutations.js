@@ -1,5 +1,5 @@
 import { gql } from "@apollo/client";
-import { COMMENT_FRAGMENT, MESSAGE_FRAGMENT } from "./fragments";
+import { USER_FRAGMENT, COMMENT_FRAGMENT, MESSAGE_FRAGMENT } from "./fragments";
 
 /* ========== Auth Mutations ========== */
 
@@ -38,36 +38,34 @@ export const LOGOUT = gql`
 /* ========== User Mutations ========== */
 
 export const FOLLOW = gql`
+  ${USER_FRAGMENT}
   mutation Follow($username: String!) {
     follow(username: $username) {
-      user_id
-      username
+      ...UserFragment
       followers {
-        username
-        followed_at
+        ...UserFragment
       }
     }
   }
 `;
 
 export const UNFOLLOW = gql`
+  ${USER_FRAGMENT}
   mutation Unfollow($username: String!) {
     unfollow(username: $username) {
-      user_id
-      username
+      ...UserFragment
       followers {
-        username
-        followed_at
+        ...UserFragment
       }
     }
   }
 `;
 
 export const REMOVE_FOLLOWER = gql`
+  ${USER_FRAGMENT}
   mutation RemoveFollower($username: String!) {
     removeFollower(username: $username) {
-      user_id
-      username
+      ...UserFragment
     }
   }
 `;

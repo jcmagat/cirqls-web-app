@@ -1,24 +1,25 @@
 import { gql } from "@apollo/client";
-import { POST_FRAGMENT, COMMENT_FRAGMENT, MESSAGE_FRAGMENT } from "./fragments";
+import {
+  USER_FRAGMENT,
+  POST_FRAGMENT,
+  COMMENT_FRAGMENT,
+  MESSAGE_FRAGMENT,
+} from "./fragments";
 
 /* ========== User Queries ========== */
 
 export const GET_USER = gql`
+  ${USER_FRAGMENT}
   ${POST_FRAGMENT}
   ${COMMENT_FRAGMENT}
   query User($username: String!) {
     user(username: $username) {
-      user_id
-      username
-      created_at
-      profile_pic_src
+      ...UserFragment
       following {
-        username
-        followed_at
+        ...UserFragment
       }
       followers {
-        username
-        followed_at
+        ...UserFragment
       }
       posts {
         ...PostFragment
@@ -34,18 +35,16 @@ export const GET_USER = gql`
 `;
 
 export const GET_AUTH_USER = gql`
+  ${USER_FRAGMENT}
   query AuthUser {
     authUser {
-      user_id
+      ...UserFragment
       email
-      username
-      created_at
-      profile_pic_src
       following {
-        username
+        ...UserFragment
       }
       followers {
-        username
+        ...UserFragment
       }
       posts {
         post_id

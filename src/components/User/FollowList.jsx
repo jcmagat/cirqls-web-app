@@ -237,14 +237,6 @@ function FollowCard({ profileUser, user, type }) {
   const isAuthUsersProfile =
     authUser && authUser.username === profileUser?.username;
 
-  const followSinceDate = new Date(user.followed_at).toLocaleDateString(
-    "en-us",
-    {
-      month: "long",
-      year: "numeric",
-    }
-  );
-
   const handleCardClick = () => {
     history.push(`/u/${user.username}`);
   };
@@ -253,10 +245,8 @@ function FollowCard({ profileUser, user, type }) {
     <Card>
       <CardActionArea onClick={handleCardClick}>
         <StyledCardHeader
-          avatar={<Avatar>{user.username.charAt(0).toUpperCase()}</Avatar>}
+          avatar={<Avatar src={user.profile_pic_src} />}
           title={`u/${user.username}`}
-          subheader={`${type} since ${followSinceDate}`}
-          subheaderTypographyProps={{ noWrap: true }}
           action={
             <>
               {isAuthUsersProfile ? (
@@ -280,7 +270,7 @@ function FollowList({ users, type }) {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
       {users.map((user) => (
-        <FollowCard key={user.username} user={user} type={type} />
+        <FollowCard key={user.user_id} user={user} type={type} />
       ))}
     </Box>
   );
