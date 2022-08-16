@@ -1,4 +1,3 @@
-import React from "react";
 import { useHistory } from "react-router-dom";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Container from "@mui/material/Container";
@@ -7,14 +6,16 @@ import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import Logo from "../components/Navigation/Logo";
 
-function NotFoundPage(props) {
+function NotFoundPage() {
   const history = useHistory();
 
-  const isSmallScreen = useMediaQuery((theme) => theme.breakpoints.down("sm"));
+  const isSmallScreen = useMediaQuery((theme: any) =>
+    theme.breakpoints.down("sm")
+  );
 
   return (
     <Container disableGutters maxWidth={false}>
-      <Logo sx={{ padding: 2 }} />
+      <Logo size="normal" sx={{ padding: 2 }} />
 
       <Paper
         sx={{

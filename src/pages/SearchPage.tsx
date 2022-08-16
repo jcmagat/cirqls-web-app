@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import makeStyles from '@mui/styles/makeStyles';
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import queryString from "query-string";
 import { useQuery } from "@apollo/client";
 import { SEARCH } from "../graphql/queries";
 import Container from "@mui/material/Container";
-import Paper from "@mui/material/Paper";
+import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
@@ -16,26 +15,13 @@ import PostList from "../components/Post/PostList";
 import CommunityCard from "../components/Community/CommunityCard";
 import UserCard from "../components/User/UserCard";
 
-const useStyles = makeStyles({
-  content: {
-    marginTop: 80,
-  },
-  cards: {
-    display: "flex",
-    flexDirection: "column",
-    gap: 16,
-  },
-});
-
 const TABS = {
   POSTS: "posts",
   COMMUNITIES: "communities",
   USERS: "users",
 };
 
-function SearchPage(props) {
-  const classes = useStyles();
-
+function SearchPage() {
   const { search } = useLocation();
   const { term } = queryString.parse(search);
 
@@ -56,23 +42,30 @@ function SearchPage(props) {
 
     setPosts(
       data.search.filter(
-        (result) =>
+        (result: any) =>
           result.__typename === "TextPost" || result.__typename === "MediaPost"
       )
     );
 
     setCommunities(
-      data.search.filter((result) => result.__typename === "Community")
+      data.search.filter((result: any) => result.__typename === "Community")
     );
 
-    setUsers(data.search.filter((result) => result.__typename === "User"));
+    setUsers(data.search.filter((result: any) => result.__typename === "User"));
   }, [data]);
 
   return (
     <Container>
-      <NavBar />
+      <NavBar elevation={3} bottomOnly={false} />
 
-      <Paper className={classes.content} elevation={0}>
+      <Box
+        sx={{
+          marginTop: 12,
+          marginBottom: 12,
+          maxWidth: 800,
+          marginInline: "auto",
+        }}
+      >
         <Typography variant="h6">{`Search results for "${term}"`}</Typography>
 
         <TabContext value={tab}>
@@ -91,25 +84,25 @@ function SearchPage(props) {
           </TabPanel>
 
           <TabPanel value={TABS.COMMUNITIES}>
-            <Paper className={classes.cards} elevation={0}>
-              {communities.map((community) => (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {communities.map((community: any) => (
                 <CommunityCard
                   key={community.community_id}
                   community={community}
                 />
               ))}
-            </Paper>
+            </Box>
           </TabPanel>
 
           <TabPanel value={TABS.USERS}>
-            <Paper className={classes.cards} elevation={0}>
-              {users.map((user) => (
+            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
+              {users.map((user: any) => (
                 <UserCard key={user.user_id} user={user} />
               ))}
-            </Paper>
+            </Box>
           </TabPanel>
         </TabContext>
-      </Paper>
+      </Box>
     </Container>
   );
 }
