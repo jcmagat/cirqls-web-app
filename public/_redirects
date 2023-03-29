@@ -1,6 +1,6 @@
 # Redirect default subdomain to primary domain
 https://cirqls.netlify.app/* https://www.cirqls.app/:splat 301!
 
-/graphql https://cirqls-backend.herokuapp.com/graphql 200
-/media/* https://cirqls-backend.herokuapp.com/media/:splat 301
+/graphql https://cirqls-backend-production.up.railway.app/graphql 200
+/media/* https://cirqls-backend-production.up.railway.app/media/:splat 301
 /* /index.html 200
